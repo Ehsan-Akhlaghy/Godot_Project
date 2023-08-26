@@ -1,3 +1,5 @@
+WorldEnvironment
+CSGMesh3D
 RigidBody3D
 Area3D
 CollisionShape3D

@@ -52,9 +52,9 @@ func calib_size():
 	var new_node:Node3D = Node3D.new()
 	
 	center_pivot.get_child(0).get_child(0).add_child(new_node)
-	#*****change_pivot(new_node,find_center_3dObj(biggest_bounding_box.get_center()))
+	change_pivot(new_node,find_center_3dObj(biggest_bounding_box.get_center()))
 	
-	change_pivot(new_node,all_centers(Model))
+	#change_pivot(new_node,all_centers(Model))
 	MyReparent(Model,new_node)
 	
 
@@ -64,10 +64,9 @@ func calib_size():
 	
 	
 	
+	#change_pivot(center_pivot,all_centers(Model))
 	
-	change_pivot(center_pivot,all_centers(Model))
-	
-	#*******change_pivot(center_pivot,find_center_3dObj(biggest_bounding_box.get_center()))
+	change_pivot(center_pivot,find_center_3dObj(biggest_bounding_box.get_center()))
 	#change_pivot(center_pivot,find_center_3dObj(all_centers(Model)))
 	#MyReparent(Model,center_pivot.get_child(0).get_child(0))
 	
@@ -335,6 +334,8 @@ func all_centers(mymodel:Node3D):
 	allmeshes=get_all_meshes(get_all_children(mymodel))
 	for i in allmeshes:
 		all_center.append(i.global_transform.origin)
+		
+	
 		
 	var sum:Vector3 = Vector3.ZERO	
 	for i in all_center:
