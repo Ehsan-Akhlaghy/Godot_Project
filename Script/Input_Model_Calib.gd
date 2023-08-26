@@ -52,10 +52,12 @@ func calib_size():
 	var new_node:Node3D = Node3D.new()
 	
 	center_pivot.get_child(0).get_child(0).add_child(new_node)
-	change_pivot(new_node,find_center_3dObj(biggest_bounding_box.get_center()))
+	#*****change_pivot(new_node,find_center_3dObj(biggest_bounding_box.get_center()))
+	
+	change_pivot(new_node,all_centers(Model))
 	MyReparent(Model,new_node)
 	
-	
+
 	
 	new_node.scale = find_desired_size(biggest_bounding_box)
 	
@@ -63,7 +65,9 @@ func calib_size():
 	
 	
 	
-	change_pivot(center_pivot,find_center_3dObj(biggest_bounding_box.get_center()))
+	change_pivot(center_pivot,all_centers(Model))
+	
+	#*******change_pivot(center_pivot,find_center_3dObj(biggest_bounding_box.get_center()))
 	#change_pivot(center_pivot,find_center_3dObj(all_centers(Model)))
 	#MyReparent(Model,center_pivot.get_child(0).get_child(0))
 	
@@ -74,7 +78,11 @@ func find_center_3dObj(Mymesh:Vector3)->Vector3:
 	
 	#var center:Vector3 = Model.to_global(Mymesh.get_center())
 	
+	#*************
 	var center:Vector3 = Model.to_global(Mymesh)
+	
+	
+	
 	
 	#var center:Vector3 = Mymesh.to_global(Mymesh.get_center())
 	
@@ -144,7 +152,7 @@ func create_Marker3d():
 	
 	#my_collision.shape.size=standard_size/1.5
 	
-	my_collision.shape.size=standard_size/2
+	my_collision.shape.size=standard_size
 	
 	
 	get_parent().add_child(center_pivot)
@@ -280,6 +288,19 @@ func get_all_meshes_aabb(mynodes):
 			print("size aabb mesh:"+str(i.get_aabb().size))
 			print("center aabb mesh:"+str(i.get_aabb().get_center()))
 	return allmeshes
+
+func get_all_meshes(mynodes):
+	var allmeshes = []
+	
+	for i in mynodes:
+		
+		#if i is Node3D:
+			#i.scale = Vector3.ONE
+		if(i is MeshInstance3D):
+			allmeshes.append(i)
+			print("size aabb mesh:"+str(i.get_aabb().size))
+			print("center aabb mesh:"+str(i.get_aabb().get_center()))
+	return allmeshes
 	
 func find_biggest_bounding_box(mymodel:Node3D):
 	var allmeshes = []
@@ -292,12 +313,28 @@ func find_biggest_bounding_box(mymodel:Node3D):
 		allmeshes[i+1] = allmeshes[i+1].merge(allmeshes[i])
 		
 
+#func all_centers(mymodel:Node3D):
+#	var allmeshes_aabb = []
+#	var all_center = []
+#	allmeshes_aabb =get_all_meshes_aabb(get_all_children(mymodel))
+#	for i in allmeshes_aabb:
+#		all_center.append(i.get_center())
+#
+#	var sum:Vector3 = Vector3.ZERO	
+#	for i in all_center:
+#		sum+=i
+#	print(sum)
+#	print(sum/all_center.size())
+#	#print(mymodel.to_global(sum/all_center.size()))
+#	return sum/all_center.size()
+
+
 func all_centers(mymodel:Node3D):
-	var allmeshes_aabb = []
+	var allmeshes = []
 	var all_center = []
-	allmeshes_aabb =get_all_meshes_aabb(get_all_children(mymodel))
-	for i in allmeshes_aabb:
-		all_center.append(i.get_center())
+	allmeshes=get_all_meshes(get_all_children(mymodel))
+	for i in allmeshes:
+		all_center.append(i.global_transform.origin)
 		
 	var sum:Vector3 = Vector3.ZERO	
 	for i in all_center:
@@ -305,7 +342,8 @@ func all_centers(mymodel:Node3D):
 	print(sum)
 	print(sum/all_center.size())
 	#print(mymodel.to_global(sum/all_center.size()))
-	return sum/all_center.size()	
+	return sum/all_center.size()
+	
 			
 #func Move(whichway:String):
 #	if(whichway == "R"):

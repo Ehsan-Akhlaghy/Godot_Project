@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://np0axe7tjadi"
+path="res://.godot/imported/cilynder_objobj.obj-15a7cf34033e69d7ae9a581d94f11b68.mesh"
+
+[deps]
+
+files=["res://.godot/imported/cilynder_objobj.obj-15a7cf34033e69d7ae9a581d94f11b68.mesh"]
+
+source_file="res://3dModel/Cylinder- obj/cilynder_objobj.obj"
+dest_files=["res://.godot/imported/cilynder_objobj.obj-15a7cf34033e69d7ae9a581d94f11b68.mesh", "res://.godot/imported/cilynder_objobj.obj-15a7cf34033e69d7ae9a581d94f11b68.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

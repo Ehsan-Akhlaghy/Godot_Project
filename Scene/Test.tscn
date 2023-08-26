@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://cc81s607ik3nl"]
+
+[ext_resource type="Script" path="res://Script/test.gd" id="1_eua3x"]
+[ext_resource type="ArrayMesh" uid="uid://b76b72f73qg75" path="res://3dModel/Pencil_Scaled.obj" id="2_0jgmb"]
+[ext_resource type="ArrayMesh" uid="uid://np0axe7tjadi" path="res://3dModel/Cylinder- obj/cilynder_objobj.obj" id="2_krr6s"]
+
+[node name="Test" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -84.7787)
+
+[node name="Node3D" type="Node3D" parent="." node_paths=PackedStringArray("Model", "Node_model")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -1832.98, -261.063, -3489.01)
+script = ExtResource("1_eua3x")
+Model = NodePath("CilynderObjobj")
+Node_model = NodePath(".")
+
+[node name="CilynderObjobj" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(0.333333, 0, 0, 0, 0.333333, 0, 0, 0, 0.333333, -665.172, 2.24659, 1007.74)
+mesh = ExtResource("2_krr6s")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 463.029, -163.325, -138.685)
+custom_aabb = AABB(1, 0, 0, 0, 0, 0)
+mesh = ExtResource("2_0jgmb")
+
+[node name="Node3D2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.75, -3)
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
