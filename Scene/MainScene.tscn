@@ -1,0 +1,68 @@
+[gd_scene load_steps=8 format=3 uid="uid://bw25xhs3iehum"]
+
+[ext_resource type="Script" path="res://Script/Input_Model_Calib.gd" id="2_0sobt"]
+[ext_resource type="Script" path="res://Script/InputManager.gd" id="3_ylpph"]
+[ext_resource type="Script" path="res://Script/FilesManager.gd" id="5_m4550"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xgtco"]
+size = Vector3(4.74681, 4.055, 10.4401)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1775e"]
+diffuse_mode = 1
+albedo_color = Color(1, 0, 0.2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_7c8gr"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_blmf3"]
+
+[node name="MainScene" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 57.379, 1.17551, 0)
+current = true
+fov = 60.0
+
+[node name="3D_Area" type="Area3D" parent="."]
+transform = Transform3D(1.99857, -0.0755012, -0.00168172, 0.0755199, 1.99808, 0.0445054, -2.32831e-10, -0.0445371, 1.9995, 0, -12.4037, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="3D_Area"]
+shape = SubResource("BoxShape3D_xgtco")
+
+[node name="Desk" type="MeshInstance3D" parent="3D_Area/CollisionShape3D"]
+transform = Transform3D(1.68735, 0, 0, 0, 3.49551, 0, 0, 0, 10.7158, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_1775e")
+mesh = SubResource("BoxMesh_7c8gr")
+skeleton = NodePath("../../..")
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a File"
+initial_position = 1
+size = Vector2i(800, 400)
+visible = true
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+
+[node name="InputModelManager" type="Marker3D" parent="."]
+transform = Transform3D(0.838042, 0, -0.545604, 0, 1, 0, 0.545604, 0, 0.838042, 4.65116, -1.06669, -6.34221)
+script = ExtResource("2_0sobt")
+standard_size = Vector3(2, 2, 2)
+
+[node name="ControllerManager" type="Marker3D" parent="." node_paths=PackedStringArray("MyModelManager", "myFileDialog")]
+transform = Transform3D(0.838042, 0, -0.545604, 0, 1, 0, 0.545604, 0, 0.838042, 4.65116, -1.06669, -6.34221)
+script = ExtResource("3_ylpph")
+MyModelManager = NodePath("../InputModelManager")
+myFileDialog = NodePath("../FileDialog")
+
+[node name="FileManager" type="Marker3D" parent="." node_paths=PackedStringArray("my_model_manager", "myfiledialog")]
+script = ExtResource("5_m4550")
+my_model_manager = NodePath("../InputModelManager")
+myfiledialog = NodePath("../FileDialog")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.8592, -4.76837e-07, 9.97028)
+shape = SubResource("BoxShape3D_blmf3")
+
+[connection signal="area_entered" from="3D_Area" to="InputModelManager" method="_on_d_area_area_entered"]
+[connection signal="area_exited" from="3D_Area" to="InputModelManager" method="_on_d_area_area_exited"]
+[connection signal="file_selected" from="FileDialog" to="FileManager" method="_on_file_dialog_file_selected"]

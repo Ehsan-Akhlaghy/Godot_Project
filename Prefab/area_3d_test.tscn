@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://ctv6sqyp8qfr8"]
+
+[ext_resource type="PackedScene" uid="uid://bwtxg3eogqes1" path="res://Prefab/blackboard.tscn" id="1_nwmjc"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1jx1o"]
+size = Vector3(1.83395, 2.66823, 4.28747)
+
+[node name="Area3D" type="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.889988, 13.4839, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_1jx1o")
+
+[node name="blackboard2" parent="CollisionShape3D" instance=ExtResource("1_nwmjc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+skeleton = NodePath("../../..")

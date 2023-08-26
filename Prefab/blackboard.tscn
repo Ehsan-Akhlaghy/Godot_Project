@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bwtxg3eogqes1"]
+
+[ext_resource type="ArrayMesh" uid="uid://b3fnjlb62fgn7" path="res://3dModel/blackboard.obj" id="1_itbpv"]
+
+[node name="blackboard" type="MeshInstance3D"]
+transform = Transform3D(0.981929, 0, -0.18925, 0, 1, 0, 0.18925, 0, 0.981929, 5.12519, 0, 1.61401)
+mesh = ExtResource("1_itbpv")

@@ -1,0 +1,59 @@
+[gd_scene load_steps=8 format=3 uid="uid://c26gsg7gjkciw"]
+
+[ext_resource type="Script" path="res://Script/Mouse_Controller.gd" id="1"]
+[ext_resource type="Script" path="res://Script/Input_Model_Calib.gd" id="2"]
+[ext_resource type="ArrayMesh" uid="uid://b3fnjlb62fgn7" path="res://3dModel/blackboard.obj" id="3"]
+
+[sub_resource type="BoxShape3D" id="5"]
+
+[sub_resource type="BoxMesh" id="1"]
+
+[sub_resource type="CapsuleShape3D" id="6"]
+
+[sub_resource type="CapsuleMesh" id="3"]
+
+[node name="Node3D" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0111737, 0, 0.0640372)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.00232032, -6.74874e-05, -0.999997, 0.0290731, 0.999577, -5.84374e-11, 0.999575, -0.029073, 0.0023213, -0.658199, 1.19237, 0.160352)
+current = true
+
+[node name="StaticBody_Desk" type="StaticBody3D" parent="."]
+transform = Transform3D(0.381579, 0, 0, 0, 0.441904, 0, 0, 0, 2.04119, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody_Desk"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.152335, 0.0298659, -0.00150248)
+shape = SubResource("5")
+
+[node name="DeskMesh" type="MeshInstance3D" parent="StaticBody_Desk/CollisionShape3D" groups=["DeskPen"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.152335, -0.0298659, 0.0015025)
+mesh = SubResource("1")
+skeleton = NodePath("../../..")
+
+[node name="RigidBodypen" type="RigidBody3D" parent="."]
+transform = Transform3D(0.244536, 0, 0, 0, 0.133728, 0, 0, 0, 0.1, 0.405542, 0.757145, 7.45058e-09)
+mass = 10.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBodypen"]
+transform = Transform3D(1, 4.65661e-10, -2.13163e-14, -4.65661e-10, 1, 7.91034e-16, -1.42109e-14, 7.07767e-16, 1, 0, 0, 0)
+shape = SubResource("6")
+
+[node name="PenMesh" type="MeshInstance3D" parent="RigidBodypen/CollisionShape3D" groups=["DeskPen"]]
+transform = Transform3D(1, -4.65661e-10, 2.4869e-14, 4.65661e-10, 1, 6.38378e-16, 2.13163e-14, 6.66134e-16, 1, 0, 0, 0)
+mesh = SubResource("3")
+skeleton = NodePath("../../..")
+script = ExtResource("1")
+
+[node name="blackboard" type="MeshInstance3D" parent="." groups=["Imported_model"]]
+transform = Transform3D(0.981929, 0, -0.18925, 0, 1, 0, 0.18925, 0, 0.981929, 5.12519, 0, 1.61401)
+mesh = ExtResource("3")
+
+[node name="Marker3D" type="Marker3D" parent="."]
+transform = Transform3D(0.838042, 0, -0.545604, 0, 1, 0, 0.545604, 0, 0.838042, 4.65116, -1.06669, 1.31679)
+script = ExtResource("2")
+standard_size = Vector3(3, 3, 3)
+Change_Shape = null
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.04508, 0, 0)
