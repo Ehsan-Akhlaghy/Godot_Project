@@ -43,10 +43,11 @@ ok_button_text = "Open"
 file_mode = 0
 access = 2
 
-[node name="InputModelManager" type="Marker3D" parent="."]
+[node name="InputModelManager" type="Marker3D" parent="." node_paths=PackedStringArray("offset_desk")]
 transform = Transform3D(0.838042, 0, -0.545604, 0, 1, 0, 0.545604, 0, 0.838042, 4.65116, -1.06669, -6.34221)
 script = ExtResource("2_0sobt")
 standard_size = Vector3(10, 10, 10)
+offset_desk = NodePath("../offset_desk")
 
 [node name="ControllerManager" type="Marker3D" parent="." node_paths=PackedStringArray("MyModelManager", "myFileDialog")]
 transform = Transform3D(0.838042, 0, -0.545604, 0, 1, 0, 0.545604, 0, 0.838042, 4.65116, -1.06669, -6.34221)
@@ -62,6 +63,9 @@ myfiledialog = NodePath("../FileDialog")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.8592, -4.76837e-07, 9.97028)
 shape = SubResource("BoxShape3D_blmf3")
+
+[node name="offset_desk" type="Node3D" parent="."]
+transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, 0, -5.75318, 0)
 
 [connection signal="area_entered" from="3D_Area" to="InputModelManager" method="_on_d_area_area_entered"]
 [connection signal="area_exited" from="3D_Area" to="InputModelManager" method="_on_d_area_area_exited"]

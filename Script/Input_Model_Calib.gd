@@ -8,6 +8,8 @@ class_name  Input_Model_Manager
 var Model
 @export var standard_size:Vector3
 
+@export var offset_desk:Node3D
+
 
 
 
@@ -23,6 +25,8 @@ var my_area:Area3D
 var new_node:Node3D
 
 
+var can_increase_pivot:bool = false
+var can_decrese_pivot: bool = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -39,7 +43,8 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	
+	increase_pivot()
+		
 	pass
 
 #formulation (feature_unit/current_unit) * current_size = Desired_size 
@@ -71,6 +76,8 @@ func calib_size():
 	change_pivot(center_pivot,center)
 	
 	center_pivot.global_position = Vector3.ZERO
+	
+	center_pivot.global_position = offset_desk.global_position
 	
 	#change_pivot(center_pivot,find_center_3dObj(biggest_bounding_box.get_center()))
 	#change_pivot(center_pivot,find_center_3dObj(all_centers(Model)))
@@ -228,6 +235,8 @@ func DoScale(my_delta:float,max_scale =1 ):
 	
 	#new_node.scale = clamp(_Scale,Vector3(0.1,0.1,0.1),Vector3(MaxScale,MaxScale,MaxScale))
 	parent.scale = clamp(_Scale,Vector3(0.1,0.1,0.1),Vector3(MaxScale,MaxScale,MaxScale))
+	decrease_pivot()
+	#parent.scale = clamp(_Scale,Vector3(0.1,0.1,0.1),Vector3(MaxScale,MaxScale,MaxScale))
 	#============
 	#******************
 	
@@ -431,24 +440,51 @@ func all_centers(mymodel:Node3D):
 
 
 
+func increase_pivot():
+	if(can_increase_pivot):
+		center_pivot.global_position += Vector3(0,0.25,0)
+
+func decrease_pivot():
+	if(can_decrese_pivot):
+		center_pivot.global_position -= Vector3(0,1,0)
+		print("decrease pivot")
+
+func dir_collision(dir:String)->Vector3:
+	match dir:
+		"down":
+			return Vector3(0,0.25,0)
+		"up":
+			return Vector3(0,-1,0)
+		"left":
+			return Vector3(0,0,1)
+		"right":
+			return Vector3(0,0,-1)
+	return Vector3.ZERO
 	
-
-
-
-
 
 
 func _on_d_area_area_entered(area):
 	
+	
 	print("area:"+ str(area.get_groups()))
+	
+	
 	
 	if(area.is_in_group("can_rotation")):
 		
-		MaxScale = center_pivot.scale[0]
+		#***MaxScale = center_pivot.scale[0]
+		#center_pivot.global_position += Vector3(0,1,0)
+		
+		can_increase_pivot = true
+		can_decrese_pivot = false
+		
 		print("EnteredMyDesk area:" + area.name)
 	pass # Replace with function body.
 
 
 func _on_d_area_area_exited(area):
+	if(area.is_in_group("can_rotation")):
+		can_increase_pivot = false
+		can_decrese_pivot = true
 	#print("ExitedMyDesk area:" + area.name)
 	pass # Replace with function body.
