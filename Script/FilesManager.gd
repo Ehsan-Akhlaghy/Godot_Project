@@ -78,7 +78,8 @@ func LoadFromFile(path:String):
 		
 		my_model_manager.Model= mygltf.generate_scene(gltf_state)
 		
-		my_model_manager.new_file_added()
+		if(my_model_manager.Model!=null):
+			my_model_manager.new_file_added()
 		
 		#add_child(MyModel)	
 	else:

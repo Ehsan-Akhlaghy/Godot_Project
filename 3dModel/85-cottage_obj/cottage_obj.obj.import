@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://f1103rabojn"
+path="res://.godot/imported/cottage_obj.obj-4241919cebf68ff4c799876510d65f71.mesh"
+
+[deps]
+
+files=["res://.godot/imported/cottage_obj.obj-4241919cebf68ff4c799876510d65f71.mesh"]
+
+source_file="res://3dModel/85-cottage_obj/cottage_obj.obj"
+dest_files=["res://.godot/imported/cottage_obj.obj-4241919cebf68ff4c799876510d65f71.mesh", "res://.godot/imported/cottage_obj.obj-4241919cebf68ff4c799876510d65f71.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

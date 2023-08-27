@@ -20,7 +20,7 @@ var MaxScale:float = 100
 var myshape
 var my_area:Area3D
 
-
+var new_node:Node3D
 
 
 
@@ -47,28 +47,35 @@ func calib_size():
 	
 	Init_Model()
 	
-	var biggest_bounding_box:AABB = find_biggest_bounding_box(Model)
+	#***var biggest_bounding_box:AABB = find_biggest_bounding_box(Model)
 	
-	var new_node:Node3D = Node3D.new()
+	#***var new_node:Node3D = Node3D.new()
+	
+	new_node  = Node3D.new()
 	
 	center_pivot.get_child(0).get_child(0).add_child(new_node)
-	change_pivot(new_node,find_center_3dObj(biggest_bounding_box.get_center()))
 	
-	#change_pivot(new_node,all_centers(Model))
+	#change_pivot(new_node,find_center_3dObj(biggest_bounding_box.get_center()))
+	var center = all_centers(Model)
+	
+	change_pivot(new_node,center)
 	MyReparent(Model,new_node)
 	
 
 	
-	new_node.scale = find_desired_size(biggest_bounding_box)
+	#new_node.scale = find_desired_size(biggest_bounding_box)
+	
+	new_node.scale = find_desired_size_2(Model)
 	
 	
+	change_pivot(center_pivot,center)
 	
+	center_pivot.global_position = Vector3.ZERO
 	
-	#change_pivot(center_pivot,all_centers(Model))
-	
-	change_pivot(center_pivot,find_center_3dObj(biggest_bounding_box.get_center()))
+	#change_pivot(center_pivot,find_center_3dObj(biggest_bounding_box.get_center()))
 	#change_pivot(center_pivot,find_center_3dObj(all_centers(Model)))
-	#MyReparent(Model,center_pivot.get_child(0).get_child(0))
+	
+	#****MyReparent(Model,center_pivot.get_child(0).get_child(0))
 	
 	
 	#new_node.position = Vector3(0,0,0)
@@ -91,8 +98,8 @@ func find_center_3dObj(Mymesh:Vector3)->Vector3:
 	#print("before changing cordinate:"+str(Mymesh.get_center()))
 	#print("afer changing cordinate:"+str(center))
 	
-	print("before changing cordinate:"+str(Mymesh))
-	print("afer changing cordinate:"+str(center))
+	#print("before changing cordinate:"+str(Mymesh))
+	#print("afer changing cordinate:"+str(center))
 	
 	
 	return center
@@ -102,8 +109,12 @@ func change_pivot(mynode:Node3D,center:Vector3):
 	
 	#print("center before:"+ str(center_pivot.global_position) )
 	#mynode.global_position= center
+	if(new_node.position.length()!=0):
+		new_node.position = Vector3.ZERO
 	
 	mynode.global_position= center
+	
+	#mynode.position= center
 	
 	#print("center after:"+ str(center_pivot.global_position) )
 	
@@ -176,6 +187,8 @@ func MyRotation(degree:float):
 	
 	center_pivot.rotate_y(degree)
 	
+	#***new_node.rotate_y(degree)
+	
 	pass
 
 func DoScale(my_delta:float,max_scale =1 ):
@@ -201,18 +214,22 @@ func DoScale(my_delta:float,max_scale =1 ):
 	
 	#**********var parent:Node3D = Model.get_parent().get_parent().get_parent()
 	
+	#****************
 	var parent:Node3D = Model.get_parent().get_parent().get_parent().get_parent()
 	
 	var _Scale:Vector3 =  Vector3(parent.scale.x+my_delta,parent.scale.y+my_delta
 				,parent.scale.z+my_delta) 			
+	
+	#var _Scale:Vector3 =  Vector3(new_node.scale.x+my_delta,new_node.scale.y+my_delta
+			#	,new_node.scale.z+my_delta) 	
 				
 	#=======================
 	
 	
-
+	#new_node.scale = clamp(_Scale,Vector3(0.1,0.1,0.1),Vector3(MaxScale,MaxScale,MaxScale))
 	parent.scale = clamp(_Scale,Vector3(0.1,0.1,0.1),Vector3(MaxScale,MaxScale,MaxScale))
 	#============
-	
+	#******************
 	
 	#print("ScaleName:"+str(Model.get_parent().name))
 	
@@ -225,16 +242,21 @@ func Init_Model():
 	
 	
 	
-	Model.global_scale(Vector3.ONE)
+	#*********Model.global_scale(Vector3.ONE)
+	
+	
+	
 	#Model.global_position = Vector3(0,0,0)
 
 	#Model.rotation = Vector3.ZERO
+	
 	MyReparent(Model,Model.get_parent().get_parent())
 	
 	#Model.position = Vector3(0,0,0)
 	Model.global_position = Vector3(0,0,0)
 	
 func find_desired_size(mymesh:AABB)->Vector3:
+	
 	#var  Mymesh:AABB = Model.get_aabb()
 	
 	
@@ -258,6 +280,60 @@ func find_desired_size(mymesh:AABB)->Vector3:
 	#var New_AABB:AABB =Mymesh.grow(float(standard_size.x-Bounding_box.x)/2)
 	
 	pass
+
+func find_desired_size_2(node):
+	var allmeshes = []
+	var all_size = []
+	allmeshes=get_all_meshes(get_all_children(node))
+	for i in allmeshes:
+		all_size.append( i.global_transform.basis.get_scale() *i.get_aabb().size) 
+		
+	
+		
+	#**var sum:Vector3 = Vector3.ZERO	
+	#**for i in all_size:
+		#**sum+=i
+	#print(sum)
+	
+	#**var size = sum/all_size.size()
+	#**print("second way center:"+str(sum/all_size.size()))
+	
+	
+	#print(mymodel.to_global(sum/all_center.size()))
+	
+
+	
+	var biggest_vector:Vector3 =Vector3.ZERO
+	
+	for i in range(0,all_size.size()):
+		if(i+1 ==all_size.size()):
+			break
+		#print("i:"+str(i))
+		#print("array:"+str(all_size))	
+		#print("pre:"+str(all_size[i])+"length:"+str(all_size[i].length()))
+		#print("current:"+str(all_size[i+1])+"length:"+str(all_size[i+1].length()))
+		if(all_size[i].length() >= all_size[i+1].length()):
+			all_size[i+1] = all_size[i]
+		#all_size[i+1] = max(all_size[i].length(),all_size[i+1].length())
+	biggest_vector = all_size[all_size.size()-1]	
+	
+	var Scale= [float(standard_size.x)/float(biggest_vector.x),
+						float(standard_size.y)/float(biggest_vector.y),
+						float(standard_size.z)/float(biggest_vector.z)]
+	
+	
+								
+	Scale.sort()
+	MyScale= Vector3(Scale[0],Scale[0],Scale[0])
+	
+	#var parent:Node3D = Model.get_parent().get_parent().get_parent()
+	
+	return MyScale
+	
+	
+	
+	return 
+	
 	
 func new_file_added():
 	if(center_pivot!=null):
@@ -284,8 +360,8 @@ func get_all_meshes_aabb(mynodes):
 			#i.scale = Vector3.ONE
 		if(i is MeshInstance3D):
 			allmeshes.append(i.get_aabb())
-			print("size aabb mesh:"+str(i.get_aabb().size))
-			print("center aabb mesh:"+str(i.get_aabb().get_center()))
+			#print("size aabb mesh:"+str(i.get_aabb().size))
+			#print("center aabb mesh:"+str(i.get_aabb().get_center()))
 	return allmeshes
 
 func get_all_meshes(mynodes):
@@ -297,8 +373,8 @@ func get_all_meshes(mynodes):
 			#i.scale = Vector3.ONE
 		if(i is MeshInstance3D):
 			allmeshes.append(i)
-			print("size aabb mesh:"+str(i.get_aabb().size))
-			print("center aabb mesh:"+str(i.get_aabb().get_center()))
+			#print("size aabb mesh:"+str(i.get_aabb().size))
+			#print("center aabb mesh:"+str(i.get_aabb().get_center()))
 	return allmeshes
 	
 func find_biggest_bounding_box(mymodel:Node3D):
@@ -307,7 +383,7 @@ func find_biggest_bounding_box(mymodel:Node3D):
 	var size_allmeshes:int = allmeshes.size()	
 	for i in range(0,size_allmeshes):
 		if(i+1 == size_allmeshes):
-			print("size merged:"+str(allmeshes[i].size))
+			#print("size merged:"+str(allmeshes[i].size))
 			return allmeshes[i]
 		allmeshes[i+1] = allmeshes[i+1].merge(allmeshes[i])
 		
@@ -333,15 +409,15 @@ func all_centers(mymodel:Node3D):
 	var all_center = []
 	allmeshes=get_all_meshes(get_all_children(mymodel))
 	for i in allmeshes:
-		all_center.append(i.global_transform.origin)
+		all_center.append( i.global_transform *i.get_aabb().get_center()) 
 		
 	
 		
 	var sum:Vector3 = Vector3.ZERO	
 	for i in all_center:
 		sum+=i
-	print(sum)
-	print(sum/all_center.size())
+	#print(sum)
+	#print("second way center:"+str(sum/all_center.size()))
 	#print(mymodel.to_global(sum/all_center.size()))
 	return sum/all_center.size()
 	
