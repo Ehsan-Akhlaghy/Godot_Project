@@ -4,7 +4,9 @@ class_name  MyMovement
 #const   path="res://3dModel/pen_scaled.glb"
 #var myModel = preload(path)
 
-@export var Model:Node3D
+#@export var Model:Node3D
+
+@export var my_char:CharacterBody3D
 
 #@export var myVisualInstance:VisualInstance3D
 #@export var ModelMesh:Mesh
@@ -22,6 +24,13 @@ func _ready():
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	
+	if(my_char.is_on_floor()):
+		print("on floor")
+	if(my_char.is_on_ceiling()):
+		print("on ceiling")
+	if(my_char.is_on_wall()):
+		print("on wall")
 	#print("GetSize:"+str(Model.get_aabb().size))
 	
 	#print("Get Center:"+str(Model.get_aabb().get_center()))
@@ -32,9 +41,9 @@ func _process(delta):
 	#print("size"+str(a.size))
 	#print("size basis:"+str( Model.global_transform.basis.get_scale()*Model.get_aabb().size))
 	#print("Get center visual instance:"+str(myVisualInstance.get_aabb().get_center()))
-	print("######")
+	#print("######")
 	
-	print("severalMeshes_center" +str(all_centers(Model)))
+	#print("severalMeshes_center" +str(all_centers(Model)))
 	
 	
 

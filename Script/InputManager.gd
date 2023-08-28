@@ -26,14 +26,22 @@ func handle_mouse():
 		#if(Input.is_action_just_pressed("Rotation_Right")):
 		if(Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)):
 			#MyModelManager.MyRotation(0.1)
-			MyModelManager.MyRotation(0.01)
+			MyModelManager.MyRotation(0.01,"y")
 			#print("Wheel up!");
 		#elif(Input.is_action_just_pressed("Rotation_Left")):
 		elif(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)):
 			
 			#MyModelManager.MyRotation(-0.1)
-			MyModelManager.MyRotation(-0.01)
+			MyModelManager.MyRotation(-0.01,"y")
 			#print("Wheel down!");
+		elif(Input.is_action_pressed("z_rotation_p")):
+			#print("z_rotation_p")
+			MyModelManager.MyRotation(0.01,"z")
+			
+		elif(Input.is_action_pressed("z_rotation_n")):
+			#print("z_rotation_n")
+			MyModelManager.MyRotation(-0.01,"z")
+			
 		if(Input.is_action_just_released("Scale_up")):
 			#print("wheel up")
 			#MyModelManager.DoScale(0.01)

@@ -21,6 +21,7 @@ var MaxScale:float = 100
 
 var myshape
 var my_area:Area3D
+var my_char_body:CharacterBody3D
 
 var new_node:Node3D
 
@@ -31,7 +32,7 @@ var can_decrese_pivot: bool = true
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-
+	
 
 	#call_deferred("create_Marker3d")
 	
@@ -43,7 +44,36 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	increase_pivot()
+	
+	
+	
+	
+	if(my_char_body!=null):
+	
+			var mybase = center_pivot.global_transform.basis
+			print("forward:"+str(-mybase.z))
+			print("backward"+str(mybase.z))
+			print("right"+str(mybase.x))
+			print("left"+str(mybase.x))
+			print("up"+str(mybase.y))
+			print("bottom"+str(-mybase.x))
+			
+			my_char_body.move_and_slide()
+			print("last motion: "+str(my_char_body.get_last_motion()))
+			print("Delta position: "+str(my_char_body.get_position_delta()))
+			print("collision"+str(my_char_body.get_slide_collision_count()))
+			if(my_char_body.is_on_floor()):
+				print("on floor")
+				print("floor normal: "+str(my_char_body.get_floor_normal()))
+			if(my_char_body.is_on_ceiling()):
+				print("on ceiling")
+				
+				#zprint("floor normal: "+str(my_char_body.get))
+			if(my_char_body.is_on_wall()):
+				print("on wall")
+				print("wall normal: "+str(my_char_body.get_wall_normal()))
+	
+	#increase_pivot()
 		
 	pass
 
@@ -146,7 +176,19 @@ func create_Marker3d():
 	
 	#center_pivot.global_position = Vector3(0,10,0)
 	
-	my_area = Area3D.new()
+	#****my_area = Area3D.new()
+	
+	my_char_body = CharacterBody3D.new()
+	
+	my_char_body.axis_lock_angular_x = false
+	my_char_body.axis_lock_angular_y = false
+	my_char_body.axis_lock_angular_z = false
+	my_char_body.axis_lock_linear_x = false
+	my_char_body.axis_lock_linear_y = false
+	my_char_body.axis_lock_linear_z = false
+	
+	
+	
 	
 	#my_area.gravity = 0
 	#my_area.area_entered.connect(My_area_enterted())
@@ -174,25 +216,29 @@ func create_Marker3d():
 	
 	get_parent().add_child(center_pivot)
 	
-	center_pivot.add_child(my_area)
-	my_area.add_child(my_collision)
+	#center_pivot.add_child(my_area)
+	#my_area.add_child(my_collision)
 	
 	#center_pivot.add_child(my_rigid)
 	#my_rigid.add_child(my_collision)
 	
-	#center_pivot.add_child(my_char)
-	#my_char.add_child(my_collision)
+	center_pivot.add_child(my_char_body)
+	my_char_body.add_child(my_collision)
 	
 	#Model.add_to_group("can_rotation")
 	for i in center_pivot.get_children():
 		i.add_to_group("can_rotation")
 	
-func MyRotation(degree:float):
+func MyRotation(degree:float,axis:String):
 	
-	
+	if(axis=="y"):
+		center_pivot.rotate_y(degree)
+	elif(axis=="z"):
+		center_pivot.rotate_z(degree)
+		
 	#InputModel.rotate_y(degree)
 	
-	center_pivot.rotate_y(degree)
+	
 	
 	#***new_node.rotate_y(degree)
 	
@@ -442,12 +488,21 @@ func all_centers(mymodel:Node3D):
 
 func increase_pivot():
 	if(can_increase_pivot):
-		center_pivot.global_position += Vector3(0,0.25,0)
+		#center_pivot.global_position += Vector3(0,0.25,0)
+		#if(my_char_body!=null):
+		#	my_char_body.move_and_slide()
+			pass
 
 func decrease_pivot():
 	if(can_decrese_pivot):
-		center_pivot.global_position -= Vector3(0,1,0)
-		print("decrease pivot")
+		#center_pivot.global_position -= Vector3(0,1,0)
+		#if(my_char_body!=null):
+		#	my_char_body.move_and_slide()
+			
+		pass
+			
+			
+			#print("decrease pivot")
 
 func dir_collision(dir:String)->Vector3:
 	match dir:
@@ -486,5 +541,25 @@ func _on_d_area_area_exited(area):
 	if(area.is_in_group("can_rotation")):
 		can_increase_pivot = false
 		can_decrese_pivot = true
+		
+		
 	#print("ExitedMyDesk area:" + area.name)
+	pass # Replace with function body.
+
+
+func _on_d_area_body_entered(body):
+	#print("body entered:"+str(body.name))
+	can_increase_pivot = true
+	can_decrese_pivot = false
+
+	
+	pass # Replace with function body.
+
+
+func _on_d_area_body_exited(body):
+	#print("body exited:"+str(body.name))
+	can_increase_pivot = false
+	can_decrese_pivot = true
+	
+	
 	pass # Replace with function body.
