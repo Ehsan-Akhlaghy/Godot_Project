@@ -29,8 +29,17 @@ var new_node:Node3D
 var can_increase_pivot:bool = false
 var can_decrese_pivot: bool = true
 
+@export var desk:Node3D
+
+var on_floor:= [false,false,0]
+var on_wall:= false
+var on_wall_r:= [false,false,0]
+var on_wall_l:= [false,false,0]
+var on_ceiling:= [false,false,0]
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
 	
 	
 
@@ -44,34 +53,34 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	calib_pos()
 	
 	
 	
+	#if(my_char_body!=null):
 	
-	if(my_char_body!=null):
-	
-			var mybase = center_pivot.global_transform.basis
-			print("forward:"+str(-mybase.z))
-			print("backward"+str(mybase.z))
-			print("right"+str(mybase.x))
-			print("left"+str(mybase.x))
-			print("up"+str(mybase.y))
-			print("bottom"+str(-mybase.x))
-			
-			my_char_body.move_and_slide()
-			print("last motion: "+str(my_char_body.get_last_motion()))
-			print("Delta position: "+str(my_char_body.get_position_delta()))
-			print("collision"+str(my_char_body.get_slide_collision_count()))
-			if(my_char_body.is_on_floor()):
-				print("on floor")
-				print("floor normal: "+str(my_char_body.get_floor_normal()))
-			if(my_char_body.is_on_ceiling()):
-				print("on ceiling")
-				
-				#zprint("floor normal: "+str(my_char_body.get))
-			if(my_char_body.is_on_wall()):
-				print("on wall")
-				print("wall normal: "+str(my_char_body.get_wall_normal()))
+#			var mybase = center_pivot.global_transform.basis
+#			print("forward:"+str(-mybase.z))
+#			print("backward"+str(mybase.z))
+#			print("right"+str(mybase.x))
+#			print("left"+str(mybase.x))
+#			print("up"+str(mybase.y))
+#			print("bottom"+str(-mybase.x))
+#
+#			my_char_body.move_and_slide()
+#			print("last motion: "+str(my_char_body.get_last_motion()))
+#			print("Delta position: "+str(my_char_body.get_position_delta()))
+#			print("collision"+str(my_char_body.get_slide_collision_count()))
+#			if(my_char_body.is_on_floor()):
+#				print("on floor")
+#				print("floor normal: "+str(my_char_body.get_floor_normal()))
+#			if(my_char_body.is_on_ceiling()):
+#				print("on ceiling")
+#
+#				#zprint("floor normal: "+str(my_char_body.get))
+#			if(my_char_body.is_on_wall()):
+#				print("on wall")
+#				print("wall normal: "+str(my_char_body.get_wall_normal()))
 	
 	#increase_pivot()
 		
@@ -234,8 +243,9 @@ func MyRotation(degree:float,axis:String):
 	if(axis=="y"):
 		center_pivot.rotate_y(degree)
 	elif(axis=="z"):
-		center_pivot.rotate_z(degree)
-		
+		#center_pivot.rotate_z(degree)
+		#center_pivot.rotate_object_local(Vector3(0,0,1),degree)
+		center_pivot.rotate_object_local(Vector3(0,0,1),degree)
 	#InputModel.rotate_y(degree)
 	
 	
@@ -494,14 +504,25 @@ func increase_pivot():
 			pass
 
 func decrease_pivot():
-	if(can_decrese_pivot):
+	#if(can_decrese_pivot):
 		#center_pivot.global_position -= Vector3(0,1,0)
 		#if(my_char_body!=null):
 		#	my_char_body.move_and_slide()
-			
+	print("decrease pivot")
+	if(on_ceiling[1]):
+		print("decrease pivot ceiling")
+		center_pivot.global_position+=Vector3(0,0.1,0)
+		
+	elif(on_floor[1]):
+		center_pivot.global_position+=Vector3(0,-0.1,0)
+	
+	if(on_wall_r):
+		center_pivot.global_position+=Vector3(0,0,-0.1)
+	elif(on_wall_l):
+		center_pivot.global_position+=Vector3(0,0,0.1)		
 		pass
 			
-			
+	my_char_body.move_and_slide()		
 			#print("decrease pivot")
 
 func dir_collision(dir:String)->Vector3:
@@ -515,8 +536,107 @@ func dir_collision(dir:String)->Vector3:
 		"right":
 			return Vector3(0,0,-1)
 	return Vector3.ZERO
-	
 
+
+func check_collision_side():
+	my_char_body.move_and_slide()
+	if(my_char_body.is_on_floor()):
+		print("on floor")
+		#var collision:KinematicCollision3D =	my_char_body.get_last_slide_collision()
+		#print("Coll pos:"+str(collision.get_position(0)))
+		#print("Position_inside_object"+str(point_inside_object(collision.get_position(0),find_biggest_bounding_box(desk))))
+		#center_pivot.global_position+=Vector3(0,0.1,0)
+		on_floor[0] = true
+		on_floor[1] = true
+		on_floor[2] = on_floor[2]+1
+		
+	elif(my_char_body.is_on_ceiling()):
+		print("on ceiling")
+		
+		on_ceiling[0] = true
+		on_ceiling[1] = true
+		on_ceiling[2] = on_ceiling[2]+1
+		
+		#var collision:KinematicCollision3D =	my_char_body.get_last_slide_collision()
+		#rint("Coll pos:"+str(collision.get_position(0)))
+		
+	elif(my_char_body.is_on_wall()):
+		var collision:KinematicCollision3D =	my_char_body.get_last_slide_collision()
+		#print("Coll pos:"+str(collision.get_position(0)))
+		on_wall = true
+		
+		print("position collision: "+str(collision.get_position(0)))
+		
+		if(wall_Is_right(center_pivot,collision.get_position(0))):
+			#center_pivot.global_position+=Vector3(-0.1,0,0)
+			#on_wall_l  = true
+			on_wall_r[0] = true
+			on_wall_r[1] = true
+			on_wall_r[2] = on_wall_r[2]+1
+		else:
+			on_wall_l[0] = true
+			on_wall_l[1] = true
+			on_wall_l[2] = on_wall_l[2] +1 
+			#center_pivot.global_position+=Vector3(0.1,0,0)
+		print("on wall")
+	
+	else:
+		print("nothing happened")
+
+#func point_inside_object(point:Vector3,Model_AABB:AABB)->bool:
+		#return Model_AABB.has_point(point)
+
+func calib_pos():
+	#print("call calib pos")
+	if(on_floor):
+		#print("on floor")
+		center_pivot.global_position+=Vector3(0,0.1,0)
+		my_char_body.move_and_slide()
+		if(!my_char_body.is_on_floor()):
+			on_floor[0] = false
+			#print("not in floor")
+	elif(on_wall):
+		print("on wall")
+		my_char_body.move_and_slide()
+		if(on_wall_r):
+			#center_pivot.global_position+=Vector3(-0.1,0,0)
+			
+		
+			center_pivot.global_position+=Vector3(0,0,0.1)
+			print("right")
+		elif(on_wall_l):
+			print("left")
+			#center_pivot.global_position+=Vector3(0.1,0,0)
+			center_pivot.global_position+=Vector3(0,0,-0.1)
+		if(!my_char_body.is_on_wall()):
+			print("not in wall")
+			on_wall = false
+			on_wall_l[0] = false
+			on_wall_r[0] = false
+	elif(on_ceiling):
+		center_pivot.global_position+=Vector3(0,-0.1,0)
+		my_char_body.move_and_slide()
+		if(!my_char_body.is_on_ceiling()):
+			on_ceiling[0] = false
+			
+	
+func wall_Is_right(myobject:Node3D,point:Vector3)->bool:
+	print("global position object:"+str(myobject.global_position))
+	#print("point:"+str(point.z))
+	if(myobject.global_position.z < point.z):
+		print("object<point")
+		return false
+	else:
+		print("object>point")
+		return true
+	
+		
+		#var a:PhysicsDirectSpaceState3D
+		#PhysicsRayQueryParameters3D
+		
+	#var new_AABB:AABB = AABB(point,Vector3(5,5,5))
+	#return Model_AABB.encloses(new_AABB)
+	
 
 func _on_d_area_area_entered(area):
 	
@@ -548,9 +668,12 @@ func _on_d_area_area_exited(area):
 
 
 func _on_d_area_body_entered(body):
-	#print("body entered:"+str(body.name))
-	can_increase_pivot = true
-	can_decrese_pivot = false
+	print("body entered:"+str(body.name))
+	
+	#check_collision_side()
+	
+	#can_increase_pivot = true
+	#can_decrese_pivot = false
 
 	
 	pass # Replace with function body.
@@ -558,8 +681,10 @@ func _on_d_area_body_entered(body):
 
 func _on_d_area_body_exited(body):
 	#print("body exited:"+str(body.name))
-	can_increase_pivot = false
-	can_decrese_pivot = true
+	
+	
+	#can_increase_pivot = false
+	#can_decrese_pivot = true
 	
 	
 	pass # Replace with function body.

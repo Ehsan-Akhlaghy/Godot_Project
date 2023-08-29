@@ -25,12 +25,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
-	if(my_char.is_on_floor()):
-		print("on floor")
-	if(my_char.is_on_ceiling()):
-		print("on ceiling")
-	if(my_char.is_on_wall()):
-		print("on wall")
+	
 	#print("GetSize:"+str(Model.get_aabb().size))
 	
 	#print("Get Center:"+str(Model.get_aabb().get_center()))
@@ -116,6 +111,7 @@ func move_up():
 	pass
 
 
+	
 
 
 func _on_area_desk_body_entered(body):
