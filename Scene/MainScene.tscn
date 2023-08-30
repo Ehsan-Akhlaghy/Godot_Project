@@ -39,7 +39,7 @@ transform = Transform3D(1, -1.21072e-08, 1.77636e-14, -7.45058e-09, 1, 8.32667e-
 size = Vector3(20, 10, 20)
 
 [node name="StaticBody3D2" type="StaticBody3D" parent="."]
-transform = Transform3D(0.999925, -0.012217, 0, -5.34022e-10, -4.37081e-08, 1, -0.012217, -0.999925, -4.37114e-08, -0.148537, -0.271282, 5.97185)
+transform = Transform3D(0.999925, -0.012217, 0, -5.34022e-10, -4.37081e-08, 1, -0.012217, -0.999925, -4.37114e-08, -0.148537, -0.271282, 30.6129)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
 transform = Transform3D(1, 1.86265e-09, 5.82645e-11, -1.86265e-09, 1, 1.86265e-09, -1.38556e-13, -1.11022e-16, 1, -7.45058e-09, -6, 4.44089e-16)
@@ -50,7 +50,7 @@ transform = Transform3D(1, -1.21072e-08, 1.77636e-14, -7.45058e-09, 1, 8.32667e-
 size = Vector3(20, 10, 20)
 
 [node name="StaticBody3D4" type="StaticBody3D" parent="."]
-transform = Transform3D(0.999925, 0, 0.012217, 0, 1, 0, -0.012217, 0, 0.999925, -0.148537, 55.1764, 2.30561)
+transform = Transform3D(0.999925, 0, 0.012217, 0, 1, 0, -0.012217, 0, 0.999925, -0.148537, -12.584, -9.2424)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D4"]
 transform = Transform3D(1, 1.86265e-09, 5.82645e-11, -1.86265e-09, 1, 1.86265e-09, -1.38556e-13, -1.11022e-16, 1, -7.45058e-09, -6, 4.44089e-16)
@@ -148,7 +148,7 @@ my_model_manager = NodePath("../InputModelManager")
 myfiledialog = NodePath("../FileDialog")
 
 [node name="offset_desk" type="Node3D" parent="."]
-transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, -9.36355, 4.85364, 0)
+transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, -2.68655, -14.9767, -10.4605)
 
 [node name="Node3D2" type="Node3D" parent="."]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -4.42, 9.7, -0.03)

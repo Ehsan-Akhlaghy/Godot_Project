@@ -291,7 +291,7 @@ func DoScale(my_delta:float,max_scale =1 ):
 	
 	#new_node.scale = clamp(_Scale,Vector3(0.1,0.1,0.1),Vector3(MaxScale,MaxScale,MaxScale))
 	parent.scale = clamp(_Scale,Vector3(0.1,0.1,0.1),Vector3(MaxScale,MaxScale,MaxScale))
-	decrease_pivot()
+	#decrease_pivot()
 	#parent.scale = clamp(_Scale,Vector3(0.1,0.1,0.1),Vector3(MaxScale,MaxScale,MaxScale))
 	#============
 	#******************
@@ -509,17 +509,26 @@ func decrease_pivot():
 		#if(my_char_body!=null):
 		#	my_char_body.move_and_slide()
 	print("decrease pivot")
-	if(on_ceiling[1]):
+	if(on_ceiling[2]!=0):
 		print("decrease pivot ceiling")
 		center_pivot.global_position+=Vector3(0,0.1,0)
 		
-	elif(on_floor[1]):
+		on_ceiling[2]=on_ceiling[2]-1
+		
+	elif(on_floor[2]!=0):
+		print("decrease pivot flooring")
 		center_pivot.global_position+=Vector3(0,-0.1,0)
-	
-	if(on_wall_r):
+		on_floor[2] = on_floor[2]-1
+		
+		print(on_floor[2])
+	if(on_wall_r[2]!=0):
+		print("decrease pivot wall r")
 		center_pivot.global_position+=Vector3(0,0,-0.1)
-	elif(on_wall_l):
-		center_pivot.global_position+=Vector3(0,0,0.1)		
+		on_wall_r[2]= on_wall_r[2]-1
+	elif(on_wall_l[2]!=0):
+		print("decrease pivot wall left")
+		center_pivot.global_position+=Vector3(0,0,0.1)	
+		on_wall_l[2] = on_wall_l[2]-1	
 		pass
 			
 	my_char_body.move_and_slide()		
@@ -588,34 +597,46 @@ func check_collision_side():
 
 func calib_pos():
 	#print("call calib pos")
-	if(on_floor):
-		#print("on floor")
+	if(on_floor[0]):
+		print("on floor")
 		center_pivot.global_position+=Vector3(0,0.1,0)
 		my_char_body.move_and_slide()
+		
+		on_floor[2]=on_floor[2]+1
+		
+		
 		if(!my_char_body.is_on_floor()):
 			on_floor[0] = false
 			#print("not in floor")
 	elif(on_wall):
 		print("on wall")
 		my_char_body.move_and_slide()
-		if(on_wall_r):
+		if(on_wall_r[0]):
 			#center_pivot.global_position+=Vector3(-0.1,0,0)
 			
 		
 			center_pivot.global_position+=Vector3(0,0,0.1)
 			print("right")
-		elif(on_wall_l):
+			
+			on_wall_r[2] = on_wall_r[2]+1
+			
+		elif(on_wall_l[0]):
 			print("left")
 			#center_pivot.global_position+=Vector3(0.1,0,0)
 			center_pivot.global_position+=Vector3(0,0,-0.1)
+			
+			on_wall_l[2] = on_wall_l[2]+1
+			
 		if(!my_char_body.is_on_wall()):
 			print("not in wall")
 			on_wall = false
 			on_wall_l[0] = false
 			on_wall_r[0] = false
-	elif(on_ceiling):
+	elif(on_ceiling[0]):
 		center_pivot.global_position+=Vector3(0,-0.1,0)
 		my_char_body.move_and_slide()
+		
+		on_ceiling[2] = on_ceiling[2]+1
 		if(!my_char_body.is_on_ceiling()):
 			on_ceiling[0] = false
 			

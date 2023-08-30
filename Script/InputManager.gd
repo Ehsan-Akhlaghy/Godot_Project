@@ -38,6 +38,9 @@ func handle_mouse():
 			MyModelManager.MyRotation(-0.01,"y")
 			
 			MyModelManager.check_collision_side()
+			
+			
+			
 			#print("Wheel down!");
 		elif(Input.is_action_pressed("z_rotation_p")):
 			#print("z_rotation_p")
@@ -64,6 +67,9 @@ func handle_mouse():
 			MyModelManager.DoScale(-0.1)
 			
 			MyModelManager.check_collision_side()
+			
+			
+			MyModelManager.decrease_pivot()
 		
 	if(Input.is_action_just_pressed("Esc")):
 			myFileDialog.visible= true
