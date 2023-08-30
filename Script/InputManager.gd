@@ -29,7 +29,7 @@ func handle_mouse():
 			#MyModelManager.MyRotation(0.1)
 			MyModelManager.MyRotation(0.01,"y")
 			
-			MyModelManager.check_collision_side()
+			#MyModelManager.check_collision_side()
 			#print("Wheel up!");
 		#elif(Input.is_action_just_pressed("Rotation_Left")):
 		elif(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)):
@@ -37,7 +37,7 @@ func handle_mouse():
 			#MyModelManager.MyRotation(-0.1)
 			MyModelManager.MyRotation(-0.01,"y")
 			
-			MyModelManager.check_collision_side()
+			#MyModelManager.check_collision_side()
 			
 			
 			
@@ -46,13 +46,13 @@ func handle_mouse():
 			#print("z_rotation_p")
 			MyModelManager.MyRotation(0.01,"z")
 			
-			MyModelManager.check_collision_side()
+			#MyModelManager.check_collision_side()
 			
 		elif(Input.is_action_pressed("z_rotation_n")):
 			#print("z_rotation_n")
 			MyModelManager.MyRotation(-0.01,"z")
 			
-			MyModelManager.check_collision_side()
+			#MyModelManager.check_collision_side()
 			
 		if(Input.is_action_just_released("Scale_up")):
 			#print("wheel up")
@@ -69,7 +69,7 @@ func handle_mouse():
 			MyModelManager.check_collision_side()
 			
 			
-			MyModelManager.decrease_pivot()
+			#MyModelManager.decrease_pivot()
 		
 	if(Input.is_action_just_pressed("Esc")):
 			myFileDialog.visible= true
