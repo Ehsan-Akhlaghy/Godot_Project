@@ -46,7 +46,7 @@ var myshapecast:ShapeCast3D
 var is_colided:bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	call_deferred(create_desk())
+	#call_deferred(create_desk())
 	
 	
 
@@ -788,44 +788,69 @@ func side(mypos:Vector3):
 		print("objecy is down")
 	
 	
-func my_raycast(myray:RayCast3D,myarea:Area3D,myz:float):
+func my_raycast(myray:RayCast3D,myarea:Area3D):
 	myray.global_position = center_pivot.global_position
-	myray.global_position.z+=myz
+	#myray.global_position.z+=myz
 	myray.enabled = true
 	
-	
+	myray.target_position = myarea.global_position - myray.global_position
+	print("inside raycast")
+	if(myray.is_colliding()):
+		print(myray.get_collider().name)
+		print("my area inside raycast:"+str(myarea.name))
+		if(myray.get_collider().name==myarea.name):
+			myray.enabled = false
+			print("colided")
+			print(myarea.to_local(myray.get_collision_normal()))
+			print(myarea.to_global(myray.get_collision_normal()))
+			
+			print("basisx:"+str(myarea.transform.basis.x))
+			print("basisy:"+str(myarea.transform.basis.y))
+			print("basisz:"+str(myarea.transform.basis.z))
+			print("basisx:"+str(myarea.global_transform.basis.x))
+			print("basisy:"+str(myarea.global_transform.basis.y))
+			print("basisz:"+str(myarea.global_transform.basis.z))
+			
+			var mynormal = myray.get_collision_normal()
+			
+			match(mynormal):
+				Vector3(1,0,0):
+					return"left"
+				Vector3(-1,0,0):
+					return "right"
+			
 	
 	
 
-	myray.target_position = Vector3(0,300,0)
-	if(myray.is_colliding()):
-		if(myray.get_collider().get_parent().name==myarea.name):
-			myray.enabled = false
-			print("up")
-			return "up"
-	else:
-		myray.target_position = Vector3(0,-300,0)
-		if(myray.is_colliding()):
-			if(myray.get_collider().get_parent().name==myarea.name):
-				myray.enabled = false
-				print("down")
-				return "down"
-		else:
-			myray.target_position = Vector3(0,0,300)
-			if(myray.is_colliding()):
-				if(myray.get_collider().get_parent().name==myarea.name):
-					myray.enabled = false
-					print("right")
-					return "right"
-			else:
-				myray.target_position = Vector3(0,0,-300)
-				if(myray.is_colliding()):
-					if(myray.get_collider().get_parent().name==myarea.name):
-						myray.enabled = false
-						print("false")
-						return "left"
-				else:
-					"none of side"
+#	myray.target_position = Vector3(0,300,0)
+#	if(myray.is_colliding()):
+#		if(myray.get_collider().get_parent().name==myarea.name):
+#			myray.enabled = false
+#			print("up")
+#			return "up"
+#	else:
+#		myray.target_position = Vector3(0,-300,0)
+#		if(myray.is_colliding()):
+#			if(myray.get_collider().get_parent().name==myarea.name):
+#				myray.enabled = false
+#				print("down")
+#				return "down"
+#		else:
+#			myray.target_position = Vector3(0,0,300)
+#			if(myray.is_colliding()):
+#				if(myray.get_collider().get_parent().name==myarea.name):
+#					myray.enabled = false
+#					print("right")
+#					return "right"
+#			else:
+#				myray.target_position = Vector3(0,0,-300)
+#				if(myray.is_colliding()):
+#					if(myray.get_collider().get_parent().name==myarea.name):
+#						myray.enabled = false
+#						print("false")
+#						return "left"
+#				else:
+#					"none of side"
 
 
 
@@ -868,9 +893,8 @@ func _on_d_area_area_entered(area):
 	print("area:"+ str(area.get_groups()))
 	#print("area normal:"+str())
 	
-	my_raycast(myray,area,0)
-	my_raycast(myray,area,0.2)
-	my_raycast(myray,area,-0.2)
+	my_raycast(myray,area)
+
 	
 	
 	#var distance = area.global_position.distance_squared_to(center_pivot.global_position)
@@ -909,23 +933,7 @@ func _on_d_area_area_exited(area):
 	pass # Replace with function body.
 
 
-func _on_d_area_body_entered(body):
-	print("body entered:"+str(body.name))
-	
-	var a:StaticBody3D
-	var b:CharacterBody3D
-	var c:RayCast3D
-	
-	#check_collision_side()
-	
-	#can_increase_pivot = true
-	#can_decrese_pivot = false
 
-	
-	pass # Replace with function body.
-
-
-func _on_d_area_body_exited(body):
 	#print("body exited:"+str(body.name))
 	
 	

@@ -82,7 +82,7 @@ transform = Transform3D(1, -1.21072e-08, 1.77636e-14, -7.45058e-09, 1, 8.32667e-
 size = Vector3(20, 10, 20)
 
 [node name="3D_Area" type="Area3D" parent="."]
-transform = Transform3D(24.1383, 0, 0, 0, 9.5894, 0, 0, 0, 3.50341, -0.98, 5.381, -5.44166)
+transform = Transform3D(-2.55446, 0, -9.66823, 0, 10, 0, 9.66823, 0, -2.55446, -92.514, -39.2996, -0.241371)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="3D_Area"]
 shape = SubResource("BoxShape3D_xgtco")
@@ -150,23 +150,14 @@ myfiledialog = NodePath("../FileDialog")
 transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, -2.68655, -14.9767, -10.4605)
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -2.687, -14.977, -9)
-visible = false
-target_position = Vector3(-0.133, -31.674, -1)
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -2.687, -14.977, -10.46)
+target_position = Vector3(-154.766, -49.8286, 75.8519)
 collide_with_areas = true
 collide_with_bodies = false
-debug_shape_custom_color = Color(0.929412, 0, 0, 1)
-
-[node name="Node3D2" type="Node3D" parent="."]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -0.98, 0, 0.3)
+debug_shape_custom_color = Color(0.792157, 0, 0.823529, 1)
+debug_shape_thickness = 5
 
 [node name="Node3D4" type="Node3D" parent="."]
-transform = Transform3D(0.995396, 0, 0.0958458, 0, 1, 0, -0.0958458, 0, 0.995396, 2.1372, 12.4729, 22.1957)
+transform = Transform3D(0.995396, 0, 0.0958458, 0, 1, 0, -0.0958458, 0, 0.995396, -10.7756, 12.4729, 22.1957)
 
-[connection signal="body_entered" from="3D_Area" to="InputModelManager" method="_on_d_area_body_entered"]
-[connection signal="body_exited" from="3D_Area" to="InputModelManager" method="_on_d_area_body_exited"]
-[connection signal="body_entered" from="3D_Area2" to="InputModelManager" method="_on_d_area_body_entered"]
-[connection signal="body_exited" from="3D_Area2" to="InputModelManager" method="_on_d_area_body_exited"]
-[connection signal="body_entered" from="3D_Area3" to="InputModelManager" method="_on_d_area_body_entered"]
-[connection signal="body_exited" from="3D_Area3" to="InputModelManager" method="_on_d_area_body_exited"]
 [connection signal="file_selected" from="FileDialog" to="FileManager" method="_on_file_dialog_file_selected"]
