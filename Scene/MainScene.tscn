@@ -1,8 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://bw25xhs3iehum"]
+[gd_scene load_steps=8 format=3 uid="uid://bw25xhs3iehum"]
 
 [ext_resource type="Script" path="res://Script/Input_Model_Calib.gd" id="2_0sobt"]
 [ext_resource type="Script" path="res://Script/InputManager.gd" id="3_ylpph"]
-[ext_resource type="Script" path="res://Script/test.gd" id="4_j35uq"]
 [ext_resource type="Script" path="res://Script/FilesManager.gd" id="5_m4550"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wbfat"]
@@ -17,9 +16,6 @@ albedo_color = Color(1, 0, 0.2, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_7c8gr"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_0q55g"]
-size = Vector3(2, 2, 2)
-
 [node name="MainScene" type="Node3D"]
 
 [node name="Camera3D" type="Camera3D" parent="."]
@@ -28,7 +24,7 @@ current = true
 fov = 60.0
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
-transform = Transform3D(-4.37145e-08, 3.83027e-14, 1, 0.0119029, 0.999929, 5.20291e-10, -0.999929, 0.0119029, -4.37114e-08, -4.17774e-06, 1.13754, -95.562)
+transform = Transform3D(-9.47723e-05, -9.21301e-05, 1, 0.0125884, 0.999921, 9.33144e-05, -0.999921, 0.0125884, -9.36064e-05, -0.210377, 0.899251, -95.882)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 transform = Transform3D(1, 1.86265e-09, 5.82645e-11, -1.86265e-09, 1, 1.86265e-09, -1.38556e-13, -1.11022e-16, 1, -7.45058e-09, -6, 4.44089e-16)
@@ -39,7 +35,7 @@ transform = Transform3D(1, -1.21072e-08, 1.77636e-14, -7.45058e-09, 1, 8.32667e-
 size = Vector3(20, 10, 20)
 
 [node name="StaticBody3D2" type="StaticBody3D" parent="."]
-transform = Transform3D(0.999925, -0.012217, 0, -5.34022e-10, -4.37081e-08, 1, -0.012217, -0.999925, -4.37114e-08, -0.148537, -0.271282, 30.6129)
+transform = Transform3D(3.9997, -0.048868, -2.13609e-09, 2.22045e-16, -1.74846e-07, 4, -0.048868, -3.9997, -1.74833e-07, -17.631, -0.27128, 79.385)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
 transform = Transform3D(1, 1.86265e-09, 5.82645e-11, -1.86265e-09, 1, 1.86265e-09, -1.38556e-13, -1.11022e-16, 1, -7.45058e-09, -6, 4.44089e-16)
@@ -49,8 +45,11 @@ shape = SubResource("BoxShape3D_wbfat")
 transform = Transform3D(1, -1.21072e-08, 1.77636e-14, -7.45058e-09, 1, 8.32667e-16, 0, -3.72529e-09, 1, 0.273681, 9.53674e-07, 2.74225e-13)
 size = Vector3(20, 10, 20)
 
+[node name="Node3D3" type="Node3D" parent="."]
+transform = Transform3D(3.9997, -0.048868, -2.13609e-09, 0, -1.74846e-07, 4, -0.048868, -3.9997, -1.74833e-07, -18.1916, -0.271282, 33.5011)
+
 [node name="StaticBody3D4" type="StaticBody3D" parent="."]
-transform = Transform3D(0.999925, 0, 0.012217, 0, 1, 0, -0.012217, 0, 0.999925, -0.148537, -19.1002, -3.41239)
+transform = Transform3D(0.324297, 0, -0.945955, 0, 1, 0, 0.945955, 0, 0.324297, 31.8451, -9.41011, 89.848)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D4"]
 transform = Transform3D(1, 1.86265e-09, 5.82645e-11, -1.86265e-09, 1, 1.86265e-09, -1.38556e-13, -1.11022e-16, 1, -7.45058e-09, -6, 4.44089e-16)
@@ -61,7 +60,7 @@ transform = Transform3D(1, -1.21072e-08, 1.77636e-14, -7.45058e-09, 1, 8.32667e-
 size = Vector3(20, 10, 20)
 
 [node name="StaticBody3D5" type="StaticBody3D" parent="."]
-transform = Transform3D(0.999925, 0, 0.012217, 0, 1, 0, -0.012217, 0, 0.999925, -0.148537, -26.4728, 40.2898)
+transform = Transform3D(0.999925, 0, 0.012217, 0, 1, 0, -0.012217, 0, 0.999925, 0.53998, -26.4728, 96.6429)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D5"]
 transform = Transform3D(1, 1.86265e-09, 5.82645e-11, -1.86265e-09, 1, 1.86265e-09, -1.38556e-13, -1.11022e-16, 1, -7.45058e-09, -6, 4.44089e-16)
@@ -72,7 +71,7 @@ transform = Transform3D(1, -1.21072e-08, 1.77636e-14, -7.45058e-09, 1, 8.32667e-
 size = Vector3(20, 10, 20)
 
 [node name="StaticBody3D3" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -1.07878e-06, 0.293739, -43.5973)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -1.07878e-06, 0.293741, -88.1807)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3"]
 transform = Transform3D(1, 1.86265e-09, 5.82645e-11, -1.86265e-09, 1, 1.86265e-09, -1.38556e-13, -1.11022e-16, 1, -7.45058e-09, -6, 4.44089e-16)
@@ -83,7 +82,7 @@ transform = Transform3D(1, -1.21072e-08, 1.77636e-14, -7.45058e-09, 1, 8.32667e-
 size = Vector3(20, 10, 20)
 
 [node name="3D_Area" type="Area3D" parent="."]
-transform = Transform3D(1.99857, -0.0755012, -0.00168172, 0.0755199, 1.99808, 0.0445054, -2.32831e-10, -0.0445371, 1.9995, -0.0527225, 1.39526, 62.685)
+transform = Transform3D(24.1383, 0, 0, 0, 9.5894, 0, 0, 0, 3.50341, -0.98, 5.381, -5.44166)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="3D_Area"]
 shape = SubResource("BoxShape3D_xgtco")
@@ -95,7 +94,7 @@ mesh = SubResource("BoxMesh_7c8gr")
 skeleton = NodePath("../../..")
 
 [node name="3D_Area2" type="Area3D" parent="."]
-transform = Transform3D(-0.0043548, -0.113353, 4.99871, 0.19189, 4.99503, 0.113437, -4.99631, 0.191939, -2.18501e-07, -8.95568, -11.5303, 79.0003)
+transform = Transform3D(-0.0043548, -0.113353, 4.99871, 0.19189, 4.99503, 0.113437, -4.99631, 0.191939, -2.18501e-07, 15.6736, 18.0344, 82.7015)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="3D_Area2"]
 transform = Transform3D(1, 0, 6.22151e-11, 0, 1, 3.91293e-09, 7.2653e-11, 1.89478e-10, 1, 0, 0, 0)
@@ -150,41 +149,24 @@ myfiledialog = NodePath("../FileDialog")
 [node name="offset_desk" type="Node3D" parent="."]
 transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, -2.68655, -14.9767, -10.4605)
 
-[node name="Node3D2" type="Node3D" parent="."]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -4.42, 9.7, -0.03)
-
-[node name="Node3D" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.39, 9.72, 64.8705)
-
-[node name="CharacterBody3D" type="CharacterBody3D" parent="Node3D" node_paths=PackedStringArray("my_char")]
-axis_lock_linear_x = true
-axis_lock_linear_y = true
-axis_lock_linear_z = true
-axis_lock_angular_x = true
-axis_lock_angular_y = true
-axis_lock_angular_z = true
-script = ExtResource("4_j35uq")
-my_char = NodePath(".")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/CharacterBody3D"]
-shape = SubResource("BoxShape3D_0q55g")
-
-[node name="CSGSphere3D" type="CSGSphere3D" parent="Node3D/CharacterBody3D/CollisionShape3D"]
-radius = 5.0
-
 [node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -2.687, -14.977, -9)
+visible = false
+target_position = Vector3(-0.133, -31.674, -1)
+collide_with_areas = true
+collide_with_bodies = false
+debug_shape_custom_color = Color(0.929412, 0, 0, 1)
 
-[connection signal="area_entered" from="3D_Area" to="InputModelManager" method="_on_d_area_area_entered"]
-[connection signal="area_exited" from="3D_Area" to="InputModelManager" method="_on_d_area_area_exited"]
+[node name="Node3D2" type="Node3D" parent="."]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -0.98, 0, 0.3)
+
+[node name="Node3D4" type="Node3D" parent="."]
+transform = Transform3D(0.995396, 0, 0.0958458, 0, 1, 0, -0.0958458, 0, 0.995396, 2.1372, 12.4729, 22.1957)
+
 [connection signal="body_entered" from="3D_Area" to="InputModelManager" method="_on_d_area_body_entered"]
 [connection signal="body_exited" from="3D_Area" to="InputModelManager" method="_on_d_area_body_exited"]
-[connection signal="area_entered" from="3D_Area2" to="InputModelManager" method="_on_d_area_area_entered"]
-[connection signal="area_exited" from="3D_Area2" to="InputModelManager" method="_on_d_area_area_exited"]
 [connection signal="body_entered" from="3D_Area2" to="InputModelManager" method="_on_d_area_body_entered"]
 [connection signal="body_exited" from="3D_Area2" to="InputModelManager" method="_on_d_area_body_exited"]
-[connection signal="area_entered" from="3D_Area3" to="InputModelManager" method="_on_d_area_area_entered"]
-[connection signal="area_exited" from="3D_Area3" to="InputModelManager" method="_on_d_area_area_exited"]
 [connection signal="body_entered" from="3D_Area3" to="InputModelManager" method="_on_d_area_body_entered"]
 [connection signal="body_exited" from="3D_Area3" to="InputModelManager" method="_on_d_area_body_exited"]
 [connection signal="file_selected" from="FileDialog" to="FileManager" method="_on_file_dialog_file_selected"]
-[connection signal="Collision_Detection_Object" from="InputModelManager" to="InputModelManager" method="_on_collision_detection_object"]

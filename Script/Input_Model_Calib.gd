@@ -37,8 +37,13 @@ var on_wall_r:= [false,false,0]
 var on_wall_l:= [false,false,0]
 var on_ceiling:= [false,false,0]
 
-signal Collision_Detection_Object  
+#signal Collision_Detection_Object  
+#@export var area:Area3D
 
+
+var myray:RayCast3D
+var myshapecast:ShapeCast3D
+var is_colided:bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
@@ -191,16 +196,16 @@ func create_Marker3d():
 	
 	#center_pivot.global_position = Vector3(0,10,0)
 	
-	#****my_area = Area3D.new()
+	my_area = Area3D.new()
 	
-	my_char_body = CharacterBody3D.new()
+	#my_char_body = CharacterBody3D.new()
 	
-	my_char_body.axis_lock_angular_x = false
-	my_char_body.axis_lock_angular_y = false
-	my_char_body.axis_lock_angular_z = false
-	my_char_body.axis_lock_linear_x = false
-	my_char_body.axis_lock_linear_y = false
-	my_char_body.axis_lock_linear_z = false
+	#my_char_body.axis_lock_angular_x = false
+	#my_char_body.axis_lock_angular_y = false
+	#my_char_body.axis_lock_angular_z = false
+	#my_char_body.axis_lock_linear_x = false
+	#my_char_body.axis_lock_linear_y = false
+	#my_char_body.axis_lock_linear_z = false
 	
 	
 	
@@ -231,18 +236,28 @@ func create_Marker3d():
 	
 	get_parent().add_child(center_pivot)
 	
-	#center_pivot.add_child(my_area)
-	#my_area.add_child(my_collision)
+	center_pivot.add_child(my_area)
+	my_area.add_child(my_collision)
 	
 	#center_pivot.add_child(my_rigid)
 	#my_rigid.add_child(my_collision)
 	
-	center_pivot.add_child(my_char_body)
-	my_char_body.add_child(my_collision)
+	#center_pivot.add_child(my_char_body)
+	#my_char_body.add_child(my_collision)
+	
+	
 	
 	#Model.add_to_group("can_rotation")
 	for i in center_pivot.get_children():
 		i.add_to_group("can_rotation")
+		
+	#var callable = Callable(self,"collision_happen")
+	my_area.area_entered.connect(_on_d_area_area_entered)
+	my_area.area_exited.connect(_on_d_area_area_exited)
+	#print("connection:"+str(my_area.connect("area_entered",func ehsan():print("fired!"),18)))
+	#print("Connection:"+str(my_area.area_entered.get_connections()))
+	#my_area.area_entered.emit()
+	#print("Connection2:"+str(area.area_entered.get_connections()))
 	
 func MyRotation(degree:float,axis:String):
 	
@@ -254,8 +269,8 @@ func MyRotation(degree:float,axis:String):
 		center_pivot.rotate_object_local(Vector3(0,0,1),degree)
 	#InputModel.rotate_y(degree)
 	
-	
-	
+	#print("Globalbasisx:"+str(center_pivot.global_transform.basis.x))
+	#print("Localbasisx:"+str(center_pivot.transform.basis.x))
 	#***new_node.rotate_y(degree)
 	
 	pass
@@ -414,6 +429,8 @@ func new_file_added():
 	add_child(Model)
 	create_Marker3d()
 	calib_size()
+	create_ray3d()
+	#create_shape3d()
 	
 	
 func get_all_children(in_node,arr:=[]):
@@ -540,17 +557,7 @@ func decrease_pivot():
 	my_char_body.move_and_slide()		
 			#print("decrease pivot")
 
-func dir_collision(dir:String)->Vector3:
-	match dir:
-		"down":
-			return Vector3(0,0.25,0)
-		"up":
-			return Vector3(0,-1,0)
-		"left":
-			return Vector3(0,0,1)
-		"right":
-			return Vector3(0,0,-1)
-	return Vector3.ZERO
+
 
 
 func check_collision_side():
@@ -685,6 +692,7 @@ func calib_pos():
 			on_ceiling[0] = false
 			
 func calib_pos_v2():
+	
 	while(on_floor[0]):
 		print("on floor")
 		center_pivot.global_position+=Vector3(0,0.1,0)
@@ -693,9 +701,8 @@ func calib_pos_v2():
 		
 		if(!my_char_body.is_on_floor()):
 			on_floor[0] = false
-			Collision_Detection_Object.emit()
-		
-		
+			#Collision_Detection_Object.emit()
+
 func wall_Is_right(myobject:Node3D,point:Vector3)->bool:
 	print("global position object:"+str(myobject.global_position))
 	#print("point:"+str(point.z))
@@ -714,13 +721,149 @@ func wall_Is_right(myobject:Node3D,point:Vector3)->bool:
 	#return Model_AABB.encloses(new_AABB)
 	
 
+
+		
+func create_ray3d():
+	myray = RayCast3D.new()
+	
+	
+	get_parent().add_child(myray)
+	myray.global_position = center_pivot.global_position
+	myray.enabled = false
+	myray.collide_with_areas = true
+	myray.collide_with_bodies = false
+		
+func create_shape3d():
+	myshapecast = ShapeCast3D.new()
+	
+	
+	get_parent().add_child(myray)
+	myshapecast.global_position = center_pivot.global_position
+	myshapecast.enabled = false
+	myshapecast.collide_with_areas = true
+	myshapecast.collide_with_bodies = false
+	var myshape = BoxShape3D.new()
+	myshapecast.shape =myshape
+	
+func my_shapecast(myshape:ShapeCast3D,myarea:Area3D,distance:float):
+	myshape.global_position = center_pivot.global_position
+	myshape.enabled = true
+	
+	
+	
+	
+
+	myshape.target_position = Vector3(0,distance,0)
+	if(myshape.is_colliding()):
+		if(myshape.get_collider(0).get_parent().name==myarea.name):
+			myshape.enabled = false
+			return "up"
+	else:
+		myshape.target_position = Vector3(0,-distance,0)
+		if(myshape.is_colliding()):
+			if(myshape.get_collider(0).get_parent().name==myarea.name):
+				myshape.enabled = false
+				return "down"
+		else:
+			myshape.target_position = Vector3(0,0,distance)
+			if(myshape.is_colliding()):
+				if(myshape.get_collider(0).get_parent().name==myarea.name):
+					myshape.enabled = false
+					return "right"
+			else:
+				myshape.target_position = Vector3(0,0,-distance)
+				if(myshape.is_colliding()):
+					if(myshape.get_collider(0).get_parent().name==myarea.name):
+						myshape.enabled = false
+						return "left"
+				else:
+					"none of side"
+	
+func side(mypos:Vector3):
+	var newpos:Vector3 =center_pivot.to_local(mypos)
+	if(newpos.y >0):
+		print("object is up")
+	elif (newpos.y<0):
+		print("objecy is down")
+	
+	
+func my_raycast(myray:RayCast3D,myarea:Area3D,myz:float):
+	myray.global_position = center_pivot.global_position
+	myray.global_position.z+=myz
+	myray.enabled = true
+	
+	
+	
+	
+
+	myray.target_position = Vector3(0,300,0)
+	if(myray.is_colliding()):
+		if(myray.get_collider().get_parent().name==myarea.name):
+			myray.enabled = false
+			print("up")
+			return "up"
+	else:
+		myray.target_position = Vector3(0,-300,0)
+		if(myray.is_colliding()):
+			if(myray.get_collider().get_parent().name==myarea.name):
+				myray.enabled = false
+				print("down")
+				return "down"
+		else:
+			myray.target_position = Vector3(0,0,300)
+			if(myray.is_colliding()):
+				if(myray.get_collider().get_parent().name==myarea.name):
+					myray.enabled = false
+					print("right")
+					return "right"
+			else:
+				myray.target_position = Vector3(0,0,-300)
+				if(myray.is_colliding()):
+					if(myray.get_collider().get_parent().name==myarea.name):
+						myray.enabled = false
+						print("false")
+						return "left"
+				else:
+					"none of side"
+
+
+
+
+func dir_collision(dir:String)->Vector3:
+	match dir:
+		"down":
+			return Vector3(0,0.1,0)
+		"up":
+			return Vector3(0,-0.1,0)
+		"left":
+			return Vector3(0,0,0.1)
+		"right":
+			return Vector3(0,0,-0.1)
+	return Vector3.ZERO	
+	
+	
+
+
 func _on_d_area_area_entered(area):
-	
-	
+	is_colided = true
+	print("areaName entered:"+str(area.name))
 	print("area:"+ str(area.get_groups()))
+	#print("area normal:"+str())
+	
+	my_raycast(myray,area,0)
+	my_raycast(myray,area,0.2)
+	my_raycast(myray,area,-0.2)
 	
 	
+	#var distance = area.global_position.distance_squared_to(center_pivot.global_position)
 	
+	#side(area.global_position)
+	
+	#***while(is_colided):
+		#my_raycast(myray,area)
+		#center_pivot.global_position+=dir_collision(my_raycast(myray,area))
+		#***center_pivot.global_position+=dir_collision(my_shapecast(myshapecast,area,distance))
+		
 	if(area.is_in_group("can_rotation")):
 		
 		#***MaxScale = center_pivot.scale[0]
@@ -734,6 +877,11 @@ func _on_d_area_area_entered(area):
 
 
 func _on_d_area_area_exited(area):
+	
+	is_colided = false
+	
+	print("area name exited"+str(area.name))
+	
 	if(area.is_in_group("can_rotation")):
 		can_increase_pivot = false
 		can_decrese_pivot = true

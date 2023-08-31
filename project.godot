@@ -82,7 +82,3 @@ project/assembly_name="Frist Task"
 [physics]
 
 common/enable_pause_aware_picking=true
-
-[rendering]
-
-renderer/rendering_method="gl_compatibility"

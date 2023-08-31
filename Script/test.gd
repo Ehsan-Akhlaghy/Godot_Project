@@ -6,25 +6,37 @@ class_name  MyMovement
 
 #@export var Model:Node3D
 
-@export var my_char:CharacterBody3D
+#@export var my_char:CharacterBody3D
 
 #@export var myVisualInstance:VisualInstance3D
 #@export var ModelMesh:Mesh
 #var a:VisualInstance3D
 #@export var Node_model:Node3D
 
+@onready var myray:RayCast3D =  $"../../RayCast3D"
+
+@export var target_pos:Node3D
 
 #@export var my_cam:Camera3D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
+
+	
+	
 #	add_child(myModel)
 	pass # Replace with function body.
 
+#func _physics_process(delta):
+#	pass
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	
+	#if(myray!=null):
+		#myray.target_position =Vector3(-0.149,-0.271,30.613)
+		
+		#if(myray.is_colliding()):
+		#	print(myray.get_collider().get_parent().name)
 	
 	#print("GetSize:"+str(Model.get_aabb().size))
 	
