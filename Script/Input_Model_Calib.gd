@@ -730,7 +730,7 @@ func create_ray3d():
 	
 	get_parent().add_child(myray)
 	myray.global_position = center_pivot.global_position
-	myray.enabled = false
+	myray.enabled = true
 	myray.collide_with_areas = true
 	myray.collide_with_bodies = false
 		
@@ -799,17 +799,18 @@ func my_raycast(myray:RayCast3D,myarea:Area3D):
 		print(myray.get_collider().name)
 		print("my area inside raycast:"+str(myarea.name))
 		if(myray.get_collider().name==myarea.name):
-			myray.enabled = false
+			#myray.enabled = false
 			print("colided")
-			print(myarea.to_local(myray.get_collision_normal()))
-			print(myarea.to_global(myray.get_collision_normal()))
+			print(myray.get_collision_normal())
+			#print(myarea.to_local(myray.get_collision_normal()))
+			#print(myarea.to_global(myray.get_collision_normal()))
 			
-			print("basisx:"+str(myarea.transform.basis.x))
-			print("basisy:"+str(myarea.transform.basis.y))
-			print("basisz:"+str(myarea.transform.basis.z))
-			print("basisx:"+str(myarea.global_transform.basis.x))
-			print("basisy:"+str(myarea.global_transform.basis.y))
-			print("basisz:"+str(myarea.global_transform.basis.z))
+			print("basisx:"+str(myarea.transform.basis.x/myarea.scale.x))
+			print("basisy:"+str(myarea.transform.basis.y/myarea.scale.y))
+			print("basisz:"+str(myarea.transform.basis.z/myarea.scale.z))
+			#print("basisx:"+str(myray.transform.basis.x))
+			#print("basisy:"+str(myray.transform.basis.y))
+			#print("basisz:"+str(myray.transform.basis.z))
 			
 			var mynormal = myray.get_collision_normal()
 			

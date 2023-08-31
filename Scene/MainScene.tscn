@@ -8,7 +8,7 @@
 size = Vector3(20.7879, 11.4559, 20)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xgtco"]
-size = Vector3(4.74681, 4.055, 10.4401)
+size = Vector3(1.51774, 4.56975, 13.3759)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1775e"]
 diffuse_mode = 1
@@ -82,9 +82,10 @@ transform = Transform3D(1, -1.21072e-08, 1.77636e-14, -7.45058e-09, 1, 8.32667e-
 size = Vector3(20, 10, 20)
 
 [node name="3D_Area" type="Area3D" parent="."]
-transform = Transform3D(-2.55446, 0, -9.66823, 0, 10, 0, 9.66823, 0, -2.55446, -92.514, -39.2996, -0.241371)
+transform = Transform3D(5.73206e-14, 4.37114e-07, 10, 30, -4.37114e-07, 0, 1.31134e-06, 10, -4.37114e-07, -312.037, -39.2996, -0.241366)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="3D_Area"]
+transform = Transform3D(1, 0, 5.29396e-23, 0, 1, -3.55271e-15, -1.27055e-21, 3.55271e-15, 1, -0.992429, 0, 0)
 shape = SubResource("BoxShape3D_xgtco")
 
 [node name="Desk" type="MeshInstance3D" parent="3D_Area/CollisionShape3D"]
@@ -94,7 +95,7 @@ mesh = SubResource("BoxMesh_7c8gr")
 skeleton = NodePath("../../..")
 
 [node name="3D_Area2" type="Area3D" parent="."]
-transform = Transform3D(-0.0043548, -0.113353, 4.99871, 0.19189, 4.99503, 0.113437, -4.99631, 0.191939, -2.18501e-07, 15.6736, 18.0344, 82.7015)
+transform = Transform3D(0.144748, -0.638067, -9.97916, -14.8313, -1.49535, 0, -2.23836, 9.86695, -0.645323, -13.8681, -2.49952, 32.3482)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="3D_Area2"]
 transform = Transform3D(1, 0, 6.22151e-11, 0, 1, 3.91293e-09, 7.2653e-11, 1.89478e-10, 1, 0, 0, 0)
@@ -147,7 +148,7 @@ my_model_manager = NodePath("../InputModelManager")
 myfiledialog = NodePath("../FileDialog")
 
 [node name="offset_desk" type="Node3D" parent="."]
-transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, -2.68655, -14.9767, -10.4605)
+transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, -92.514, -1.09095, -0.241371)
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -2.687, -14.977, -10.46)
