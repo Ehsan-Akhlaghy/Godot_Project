@@ -46,7 +46,7 @@ var myshapecast:ShapeCast3D
 var is_colided:bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
+	call_deferred(create_desk())
 	
 	
 
@@ -431,6 +431,7 @@ func new_file_added():
 	calib_size()
 	create_ray3d()
 	#create_shape3d()
+	
 	
 	
 func get_all_children(in_node,arr:=[]):
@@ -840,8 +841,25 @@ func dir_collision(dir:String)->Vector3:
 		"right":
 			return Vector3(0,0,-0.1)
 	return Vector3.ZERO	
+
+
+func create_desk():
+	var area_desk:Area3D = Area3D.new()
 	
+	get_parent().add_child(area_desk)
 	
+	area_desk.global_position = Vector3(0,0,0)
+	
+	var collision_desk:CollisionShape3D = CollisionShape3D.new()
+	
+	area_desk.add_child(collision_desk)
+	
+	var mesh_desk:CSGBox3D = CSGBox3D.new()
+	
+	collision_desk.add_child(mesh_desk)
+	
+	var box_colision = BoxShape3D.new()
+	collision_desk.shape =  box_colision
 
 
 func _on_d_area_area_entered(area):
@@ -893,6 +911,10 @@ func _on_d_area_area_exited(area):
 
 func _on_d_area_body_entered(body):
 	print("body entered:"+str(body.name))
+	
+	var a:StaticBody3D
+	var b:CharacterBody3D
+	var c:RayCast3D
 	
 	#check_collision_side()
 	
