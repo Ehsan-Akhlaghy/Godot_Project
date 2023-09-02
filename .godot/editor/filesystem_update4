@@ -1,3 +1,4 @@
 res://Scene/MainScene.tscn
-res://Script/Input_Model_Calib.gd
 res://Scene/Test.tscn
+res://Script/Input_Model_Calib.gd
+res://Script/InputManager.gd
