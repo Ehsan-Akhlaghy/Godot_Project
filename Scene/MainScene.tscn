@@ -121,7 +121,7 @@ mesh = SubResource("BoxMesh_7c8gr")
 skeleton = NodePath("../../..")
 
 [node name="3D_Area4" type="Area3D" parent="."]
-transform = Transform3D(-10, -8.74228e-07, 0, -3.82137e-14, 4.37114e-07, 10, -8.74228e-07, 10, -4.37114e-07, 12.5534, 46.128, 72.5408)
+transform = Transform3D(-2.16849, -6.16288e-07, -9.76205, -9.76205, -7.58638e-07, 2.16849, -8.74228e-07, 10, -4.37114e-07, 12.5534, 46.128, 55.9886)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="3D_Area4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.992428, 0, 0)
@@ -147,7 +147,7 @@ mesh = SubResource("BoxMesh_7c8gr")
 skeleton = NodePath("../../..")
 
 [node name="3D_Area6" type="Area3D" parent="."]
-transform = Transform3D(-10, 8.74228e-07, 3.82137e-14, 0, -4.37114e-07, 10, 8.74228e-07, 10, 4.37114e-07, -11.773, 46.128, 264.096)
+transform = Transform3D(1.9271, -9.81256, 2.84217e-14, 4.28921e-07, 8.42364e-08, 10, -9.81256, -1.9271, 4.37114e-07, -5.04194, 46.128, 197.81)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="3D_Area6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.992428, 0, 0)
@@ -206,6 +206,6 @@ my_model_manager = NodePath("../InputModelManager")
 myfiledialog = NodePath("../FileDialog")
 
 [node name="offset_desk" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.37343, 46.128, 219.076)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5534, 46.128, 11.7366)
 
 [connection signal="file_selected" from="FileDialog" to="FileManager" method="_on_file_dialog_file_selected"]

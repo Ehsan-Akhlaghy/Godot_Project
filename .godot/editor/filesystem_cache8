@@ -1,5 +1,5 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1693721093
+::res://::1693750216
 icon.png::CompressedTexture2D::4598776707734765351::1693393774::1693393774::1::::<><>::
 ::res://3dModel/::1693634995
 blackboard.obj::Mesh::4362836168125853930::1693393773::1693634995::1::::<><>::
@@ -157,11 +157,11 @@ area_3d_test.tscn::PackedScene::6151696578585295207::1693393773::0::1::::<><>::u
 blackboard.tscn::PackedScene::3971207104131777070::1693393773::0::1::::<><>::uid://b3fnjlb62fgn7
 center_pivot.tscn::PackedScene::8673679538195254569::1693393773::0::1::::<><>::
 node_3d.tscn::PackedScene::7477800466874328766::1693393773::0::1::::<><>::uid://dvtuh8m0y8ikn
-::res://Scene/::1693658416
-MainScene.tscn::PackedScene::3988176422885213040::1693658416::0::1::::<><>::res://Script/Input_Model_Calib.gd<>res://Script/InputManager.gd<>res://Script/FilesManager.gd
-Test.tscn::PackedScene::4982955974957470661::1693657886::0::1::::<><>::res://Script/test.gd<>uid://np0axe7tjadi::::res://3dModel/Cylinder- obj/cilynder_objobj.obj<>uid://df2rb46l2xhwc::::res://3dModel/Monitor/Moniitor.obj<>uid://c0amgueedd3nm::::res://3dModel/candle/Candle.obj<>uid://xnyruemevulc::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_1.png<>uid://bjjt08jbyb8gj::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_0.png<>uid://bk6vovrwpn3bg::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_2.png<>uid://crirrai6y0lc1::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_3.png<>uid://bj6qmw3yaaejd::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_4.png<>uid://bvn0o05cu41fi::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_6.png<>uid://ch1vp70vj4j3g::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_8.png<>uid://cy8pptqebt4of::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_5.png<>uid://cnsrxkwvq5k4o::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_7.png<>uid://dbkyrblk3fax3::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_10.png<>uid://ncvv26pok8ex::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_12.png<>uid://blls4eiu47h60::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_9.png<>uid://3b8nvwwcu02h::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_11.png
-::res://Script/::1693657808
+::res://Scene/::1693750175
+MainScene.tscn::PackedScene::3988176422885213040::1693750175::0::1::::<><>::res://Script/Input_Model_Calib.gd<>res://Script/InputManager.gd<>res://Script/FilesManager.gd
+Test.tscn::PackedScene::4982955974957470661::1693750175::0::1::::<><>::res://Script/test.gd<>uid://np0axe7tjadi::::res://3dModel/Cylinder- obj/cilynder_objobj.obj<>uid://df2rb46l2xhwc::::res://3dModel/Monitor/Moniitor.obj<>uid://c0amgueedd3nm::::res://3dModel/candle/Candle.obj<>uid://xnyruemevulc::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_1.png<>uid://bjjt08jbyb8gj::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_0.png<>uid://bk6vovrwpn3bg::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_2.png<>uid://crirrai6y0lc1::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_3.png<>uid://bj6qmw3yaaejd::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_4.png<>uid://bvn0o05cu41fi::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_6.png<>uid://ch1vp70vj4j3g::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_8.png<>uid://cy8pptqebt4of::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_5.png<>uid://cnsrxkwvq5k4o::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_7.png<>uid://dbkyrblk3fax3::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_10.png<>uid://ncvv26pok8ex::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_12.png<>uid://blls4eiu47h60::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_9.png<>uid://3b8nvwwcu02h::::res://3dModel/valery-tpose-blender-rigged-woman/source/xander-avaturn-model_11.png
+::res://Script/::1693750175
 FilesManager.gd::GDScript::-1::1693397540::0::1::::<>Node<>::
-InputManager.gd::GDScript::-1::1693657540::0::1::::<>Node<>::
-Input_Model_Calib.gd::GDScript::-1::1693657808::0::1::::Input_Model_Manager<>Node<>::
+InputManager.gd::GDScript::-1::1693744955::0::1::::<>Node<>::
+Input_Model_Calib.gd::GDScript::-1::1693750175::0::1::::Input_Model_Manager<>Node<>::
 test.gd::GDScript::-1::1693634736::0::1::::MyMovement<>Node3D<>::

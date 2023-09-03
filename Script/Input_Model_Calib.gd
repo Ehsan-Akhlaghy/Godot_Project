@@ -861,16 +861,27 @@ func wall_Is_right(myobject:Node3D,point:Vector3)->bool:
 	var diff_vec:Vector3 = point-myobject.global_position
 	
 	
-	var zavie:float = rad_to_deg(myobject.global_position.angle_to(diff_vec))
+	#var zavie:float = rad_to_deg(myobject.global_position.angle_to(diff_vec))
 	
-	print("Zavie:"+str(zavie))
+	#var new_vector:Vector3 =point.cross(Vector3.UP).sign()
 	
-	if(zavie>=90):
-		print("wall right")
-		return true
-	else:
+	var new_vector:float =Vector3.RIGHT.dot(diff_vec)
+	print("Zavie:"+str(new_vector))
+	
+	if(new_vector>=0):
 		print("wall left")
 		return false
+	else:
+		print("wall right")
+		return true
+		
+		
+#	if(zavie>=90):
+#		print("wall right")
+#		return true
+#	else:
+#		print("wall left")
+#		return false
 		
 	
 	print("wall is right or left:"+str())
