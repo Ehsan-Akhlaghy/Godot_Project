@@ -62,17 +62,20 @@ func handle_mouse():
 			#MyModelManager.DoScale(0.01)
 			MyModelManager.DoScale(0.1)
 			
-			MyModelManager.check_collision_side()
+			#MyModelManager.check_collision_side()
 			
 		
 		elif(Input.is_action_just_released("Scale_down")): 
 			#print("wheel down")
 			MyModelManager.DoScale(-0.1)
 			
-			MyModelManager.check_collision_side()
+			#MyModelManager.check_collision_side()
 			
 			
-			MyModelManager.decrease_pivot()
+			#MyModelManager.decrease_pivot()
+			MyModelManager.can_rotate_y =true
+			MyModelManager.can_rotate_z =true
+			
 		
 	if(Input.is_action_just_pressed("Esc")):
 			myFileDialog.visible= true
