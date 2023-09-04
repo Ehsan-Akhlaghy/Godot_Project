@@ -59,6 +59,18 @@ var can_rotate_z:bool = true
 var offset_wall:Vector3
 
 var velocity_char:Vector3
+
+var controller:mycontroller
+
+func _init(path_asset_glb:String,desk_path:String,asset_pos:Transform3D):
+	call_deferred(desk_path)
+	MaxScale = 100
+	add_child(Model)
+	create_Marker3d()
+	calib_size()
+	create_controller()
+	
+
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -66,7 +78,7 @@ func _ready():
 	
 	
 	
-	call_deferred("create_desk","res://3dModel/Desk/deskglb.glb")
+	#**call_deferred("create_desk","res://3dModel/Desk/deskglb.glb")
 	
 	pass
 
@@ -238,7 +250,7 @@ func change_pivot(mynode:Node3D,center:Vector3):
 	
 	
 func create_Marker3d():	
-	center_pivot = Node3D.new()
+	#center_pivot = Node3D.new()
 	
 	#center_pivot.global_position = Vector3(0,10,0)
 	
@@ -1354,28 +1366,34 @@ func activation_deactivation_char_body(enable:bool):
 	my_char_body.axis_lock_linear_z=enable
 
 
-func _on_d_area_area_entered(area):
+func create_controller():
+	controller =  mycontroller.new()
+	controller.MyModelManager = self
 	
-	print("areaName entered:"+str(area.name))
-	print("area:"+ str(area.get_groups()))
-	#print("area normal:"+str())
 	
-	wall_ceil_floor= my_raycast(myray,area)
-	
-	is_colided = true
 
-	
-	match(wall_ceil_floor):
-		"floor":
-			on_floor[2].push_back(0)
-		"ceil":
-			on_ceiling[2].push_back(0)
-		"wall_l":
-			on_wall_l[2].push_back(0)
-		"wall_r":
-			on_wall_r[2].push_back(0)
-			
-			
+#func _on_d_area_area_entered(area):
+#
+#	print("areaName entered:"+str(area.name))
+#	print("area:"+ str(area.get_groups()))
+#	#print("area normal:"+str())
+#
+#	wall_ceil_floor= my_raycast(myray,area)
+#
+#	is_colided = true
+#
+#
+#	match(wall_ceil_floor):
+#		"floor":
+#			on_floor[2].push_back(0)
+#		"ceil":
+#			on_ceiling[2].push_back(0)
+#		"wall_l":
+#			on_wall_l[2].push_back(0)
+#		"wall_r":
+#			on_wall_r[2].push_back(0)
+#
+#
 	
 #	if(on_floor[0]&&on_ceiling[0])||(on_wall_l[0]&&on_wall_r[0])||(on_floor[0]&&on_wall_l[0])||(on_floor[0]&&on_wall_r[0])||(on_ceiling[0]&&on_wall_l[0])||(on_ceiling[0]&&on_wall_r[0]):
 #		is_colided = false
@@ -1400,33 +1418,33 @@ func _on_d_area_area_entered(area):
 		#center_pivot.global_position+=dir_collision(my_raycast(myray,area))
 		#***center_pivot.global_position+=dir_collision(my_shapecast(myshapecast,area,distance))
 		
-	if(area.is_in_group("can_rotation")):
-		
-		#***MaxScale = center_pivot.scale[0]
-		#center_pivot.global_position += Vector3(0,1,0)
-		
-		can_increase_pivot = true
-		can_decrese_pivot = false
-		
-		print("EnteredMyDesk area:" + area.name)
-	pass # Replace with function body.
+#	if(area.is_in_group("can_rotation")):
+#
+#		#***MaxScale = center_pivot.scale[0]
+#		#center_pivot.global_position += Vector3(0,1,0)
+#
+#		can_increase_pivot = true
+#		can_decrese_pivot = false
+#
+#		print("EnteredMyDesk area:" + area.name)
+#	pass # Replace with function body.
 
 
-func _on_d_area_area_exited(area):
-	
-	is_colided = false
-	
-	on_floor[1]=false
-	
-	print("area name exited"+str(area.name))
-	
-	if(area.is_in_group("can_rotation")):
-		can_increase_pivot = false
-		can_decrese_pivot = true
-		
-		
-	#print("ExitedMyDesk area:" + area.name)
-	pass # Replace with function body.
+#func _on_d_area_area_exited(area):
+#
+#	is_colided = false
+#
+#	on_floor[1]=false
+#
+#	print("area name exited"+str(area.name))
+#
+#	if(area.is_in_group("can_rotation")):
+#		can_increase_pivot = false
+#		can_decrese_pivot = true
+#
+#
+#	#print("ExitedMyDesk area:" + area.name)
+#	pass # Replace with function body.
 
 
 
@@ -1437,13 +1455,10 @@ func _on_d_area_area_exited(area):
 	#can_decrese_pivot = true
 	
 	
-	pass # Replace with function body.
+	# Replace with function body.
 
 
-func _on_collision_detection_object():
-	on_floor[0]= false
-	
-	pass # Replace with function body.
+
 
 
 

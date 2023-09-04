@@ -125,6 +125,4 @@ myfiledialog = NodePath("../FileDialog")
 [node name="offset_desk" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.78466, 61.5168, -13.546)
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
-
 [connection signal="file_selected" from="FileDialog" to="FileManager" method="_on_file_dialog_file_selected"]

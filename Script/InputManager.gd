@@ -1,6 +1,6 @@
 
 extends Node
-
+class_name  mycontroller
 
 #@onready var MyModelManager=$"../../../blackboard"
 @export var MyModelManager:Input_Model_Manager
