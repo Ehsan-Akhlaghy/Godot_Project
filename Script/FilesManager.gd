@@ -80,6 +80,7 @@ func LoadFromFile(path:String):
 		
 		if(my_model_manager.Model!=null):
 			my_model_manager.new_file_added()
+			
 		
 		#add_child(MyModel)	
 	else:
