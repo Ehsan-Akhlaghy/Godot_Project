@@ -4,15 +4,10 @@ class_name  Input_Model_Manager
 
 
 
-#var Model:Node3D
+
 var Model
-@export var standard_size:Vector3
 
-@export var offset_desk:Node3D
-
-
-
-
+var standard_size:Vector3
 
 
 var center_pivot:Node3D
@@ -49,8 +44,8 @@ var wall_ceil_floor:String
 
 
 
-@export var offset_collision:float = 0.001
-@export var worldup:Vector3 = Vector3.UP
+var offset_collision:float = 0.001
+var worldup:Vector3 = Vector3.UP
 
 var can_rotate_y:bool = true
 var can_rotate_z:bool = true
@@ -62,23 +57,49 @@ var velocity_char:Vector3
 
 var controller:mycontroller
 
-func _init(path_asset_glb:String,desk_path:String,asset_pos:Transform3D):
-	call_deferred(desk_path)
-	MaxScale = 100
-	add_child(Model)
-	create_Marker3d()
-	calib_size()
-	create_controller()
+
+var path_asset_glb:String
+var desk_path:String
+var asset_pos:Vector3
+#@export
+var desk_pos:Vector3
+
+var my_model_manager:Input_Model_Manager
+
+#func _init(path_asset_glb:String,desk_path:String,asset_pos:Vector3):
+#
+#	_path_asset_glb = path_asset_glb
+#	_desk_path = desk_path
+#	_asset_pos = asset_pos
+
+func myconstructor(_path_asset_glb:String,_desk_path:String,_desk_pos:Vector3,_asset_pos:Vector3,_standard_size:Vector3):
+	
+	path_asset_glb = _path_asset_glb
+	desk_path = _desk_path
+	asset_pos = _asset_pos	
+	standard_size = _standard_size
+	desk_pos = _desk_pos
+	
+	LoadFromFile(_path_asset_glb)
+	#var myfilesmanager:MyFileManager =MyFileManager.new(_path_asset_glb)
+	#myfilesmanager.my_model_manager = self
+	
 	
 
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	call_deferred("create_desk",desk_path)
+	MaxScale = 100
+	#add_child(Model)
+	#create_Marker3d()
+	#calib_size()
+	#create_controller()
 	#call_deferred("create_desk")
 	
 	
 	
-	#**call_deferred("create_desk","res://3dModel/Desk/deskglb.glb")
+	#call_deferred("create_desk","res://3dModel/Desk/deskglb.glb")
 	
 	pass
 
@@ -182,7 +203,7 @@ func calib_size():
 	
 	my_char_body.global_position = Vector3.ZERO
 	
-	my_char_body.global_position = offset_desk.global_position
+	my_char_body.global_position = asset_pos
 	
 	
 	
@@ -308,8 +329,8 @@ func create_Marker3d():
 	
 	
 	#Model.add_to_group("can_rotation")
-	for i in center_pivot.get_children():
-		i.add_to_group("can_rotation")
+	#for i in center_pivot.get_children():
+		#i.add_to_group("can_rotation")
 		
 	#var callable = Callable(self,"collision_happen")
 	
@@ -335,6 +356,9 @@ func MyRotation(degree:float,axis:String):
 		#center_pivot.rotate_z(degree)
 		if(can_rotate_z):
 			my_char_body.rotate_object_local(Vector3(0,0,1),degree)
+			#my_char_body.rotate_object_local(Vector3(1,1,1),degree)
+			
+			
 		#center_pivot.rotate_object_local(Vector3(1,0,0),degree)
 		#center_pivot.rotate_x(degree)
 		
@@ -518,14 +542,15 @@ func new_file_added():
 		
 		can_rotate_y = true
 		can_rotate_z = true
-	if(myray!=null):
-		myray.get_parent().remove_child(myray)
+	#if(myray!=null):
+	#	myray.get_parent().remove_child(myray)
 		
 	#self.get_parent().add_child(Model)
 	MaxScale = 100
 	add_child(Model)
 	create_Marker3d()
-	calib_size()
+	#calib_size()
+	
 	#create_ray3d()
 	#create_shape3d()
 	
@@ -726,7 +751,7 @@ func check_collision_side(mydelta):
 #		#print("colided!")
 
 	if(my_char_body.is_on_floor() && my_char_body.is_on_ceiling()):
-				#print("on floor & on celing")
+				print("on floor & on celing")
 				my_char_body.velocity = Vector3.ZERO
 				activation_deactivation_char_body(true)
 				MaxScale = my_char_body.scale[0]
@@ -1313,9 +1338,11 @@ func create_desk(path:String):
 	
 		#static_desk.global_position = Vector3(0,0,0)
 		
-		static_desk.global_position = offset_desk.global_position
-		static_desk.global_position.y = static_desk.global_position.y-4
-	
+		static_desk.global_position = desk_pos
+
+		#*static_desk.global_position.y = static_desk.global_position.y-4
+		#static_desk.global_position.y = static_desk.global_position.y
+				
 		var collision_desk:CollisionShape3D = CollisionShape3D.new()
 	
 		static_desk.add_child(collision_desk)
@@ -1364,6 +1391,31 @@ func activation_deactivation_char_body(enable:bool):
 	my_char_body.axis_lock_linear_x=enable
 	my_char_body.axis_lock_linear_y=enable
 	my_char_body.axis_lock_linear_z=enable
+
+
+func LoadFromFile(path:String):
+	if(checkformat_file_glb(path)):
+		var mygltf:GLTFDocument = GLTFDocument.new()
+		var gltf_state:GLTFState = GLTFState.new()
+		
+		mygltf.append_from_file(path,gltf_state)
+		
+		#remove_pre_model()
+		Model= mygltf.generate_scene(gltf_state)
+		
+		if(Model!=null):
+			new_file_added()
+			
+
+func checkformat_file_glb(Path:String)->bool:
+	#print(File.get_as_text().to_lower())
+	#=='gltf'
+	if(Path.get_extension().contains('glb')|| Path.get_extension().contains('gltf')):
+		return true 
+	else:
+		return false
+
+
 
 
 func create_controller():

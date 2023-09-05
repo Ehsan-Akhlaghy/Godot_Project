@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://bw25xhs3iehum"]
 
-[ext_resource type="Script" path="res://Script/Input_Model_Calib.gd" id="2_0sobt"]
+[ext_resource type="PackedScene" uid="uid://caxwb0j8r676j" path="res://Prefab/input_model_manager.tscn" id="1_03q7c"]
+[ext_resource type="PackedScene" uid="uid://c0yfftr1hpwbl" path="res://Prefab/file_manager.tscn" id="2_s44vb"]
 [ext_resource type="Script" path="res://Script/InputManager.gd" id="3_ylpph"]
-[ext_resource type="Script" path="res://Script/FilesManager.gd" id="5_m4550"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wbfat"]
 size = Vector3(20.7879, 11.4559, 20)
@@ -60,7 +60,7 @@ transform = Transform3D(1, -1.21072e-08, 1.77636e-14, -7.45058e-09, 1, 8.32667e-
 size = Vector3(20, 10, 20)
 
 [node name="StaticBody3D3" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 8.78466, 72.142, -33.1634)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 8.78466, 72.142, -70.7659)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3"]
 transform = Transform3D(1, 1.86265e-09, 5.82645e-11, -1.86265e-09, 1, 1.86265e-09, -1.38556e-13, -1.11022e-16, 1, -7.45058e-09, -6, 4.44089e-16)
@@ -71,7 +71,7 @@ transform = Transform3D(1, -1.21072e-08, 1.77636e-14, -7.45058e-09, 1, 8.32667e-
 size = Vector3(20, 10, 20)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
-transform = Transform3D(8, 0, 0, 0, -7.98808, 0.436534, 0, -0.436534, -7.98808, 46.1321, 140.802, -12.9049)
+transform = Transform3D(7.8377, -1.6009, 0.0874863, -1.60329, -7.82602, 0.427678, 0, -0.436534, -7.98808, 46.1321, 92.7237, -12.9049)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 transform = Transform3D(1, 1.86265e-09, 5.82645e-11, -1.86265e-09, 1, 1.86265e-09, -1.38556e-13, -1.11022e-16, 1, -7.45058e-09, -6, 4.44089e-16)
@@ -103,26 +103,15 @@ ok_button_text = "Open"
 file_mode = 0
 access = 2
 
-[node name="InputModelManager" type="Marker3D" parent="." node_paths=PackedStringArray("offset_desk", "desk")]
-transform = Transform3D(0.838042, 0, -0.545604, 0, 1, 0, 0.545604, 0, 0.838042, 4.65116, -1.06669, -6.34221)
-script = ExtResource("2_0sobt")
-standard_size = Vector3(10, 10, 10)
-offset_desk = NodePath("../offset_desk")
-desk = NodePath("../StaticBody3D")
-offset_collision = 0.1
-
 [node name="ControllerManager" type="Marker3D" parent="." node_paths=PackedStringArray("MyModelManager", "myFileDialog")]
 transform = Transform3D(0.838042, 0, -0.545604, 0, 1, 0, 0.545604, 0, 0.838042, 4.65116, -1.06669, -6.34221)
 script = ExtResource("3_ylpph")
-MyModelManager = NodePath("../InputModelManager")
+MyModelManager = NodePath("")
 myFileDialog = NodePath("../FileDialog")
 
-[node name="FileManager" type="Marker3D" parent="." node_paths=PackedStringArray("my_model_manager", "myfiledialog")]
-script = ExtResource("5_m4550")
-my_model_manager = NodePath("../InputModelManager")
-myfiledialog = NodePath("../FileDialog")
+[node name="FileManager" parent="." instance=ExtResource("2_s44vb")]
 
 [node name="offset_desk" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.78466, 61.5168, -13.546)
 
-[connection signal="file_selected" from="FileDialog" to="FileManager" method="_on_file_dialog_file_selected"]
+[node name="InputModelManager" parent="." instance=ExtResource("1_03q7c")]

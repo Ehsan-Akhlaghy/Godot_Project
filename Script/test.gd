@@ -1,5 +1,5 @@
 extends Node3D
-class_name  MyMovement
+class_name  myTest
 
 #const   path="res://3dModel/pen_scaled.glb"
 #var myModel = preload(path)
@@ -17,6 +17,9 @@ class_name  MyMovement
 
 @export var target_pos:Node3D
 
+
+func _init(a:String):
+	ehsna(a)
 #@export var my_cam:Camera3D
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -27,6 +30,8 @@ func _ready():
 #	add_child(myModel)
 	pass # Replace with function body.
 
+func ehsna(a:String):
+	print("ehsan:"+str(a))
 #func _physics_process(delta):
 #	pass
 	

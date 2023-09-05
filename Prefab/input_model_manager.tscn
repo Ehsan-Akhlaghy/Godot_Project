@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://caxwb0j8r676j"]
+
+[ext_resource type="Script" path="res://Script/Input_Model_Calib.gd" id="1_1v0pd"]
+
+[node name="InputModelManager" type="Marker3D"]
+script = ExtResource("1_1v0pd")
+standard_size = Vector3(10, 10, 10)
