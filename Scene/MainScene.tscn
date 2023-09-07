@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://bw25xhs3iehum"]
 
-[ext_resource type="Script" path="res://Script/Input_Model_Calib.gd" id="2_0sobt"]
+[ext_resource type="PackedScene" uid="uid://caxwb0j8r676j" path="res://Prefab/input_model_manager.tscn" id="1_03q7c"]
+[ext_resource type="PackedScene" uid="uid://c0yfftr1hpwbl" path="res://Prefab/file_manager.tscn" id="2_s44vb"]
 [ext_resource type="Script" path="res://Script/InputManager.gd" id="3_ylpph"]
-[ext_resource type="Script" path="res://Script/FilesManager.gd" id="5_m4550"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wbfat"]
 size = Vector3(20.7879, 11.4559, 20)
@@ -38,7 +38,7 @@ size = Vector3(20, 10, 20)
 transform = Transform3D(3.9997, -0.048868, -2.13609e-09, 0, -1.74846e-07, 4, -0.048868, -3.9997, -1.74833e-07, -18.1916, -0.271282, 33.5011)
 
 [node name="StaticBody3D4" type="StaticBody3D" parent="."]
-transform = Transform3D(0.324297, 0, -0.945955, 0, 1, 0, 0.945955, 0, 0.324297, 61.3129, -9.41011, 175.804)
+transform = Transform3D(0.324297, 0, -0.945955, 0, 1, 0, 0.945955, 0, 0.324297, 61.3129, -9.41011, 757.679)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D4"]
 transform = Transform3D(1, 1.86265e-09, 5.82645e-11, -1.86265e-09, 1, 1.86265e-09, -1.38556e-13, -1.11022e-16, 1, -7.45058e-09, -6, 4.44089e-16)
@@ -49,7 +49,7 @@ transform = Transform3D(1, -1.21072e-08, 1.77636e-14, -7.45058e-09, 1, 8.32667e-
 size = Vector3(20, 10, 20)
 
 [node name="StaticBody3D5" type="StaticBody3D" parent="."]
-transform = Transform3D(0.999925, 0, 0.012217, 0, 1, 0, -0.012217, 0, 0.999925, 1.49279, -26.4728, 174.627)
+transform = Transform3D(0.999925, 0, 0.012217, 0, 1, 0, -0.012217, 0, 0.999925, 1.49279, -26.4728, 756.502)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D5"]
 transform = Transform3D(1, 1.86265e-09, 5.82645e-11, -1.86265e-09, 1, 1.86265e-09, -1.38556e-13, -1.11022e-16, 1, -7.45058e-09, -6, 4.44089e-16)
@@ -60,7 +60,7 @@ transform = Transform3D(1, -1.21072e-08, 1.77636e-14, -7.45058e-09, 1, 8.32667e-
 size = Vector3(20, 10, 20)
 
 [node name="StaticBody3D3" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -1.07878e-06, 0.293741, -88.1807)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 8.78466, 72.142, -70.7659)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3"]
 transform = Transform3D(1, 1.86265e-09, 5.82645e-11, -1.86265e-09, 1, 1.86265e-09, -1.38556e-13, -1.11022e-16, 1, -7.45058e-09, -6, 4.44089e-16)
@@ -71,7 +71,7 @@ transform = Transform3D(1, -1.21072e-08, 1.77636e-14, -7.45058e-09, 1, 8.32667e-
 size = Vector3(20, 10, 20)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
-transform = Transform3D(-0.000758322, -0.000737039, 8, 0.100707, 7.99937, 0.000746526, -7.99937, 0.100707, -0.000748984, -97.746, -22.3088, -507.712)
+transform = Transform3D(7.8377, -1.6009, 0.0874863, -1.60329, -7.82602, 0.427678, 0, -0.436534, -7.98808, 46.1321, 92.7237, -12.9049)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 transform = Transform3D(1, 1.86265e-09, 5.82645e-11, -1.86265e-09, 1, 1.86265e-09, -1.38556e-13, -1.11022e-16, 1, -7.45058e-09, -6, 4.44089e-16)
@@ -82,100 +82,17 @@ transform = Transform3D(1, -1.21072e-08, 1.77636e-14, -7.45058e-09, 1, 8.32667e-
 size = Vector3(20, 10, 20)
 
 [node name="3D_Area" type="Area3D" parent="."]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -1.49202e-07, 122.734, -329.403)
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -1.49202e-07, 122.734, 662.54)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="3D_Area"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.992428, 0, 0)
 shape = SubResource("BoxShape3D_xgtco")
 
 [node name="Desk" type="MeshInstance3D" parent="3D_Area/CollisionShape3D"]
-transform = Transform3D(5, -3.30931e-41, 0, 3.44383e-41, 5, 0, 0, 0, 15, 0, 0, 0)
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 15, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_1775e")
 mesh = SubResource("BoxMesh_7c8gr")
 skeleton = NodePath("../../..")
-
-[node name="3D_Area2" type="Area3D" parent="."]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -89.7027, -137.03, 7.02742)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="3D_Area2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.992428, 0, 0)
-shape = SubResource("BoxShape3D_xgtco")
-
-[node name="Desk" type="MeshInstance3D" parent="3D_Area2/CollisionShape3D"]
-transform = Transform3D(5, -3.30931e-41, 0, 3.44383e-41, 5, 0, 0, 0, 15, 0, 0, 0)
-material_override = SubResource("StandardMaterial3D_1775e")
-mesh = SubResource("BoxMesh_7c8gr")
-skeleton = NodePath("../../..")
-
-[node name="3D_Area3" type="Area3D" parent="."]
-transform = Transform3D(-4.37114e-07, 0, -10, 0, 15.2182, 0, 10, 0, -4.37114e-07, -192.142, 35.0324, 281.446)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="3D_Area3"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.992428, 0, 0)
-shape = SubResource("BoxShape3D_xgtco")
-
-[node name="Desk" type="MeshInstance3D" parent="3D_Area3/CollisionShape3D"]
-transform = Transform3D(5, -3.30931e-41, 0, 3.44383e-41, 5, 0, 0, 0, 15, 0, 0, 0)
-material_override = SubResource("StandardMaterial3D_1775e")
-mesh = SubResource("BoxMesh_7c8gr")
-skeleton = NodePath("../../..")
-
-[node name="3D_Area4" type="Area3D" parent="."]
-transform = Transform3D(-9.87489, 0.726426, 1.3996, -0.377184, -9.70618, 2.37651, 1.53111, 2.29399, 9.61214, 12.5534, 46.128, 75.7752)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="3D_Area4"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.992428, 0, 0)
-shape = SubResource("BoxShape3D_xgtco")
-
-[node name="Desk" type="MeshInstance3D" parent="3D_Area4/CollisionShape3D"]
-transform = Transform3D(5, -3.30931e-41, 0, 3.44383e-41, 5, 0, 0, 0, 15, 0, 0, 0)
-material_override = SubResource("StandardMaterial3D_1775e")
-mesh = SubResource("BoxMesh_7c8gr")
-skeleton = NodePath("../../..")
-
-[node name="3D_Area7" type="Area3D" parent="."]
-transform = Transform3D(-10, -8.74228e-07, -3.82137e-14, 0, -4.37114e-07, 10, -8.74228e-07, 10, 4.37114e-07, -145.195, 46.128, -90.603)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="3D_Area7"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.992428, 0, 0)
-shape = SubResource("BoxShape3D_xgtco")
-
-[node name="Desk" type="MeshInstance3D" parent="3D_Area7/CollisionShape3D"]
-transform = Transform3D(5, -3.30931e-41, 0, 3.44383e-41, 5, 0, 0, 0, 15, 0, 0, 0)
-material_override = SubResource("StandardMaterial3D_1775e")
-mesh = SubResource("BoxMesh_7c8gr")
-skeleton = NodePath("../../..")
-
-[node name="3D_Area6" type="Area3D" parent="."]
-transform = Transform3D(1.9271, -9.81256, 2.84217e-14, 4.28921e-07, 8.42364e-08, 10, -9.81256, -1.9271, 4.37114e-07, -5.04194, 46.128, 197.81)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="3D_Area6"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.992428, 0, 0)
-shape = SubResource("BoxShape3D_xgtco")
-
-[node name="Desk" type="MeshInstance3D" parent="3D_Area6/CollisionShape3D"]
-transform = Transform3D(5, -5.96046e-08, 0, 5.96046e-08, 5, 0, -2.84217e-14, -3.55271e-15, 15, 0, 0, 0)
-material_override = SubResource("StandardMaterial3D_1775e")
-mesh = SubResource("BoxMesh_7c8gr")
-skeleton = NodePath("../../..")
-
-[node name="3D_Area5" type="Area3D" parent="."]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -166.556, 148.934, 16.9958)
-visible = false
-collision_layer = 0
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="3D_Area5"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.992428, 0, 0)
-shape = SubResource("BoxShape3D_xgtco")
-
-[node name="Desk" type="MeshInstance3D" parent="3D_Area5/CollisionShape3D"]
-transform = Transform3D(5, -3.30931e-41, 0, 3.44383e-41, 5, 0, 0, 0, 15, 0, 0, 0)
-material_override = SubResource("StandardMaterial3D_1775e")
-mesh = SubResource("BoxMesh_7c8gr")
-skeleton = NodePath("../../..")
-
-[node name="Node3D4" type="Node3D" parent="."]
-transform = Transform3D(0.995396, 0, 0.0958458, 0, 1, 0, -0.0958458, 0, 0.995396, -27.4408, 58.0497, 10.5074)
 
 [node name="FileDialog" type="FileDialog" parent="."]
 title = "Open a File"
@@ -186,26 +103,15 @@ ok_button_text = "Open"
 file_mode = 0
 access = 2
 
-[node name="InputModelManager" type="Marker3D" parent="." node_paths=PackedStringArray("offset_desk", "desk")]
-transform = Transform3D(0.838042, 0, -0.545604, 0, 1, 0, 0.545604, 0, 0.838042, 4.65116, -1.06669, -6.34221)
-script = ExtResource("2_0sobt")
-standard_size = Vector3(10, 10, 10)
-offset_desk = NodePath("../offset_desk")
-desk = NodePath("../StaticBody3D")
-offset_collision = 0.1
-
 [node name="ControllerManager" type="Marker3D" parent="." node_paths=PackedStringArray("MyModelManager", "myFileDialog")]
 transform = Transform3D(0.838042, 0, -0.545604, 0, 1, 0, 0.545604, 0, 0.838042, 4.65116, -1.06669, -6.34221)
 script = ExtResource("3_ylpph")
-MyModelManager = NodePath("../InputModelManager")
+MyModelManager = NodePath("")
 myFileDialog = NodePath("../FileDialog")
 
-[node name="FileManager" type="Marker3D" parent="." node_paths=PackedStringArray("my_model_manager", "myfiledialog")]
-script = ExtResource("5_m4550")
-my_model_manager = NodePath("../InputModelManager")
-myfiledialog = NodePath("../FileDialog")
+[node name="FileManager" parent="." instance=ExtResource("2_s44vb")]
 
 [node name="offset_desk" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5534, 46.128, 13.3917)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.78466, 61.5168, -13.546)
 
-[connection signal="file_selected" from="FileDialog" to="FileManager" method="_on_file_dialog_file_selected"]
+[node name="InputModelManager" parent="." instance=ExtResource("1_03q7c")]

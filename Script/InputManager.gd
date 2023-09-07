@@ -1,6 +1,6 @@
 
 extends Node
-
+class_name  mycontroller
 
 #@onready var MyModelManager=$"../../../blackboard"
 @export var MyModelManager:Input_Model_Manager
@@ -33,6 +33,7 @@ func handle_mouse():
 			MyModelManager.MyRotation(0.01,"y")
 			
 			#MyModelManager.check_collision_side()
+			#MyModelManager.check_collision_side()
 			#print("Wheel up!");
 		#elif(Input.is_action_just_pressed("Rotation_Left")):
 		elif(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)):
@@ -42,7 +43,7 @@ func handle_mouse():
 			
 			#MyModelManager.check_collision_side()
 			
-			
+			#MyModelManager.check_collision_side()
 			
 			#print("Wheel down!");
 		elif(Input.is_action_pressed("z_rotation_p")):
@@ -50,11 +51,12 @@ func handle_mouse():
 			MyModelManager.MyRotation(0.01,"z")
 			
 			#MyModelManager.check_collision_side()
+			#MyModelManager.check_collision_side()
 			
 		elif(Input.is_action_pressed("z_rotation_n")):
 			#print("z_rotation_n")
 			MyModelManager.MyRotation(-0.01,"z")
-			
+			#MyModelManager.check_collision_side()
 			#MyModelManager.check_collision_side()
 			
 		if(Input.is_action_just_released("Scale_up")):
@@ -62,7 +64,7 @@ func handle_mouse():
 			#MyModelManager.DoScale(0.01)
 			MyModelManager.DoScale(0.1)
 			
-			#MyModelManager.check_collision_side()
+		#	MyModelManager.check_collision_side()
 			
 		
 		elif(Input.is_action_just_released("Scale_down")): 
@@ -75,6 +77,8 @@ func handle_mouse():
 			#MyModelManager.decrease_pivot()
 			MyModelManager.can_rotate_y =true
 			MyModelManager.can_rotate_z =true
+			
+			#MyModelManager.decrease_pivot_2()
 			
 		
 	if(Input.is_action_just_pressed("Esc")):
