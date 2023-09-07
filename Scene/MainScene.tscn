@@ -1,8 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://bw25xhs3iehum"]
+[gd_scene load_steps=6 format=3 uid="uid://bw25xhs3iehum"]
 
-[ext_resource type="PackedScene" uid="uid://caxwb0j8r676j" path="res://Prefab/input_model_manager.tscn" id="1_03q7c"]
-[ext_resource type="PackedScene" uid="uid://c0yfftr1hpwbl" path="res://Prefab/file_manager.tscn" id="2_s44vb"]
-[ext_resource type="Script" path="res://Script/InputManager.gd" id="3_ylpph"]
+[ext_resource type="PackedScene" uid="uid://db1whq2oyow6o" path="res://Prefab/input_model_manager.tscn" id="1_03q7c"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wbfat"]
 size = Vector3(20.7879, 11.4559, 20)
@@ -102,14 +100,6 @@ visible = true
 ok_button_text = "Open"
 file_mode = 0
 access = 2
-
-[node name="ControllerManager" type="Marker3D" parent="." node_paths=PackedStringArray("MyModelManager", "myFileDialog")]
-transform = Transform3D(0.838042, 0, -0.545604, 0, 1, 0, 0.545604, 0, 0.838042, 4.65116, -1.06669, -6.34221)
-script = ExtResource("3_ylpph")
-MyModelManager = NodePath("")
-myFileDialog = NodePath("../FileDialog")
-
-[node name="FileManager" parent="." instance=ExtResource("2_s44vb")]
 
 [node name="offset_desk" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.78466, 61.5168, -13.546)

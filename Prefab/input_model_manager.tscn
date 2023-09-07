@@ -1,7 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://caxwb0j8r676j"]
+[gd_scene load_steps=4 format=3 uid="uid://db1whq2oyow6o"]
 
 [ext_resource type="Script" path="res://Script/Input_Model_Calib.gd" id="1_1v0pd"]
+[ext_resource type="Script" path="res://Script/FilesManager.gd" id="2_m3wiv"]
+[ext_resource type="Script" path="res://Script/InputManager.gd" id="3_n16ub"]
 
 [node name="InputModelManager" type="Marker3D"]
 script = ExtResource("1_1v0pd")
-standard_size = Vector3(10, 10, 10)
+
+[node name="FileManager" type="Marker3D" parent="."]
+script = ExtResource("2_m3wiv")
+
+[node name="ControllerManager" type="Marker3D" parent="."]
+script = ExtResource("3_n16ub")

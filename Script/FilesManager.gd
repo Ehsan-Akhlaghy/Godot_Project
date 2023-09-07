@@ -6,12 +6,22 @@ class_name  MyFileManager
 
 var MyModel:Node3D
 
-var my_model_manager:Input_Model_Manager
+@onready var my_model_manager:Input_Model_Manager = get_node("..")
+var _path_file:String
 
+#func _init(path:String):
+	#my_model_manager = input_manager
+	#_path_file = path
+	#print(input_manager)
+	
+func _init():
+	#_path_file = my_model_manager.path_asset_glb
+	pass
 
-#func _init(path:String,input_manager:Input_Model_Manager):
-#	LoadFromFile(path)
-#	my_model_manager = input_manager.Model
+func _ready():
+	_path_file = my_model_manager.path_asset_glb
+	#LoadFromFile(_path_file)
+	call_deferred("LoadFromFile",_path_file)
 
 
 func LoadFromFile(path:String):

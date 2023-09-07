@@ -24,7 +24,7 @@ var new_node:Node3D
 var can_increase_pivot:bool = false
 var can_decrese_pivot: bool = true
 
-@export var desk:Node3D
+#@export var desk:Node3D
 
 var on_floor:= [false,false,[0]]
 var on_wall:= false
@@ -64,13 +64,9 @@ var asset_pos:Vector3
 #@export
 var desk_pos:Vector3
 
-var my_model_manager:Input_Model_Manager
+#var my_model_manager:Input_Model_Manager
+#@onready var my_file_manager:MyFileManager = get_node("FilesManager")
 
-#func _init(path_asset_glb:String,desk_path:String,asset_pos:Vector3):
-#
-#	_path_asset_glb = path_asset_glb
-#	_desk_path = desk_path
-#	_asset_pos = asset_pos
 
 func myconstructor(_path_asset_glb:String,_desk_path:String,_desk_pos:Vector3,_asset_pos:Vector3,_standard_size:Vector3):
 	
@@ -80,27 +76,16 @@ func myconstructor(_path_asset_glb:String,_desk_path:String,_desk_pos:Vector3,_a
 	standard_size = _standard_size
 	desk_pos = _desk_pos
 	
-	LoadFromFile(_path_asset_glb)
+	#LoadFromFile(_path_asset_glb)
 	#var myfilesmanager:MyFileManager =MyFileManager.new(_path_asset_glb)
-	#myfilesmanager.my_model_manager = self
 	
-	
+
 
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	call_deferred("create_desk",desk_path)
 	MaxScale = 100
-	#add_child(Model)
-	#create_Marker3d()
-	#calib_size()
-	#create_controller()
-	#call_deferred("create_desk")
-	
-	
-	
-	#call_deferred("create_desk","res://3dModel/Desk/deskglb.glb")
-	
 	pass
 
 
@@ -374,28 +359,6 @@ func MyRotation(degree:float,axis:String):
 func DoScale(my_delta:float,max_scale =1 ):
 	
 
-	#MyReparent(Model,Model.get_parent().get_parent())
-	
-	
-	
-	
-	#***********
-	#MyReparent(Model,Model.get_parent().get_parent().get_parent().get_parent())
-	
-	
-	
-	
-	#change_pivot(find_center_3dObj(Model.get_aabb()))
-	
-	#var _Scale:Vector3 =  Vector3(Model.scale.x+my_delta,Model.scale.y+my_delta
-		#		,Model.scale.z+my_delta) 
-		
-	#===============================
-	
-	#**********var parent:Node3D = Model.get_parent().get_parent().get_parent()
-	
-	#****************
-	#var parent:Node3D = Model.get_parent().get_parent().get_parent().get_parent()
 	
 	var parent:Node3D = Model.get_parent().get_parent().get_parent()
 	
@@ -430,13 +393,11 @@ func Init_Model():
 	
 	
 	
-	#Model.global_position = Vector3(0,0,0)
-
-	#Model.rotation = Vector3.ZERO
 	
-	MyReparent(Model,Model.get_parent().get_parent())
+	#****MyReparent(Model,Model.get_parent().get_parent())
 	
-	#Model.position = Vector3(0,0,0)
+	
+	
 	Model.global_position = Vector3(0,0,0)
 	
 func find_desired_size(mymesh:AABB)->Vector3:
@@ -548,8 +509,9 @@ func new_file_added():
 	#self.get_parent().add_child(Model)
 	MaxScale = 100
 	add_child(Model)
+	#call_deferred("add_child",Model)
 	create_Marker3d()
-	#calib_size()
+	calib_size()
 	
 	#create_ray3d()
 	#create_shape3d()
@@ -1393,36 +1355,13 @@ func activation_deactivation_char_body(enable:bool):
 	my_char_body.axis_lock_linear_z=enable
 
 
-func LoadFromFile(path:String):
-	if(checkformat_file_glb(path)):
-		var mygltf:GLTFDocument = GLTFDocument.new()
-		var gltf_state:GLTFState = GLTFState.new()
-		
-		mygltf.append_from_file(path,gltf_state)
-		
-		#remove_pre_model()
-		Model= mygltf.generate_scene(gltf_state)
-		
-		if(Model!=null):
-			new_file_added()
-			
-
-func checkformat_file_glb(Path:String)->bool:
-	#print(File.get_as_text().to_lower())
-	#=='gltf'
-	if(Path.get_extension().contains('glb')|| Path.get_extension().contains('gltf')):
-		return true 
-	else:
-		return false
 
 
 
 
-func create_controller():
-	controller =  mycontroller.new()
-	controller.MyModelManager = self
-	
-	
+
+
+
 
 #func _on_d_area_area_entered(area):
 #

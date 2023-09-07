@@ -3,12 +3,14 @@ extends Node
 class_name  mycontroller
 
 #@onready var MyModelManager=$"../../../blackboard"
-@export var MyModelManager:Input_Model_Manager
-@export var myFileDialog:FileDialog
+@onready var MyModelManager:Input_Model_Manager =get_node("..")
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	print("ready")
-	print(MyModelManager.name)
+	#print(MyModelManager.name)
+	
+	
 	pass # Replace with function body.
 
 
@@ -34,7 +36,7 @@ func handle_mouse():
 			
 			#MyModelManager.check_collision_side()
 			#MyModelManager.check_collision_side()
-			#print("Wheel up!");
+			print("Wheel up!");
 		#elif(Input.is_action_just_pressed("Rotation_Left")):
 		elif(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)):
 			
@@ -81,25 +83,11 @@ func handle_mouse():
 			#MyModelManager.decrease_pivot_2()
 			
 		
-	if(Input.is_action_just_pressed("Esc")):
-			myFileDialog.visible= true
-#	if(Input.is_action_just_pressed("MoveUP")):
-#		#print("wheel up")
-#		MyModelManager.Move("R")
-#	elif(Input.is_action_just_pressed("MoveDown")):
-#		#print("wheel up")
-#		MyModelManager.Move("L")
+	#if(Input.is_action_just_pressed("Esc")):
+	#		myFileDialog.visible= true
 		
 		
-#func _input(event):
-#	if(event == InputEventMouseButton):
-##		if (event.is_pressed()):
-##			if (event.get_indexed(BUTTON_WHEEL_UP)):
-##				print("wheel up");
-##			elif(event.get_indexed(BUTTON_WHEEL_DOWN)):
-##				print("wheel down");
-#		if(event.is_action_pressed("Rotation_Right")):
-#			print("wheel up");
+
 
 
 

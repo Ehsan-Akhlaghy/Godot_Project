@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://c0yfftr1hpwbl"]
-
-[ext_resource type="Script" path="res://Script/FilesManager.gd" id="1_hjait"]
-
-[node name="FileManager" type="Marker3D"]
-script = ExtResource("1_hjait")

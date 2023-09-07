@@ -1,10 +1,4 @@
-res://Scene/MainScene.tscn
 res://Scene/Test.tscn
-res://Script/Input_Model_Calib.gd
-res://Script/InputManager.gd
-res://Script/test.gd
 res://Script/mainTest.gd
+res://Scene/MainScene.tscn
 res://Prefab/input_model_manager.tscn
-res://Script/FilesManager.gd
-res://Script/FileManager2.gd
-res://Script/Input_Model_Calib2.gd
