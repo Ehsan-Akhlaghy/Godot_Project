@@ -17,6 +17,9 @@ func _process(delta):
 	#print(MyModelManager.name)
 	#GD.print(MyModelManager.name)
 	
+	#**handle_mouse()
+	pass
+func _physics_process(delta):
 	handle_mouse()
 	pass
 	
@@ -70,6 +73,9 @@ func handle_mouse():
 			
 			
 			#MyModelManager.decrease_pivot()
+			MyModelManager.can_rotate_y =true
+			MyModelManager.can_rotate_z =true
+			
 		
 	if(Input.is_action_just_pressed("Esc")):
 			myFileDialog.visible= true

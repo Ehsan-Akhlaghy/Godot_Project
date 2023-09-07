@@ -44,6 +44,19 @@ var on_ceiling:= [false,false,0]
 var myray:RayCast3D
 var myshapecast:ShapeCast3D
 var is_colided:bool = false
+
+var wall_ceil_floor:String
+
+
+
+@export var offset_collision:float = 0.001
+@export var worldup:Vector3 = Vector3.UP
+
+var can_rotate_y:bool = true
+var can_rotate_z:bool = true
+
+
+var offset_wall:Vector3
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#call_deferred(create_desk())
@@ -60,12 +73,27 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	
+	if(is_colided):
+		center_pivot.global_position+= dir_collision(wall_ceil_floor)
+		#print("onfloor_collision:"+str(on_floor[2]))
+	
+		
+	
+	
+	
+	#print("b-a:"+str(b-a))
+	#print("b-a:2"+str(a.direction_to(b)))
+	#print("slide:"+str(b.slide(Vector3(1,1,0))))
+	
+	
 	#calib_pos()
-	if(my_char_body!=null):
-		if(my_char_body.move_and_slide()):
+	#if(my_char_body!=null):
+		
+		#if(my_char_body.move_and_slide()):
 			
-			print("colided upate loop!!")
-			center_pivot.global_position += Vector3(0,0.1,0)
+		#	print("colided upate loop!!")
+			#center_pivot.global_position += Vector3(0,0.1,0)
 	
 	
 	#if(my_char_body!=null):
@@ -252,8 +280,14 @@ func create_Marker3d():
 		i.add_to_group("can_rotation")
 		
 	#var callable = Callable(self,"collision_happen")
+	
+	
+	
 	my_area.area_entered.connect(_on_d_area_area_entered)
 	my_area.area_exited.connect(_on_d_area_area_exited)
+	
+	
+	
 	#print("connection:"+str(my_area.connect("area_entered",func ehsan():print("fired!"),18)))
 	#print("Connection:"+str(my_area.area_entered.get_connections()))
 	#my_area.area_entered.emit()
@@ -262,11 +296,17 @@ func create_Marker3d():
 func MyRotation(degree:float,axis:String):
 	
 	if(axis=="y"):
-		center_pivot.rotate_y(degree)
+		#center_pivot.rotate_y(degree)
+		if(can_rotate_y):
+			center_pivot.rotate_object_local(Vector3(0,1,0),degree)
 	elif(axis=="z"):
 		#center_pivot.rotate_z(degree)
-		#center_pivot.rotate_object_local(Vector3(0,0,1),degree)
-		center_pivot.rotate_object_local(Vector3(0,0,1),degree)
+		if(can_rotate_z):
+			center_pivot.rotate_object_local(Vector3(0,0,1),degree)
+		#center_pivot.rotate_object_local(Vector3(1,0,0),degree)
+		#center_pivot.rotate_x(degree)
+		
+		
 	#InputModel.rotate_y(degree)
 	
 	#print("Globalbasisx:"+str(center_pivot.global_transform.basis.x))
@@ -424,6 +464,23 @@ func find_desired_size_2(node):
 func new_file_added():
 	if(center_pivot!=null):
 		center_pivot.get_parent().remove_child(center_pivot)
+		on_floor[2] = 0
+		on_floor[1]=false
+		
+		on_ceiling[2] = 0
+		on_ceiling[1]=false
+		
+		on_wall_r[2] = 0
+		on_wall_r[1]=false
+		
+		on_wall_l[2]=0
+		on_wall_l[1]=false
+		
+		can_rotate_y = true
+		can_rotate_z = true
+	if(myray!=null):
+		myray.get_parent().remove_child(myray)
+		
 	#self.get_parent().add_child(Model)
 	MaxScale = 100
 	add_child(Model)
@@ -533,39 +590,79 @@ func decrease_pivot():
 		#if(my_char_body!=null):
 		#	my_char_body.move_and_slide()
 	#print("decrease pivot")
-	if(on_ceiling[2]!=0):
-		print("decrease pivot ceiling")
-		center_pivot.global_position+=Vector3(0,0.1,0)
-		
-		on_ceiling[2]=on_ceiling[2]-1
-		
-	elif(on_floor[2]!=0):
-		print("decrease pivot flooring")
-		center_pivot.global_position+=Vector3(0,-0.1,0)
-		on_floor[2] = on_floor[2]-1
-		
-		print(on_floor[2])
-	if(on_wall_r[2]!=0):
-		print("decrease pivot wall r")
-		center_pivot.global_position+=Vector3(0,0,-0.1)
-		on_wall_r[2]= on_wall_r[2]-1
-	elif(on_wall_l[2]!=0):
-		print("decrease pivot wall left")
-		center_pivot.global_position+=Vector3(0,0,0.1)	
-		on_wall_l[2] = on_wall_l[2]-1	
-		pass
+	if(!is_colided):
+		while(on_ceiling[2]!=0):
+			print("decrease pivot ceiling")
+			center_pivot.global_position+=Vector3(0,offset_collision,0)
 			
-	my_char_body.move_and_slide()		
+			on_ceiling[2]=on_ceiling[2]-1
+			
+		while (on_floor[2]!=0):
+			print("decrease pivot flooring:"+str(on_floor[2]))
+			center_pivot.global_position+=Vector3(0,-offset_collision,0)
+			on_floor[2] = on_floor[2]-1
+			
+		while(on_wall_r[2]!=0):
+			print("decrease pivot wall r")
+			center_pivot.global_position+=Vector3(0,0,-offset_collision)
+			on_wall_r[2]= on_wall_r[2]-1
+		while(on_wall_l[2]!=0):
+			print("decrease pivot wall left")
+			center_pivot.global_position+=Vector3(0,0,offset_collision)	
+			on_wall_l[2] = on_wall_l[2]-1	
+			pass
+			
+	#my_char_body.move_and_slide()		
 			#print("decrease pivot")
+
+
+func decrease_pivot_2():
+	#if(can_decrese_pivot):
+		#center_pivot.global_position -= Vector3(0,1,0)
+		#if(my_char_body!=null):
+		#	my_char_body.move_and_slide()
+	#print("decrease pivot")
+	
+		while(on_ceiling[2]!=0):
+			print("decrease pivot ceiling")
+			center_pivot.global_position+=Vector3(0,offset_collision,0)
+			
+			on_ceiling[2]=on_ceiling[2]-1
+			
+		#if (on_floor[2]!=0):
+		if (on_floor[1]==true || on_floor[2]!=0):
+			print("decrease pivot flooring:"+str(on_floor[2]))
+			center_pivot.global_position+=Vector3(0,-offset_collision,0)
+			on_floor[2] = on_floor[2]-1
+			
+		while(on_wall_r[2]!=0):
+			print("decrease pivot wall r")
+			center_pivot.global_position+=Vector3(0,0,-offset_collision)
+			on_wall_r[2]= on_wall_r[2]-1
+		while(on_wall_l[2]!=0):
+			print("decrease pivot wall left")
+			center_pivot.global_position+=Vector3(0,0,offset_collision)	
+			on_wall_l[2] = on_wall_l[2]-1	
+			pass
+			
+	#my_char_body.move_and_slide()		
+			#print("decrease pivot")
+
+
 
 
 
 
 func check_collision_side():
 	
-	print("move and slide:"+str(my_char_body.move_and_slide()))
+	var is_collision:bool = my_char_body.move_and_slide()
 	
-	if(my_char_body.move_and_slide()):
+	print("move and slide:"+str(is_collision))
+	
+	
+	
+	
+	if(is_collision):
 		print("colided!")
 		
 		
@@ -588,11 +685,11 @@ func check_collision_side():
 			
 			#my_char_body.move_and_slide()
 			
-			while(on_floor[0]):
+			while (on_floor[0]):
 				print("on floor")
 				print("center pos:"+str(center_pivot.global_position))
-				center_pivot.global_position+=Vector3(0,0.005,0)
-				print("center pos:"+str(center_pivot.global_position))
+				center_pivot.global_position+=Vector3(0,0.0005,0)
+				#print("center pos:"+str(center_pivot.global_position))
 				#my_char_body.velocity += Vector3(0,0.1,0)
 #
 #				#my_char_body.move_and_slide()
@@ -608,7 +705,7 @@ func check_collision_side():
 					#Collision_Detection_Object.emit()
 			
 			
-		while(my_char_body.is_on_ceiling()):
+		if(my_char_body.is_on_ceiling()):
 			print("on ceiling")
 			
 			on_ceiling[0] = true
@@ -617,8 +714,21 @@ func check_collision_side():
 			
 			#var collision:KinematicCollision3D =	my_char_body.get_last_slide_collision()
 			#rint("Coll pos:"+str(collision.get_position(0)))
+			while (on_ceiling[0]):
+				print("on ceiling")
+				print("center pos:"+str(center_pivot.global_position))
+				center_pivot.global_position-=Vector3(0,0.0005,0)
+				on_ceiling[2] = on_ceiling[2]+1
+				
+				if(!my_char_body.move_and_slide()):
+#					print("not in floor")
+					print("move and slide2:"+str(my_char_body.move_and_slide()))
+					on_ceiling[0] = false
 			
-		while(my_char_body.is_on_wall()):
+			
+			
+			
+		if(my_char_body.is_on_wall()):
 			var collision:KinematicCollision3D =	my_char_body.get_last_slide_collision()
 			#print("Coll pos:"+str(collision.get_position(0)))
 			on_wall = true
@@ -631,12 +741,53 @@ func check_collision_side():
 				on_wall_r[0] = true
 				on_wall_r[1] = true
 				#on_wall_r[2] = on_wall_r[2]+1
+				
+				while (on_wall_r[0]):
+					print("on wall right")
+					print("center pos:"+str(center_pivot.global_position))
+					center_pivot.global_position+=Vector3(0,0,0.0005)
+				#print("center pos:"+str(center_pivot.global_position))
+				#my_char_body.velocity += Vector3(0,0.1,0)
+#
+#				#my_char_body.move_and_slide()
+					on_wall_r[2]=on_wall_r[2]+1
+				
+	#
+					if(!my_char_body.move_and_slide()):
+	#					print("not in floor")
+						print("move and slide2:"+str(my_char_body.move_and_slide()))
+						on_wall_r[0] = false
+					
+				
+				
+				
 			else:
+				print("wall left")
 				on_wall_l[0] = true
 				on_wall_l[1] = true
 				#on_wall_l[2] = on_wall_l[2] +1 
 				#center_pivot.global_position+=Vector3(0.1,0,0)
-			print("on wall")
+				
+				while (on_wall_l[0]):
+					#print("on wall left")
+					#print("center pos:"+str(center_pivot.global_position))
+					center_pivot.global_position+=Vector3(0,0,-0.0005)
+				#print("center pos:"+str(center_pivot.global_position))
+				#my_char_body.velocity += Vector3(0,0.1,0)
+#
+#				#my_char_body.move_and_slide()
+					on_wall_l[2]=on_wall_l[2]+1
+			
+#
+					if(!my_char_body.move_and_slide()):
+	#					print("not in floor")
+						#print("move and slide2:"+str(my_char_body.move_and_slide()))
+						on_wall_l[0] = false
+				
+				
+				print("on wall")
+		my_char_body.position = Vector3(0,0,0)	
+			
 	
 	#else:
 		#print("nothing happened")
@@ -647,7 +798,7 @@ func check_collision_side():
 func calib_pos():
 	#print("call calib pos")
 	if(on_floor[0]):
-		print("on floor")
+		#*print("on floor")
 		center_pivot.global_position+=Vector3(0,0.1,0)
 		my_char_body.move_and_slide()
 		
@@ -695,7 +846,7 @@ func calib_pos():
 func calib_pos_v2():
 	
 	while(on_floor[0]):
-		print("on floor")
+		#*print("on floor")
 		center_pivot.global_position+=Vector3(0,0.1,0)
 		my_char_body.move_and_slide()
 		#on_floor[2]=on_floor[2]+1
@@ -705,14 +856,45 @@ func calib_pos_v2():
 			#Collision_Detection_Object.emit()
 
 func wall_Is_right(myobject:Node3D,point:Vector3)->bool:
-	print("global position object:"+str(myobject.global_position))
+	#print("global position object:"+str(myobject.global_position))
 	#print("point:"+str(point.z))
-	if(myobject.global_position.z < point.z):
-		print("object<point")
+	var diff_vec:Vector3 = point-myobject.global_position
+	
+	
+	#var zavie:float = rad_to_deg(myobject.global_position.angle_to(diff_vec))
+	
+	#var new_vector:Vector3 =point.cross(Vector3.UP).sign()
+	
+	var new_vector:float =Vector3.RIGHT.dot(diff_vec)
+	print("Zavie:"+str(new_vector))
+	
+	if(new_vector>=0):
+		print("wall left")
 		return false
 	else:
-		print("object>point")
+		print("wall right")
 		return true
+		
+		
+#	if(zavie>=90):
+#		print("wall right")
+#		return true
+#	else:
+#		print("wall left")
+#		return false
+		
+	
+	print("wall is right or left:"+str())
+	
+
+	
+	
+#	if(myobject.global_position.z < point.z):
+#		print("object<point")
+#		return true
+#	else:
+#		print("object>point")
+#		return false
 	
 		
 		#var a:PhysicsDirectSpaceState3D
@@ -733,6 +915,10 @@ func create_ray3d():
 	myray.enabled = true
 	myray.collide_with_areas = true
 	myray.collide_with_bodies = false
+	
+	
+
+	
 		
 func create_shape3d():
 	myshapecast = ShapeCast3D.new()
@@ -792,36 +978,84 @@ func my_raycast(myray:RayCast3D,myarea:Area3D):
 	myray.global_position = center_pivot.global_position
 	#myray.global_position.z+=myz
 	myray.enabled = true
-	
+	myray.exclude_parent = true
 	myray.target_position = myarea.global_position - myray.global_position
 	print("inside raycast")
+	myray.force_raycast_update()
 	if(myray.is_colliding()):
 		print(myray.get_collider().name)
 		print("my area inside raycast:"+str(myarea.name))
+		
+		
+		
+		
+		
 		if(myray.get_collider().name==myarea.name):
 			#myray.enabled = false
 			print("colided")
+			
+			var mynormal = myray.get_collision_normal()
 			print(myray.get_collision_normal())
+			
+			#if(mynormal.is_zero_approx()):
+			mynormal = -myray.global_position.direction_to(myray.to_global(myray.target_position))
+					
+			var is_floor:bool = mynormal.angle_to(worldup) <= PI/4
+			var is_ceiling:bool = (-mynormal).angle_to(worldup) <= PI/4
+			var is_wall:bool =  not is_floor and not is_ceiling
+			
+			print("normal x:"+str(mynormal.angle_to(Vector3(1,0,0))))
+			print("normal z:"+str(mynormal.angle_to(Vector3(0,0,1)))	)					
+			print("is_floor:"+str(is_floor))
+			print("is_ceiling:"+str(is_ceiling))
+			print("is_wall:"+str(is_wall))
+			
+			#var answers = {"floor":is_floor,"ceil":is_ceiling,"wall":is_wall}
+			
+			var answer:String
+			
+			if(is_floor):
+				on_floor[0]= true
+				answer= "floor" 
+			elif(is_ceiling):
+				on_ceiling[0]= true
+				answer= "ceil"
+				
+			else:
+				if(wall_Is_right(center_pivot,myarea.global_position)):
+					on_wall_r[0] = true
+					answer= "wall_r"
+					offset_wall = find_which_side_collide(center_pivot,mynormal)
+					
+				else:
+					on_wall_l[0]=true
+					answer= "wall_l"
+					offset_wall = find_which_side_collide(center_pivot,mynormal)
+					
+			if((on_floor[0]&& on_ceiling[0])||(on_wall_l[0]&&on_wall_r[0])||
+				(on_floor[0]&&on_wall_l[0])||(on_floor[0]&&on_wall_r[0])||
+				(on_ceiling[0]&&on_wall_l[0])||(on_ceiling[0]&&on_wall_r[0])):
+							return"double_collision"
+			
+			else:		
+					
+				return answer
+			
+			
+		
+			
 			#print(myarea.to_local(myray.get_collision_normal()))
 			#print(myarea.to_global(myray.get_collision_normal()))
 			
-			print("basisx:"+str(myarea.transform.basis.x/myarea.scale.x))
-			print("basisy:"+str(myarea.transform.basis.y/myarea.scale.y))
-			print("basisz:"+str(myarea.transform.basis.z/myarea.scale.z))
+			#print("basisx:"+str(myarea.transform.basis.x/myarea.scale.x))
+			#print("basisy:"+str(myarea.transform.basis.y/myarea.scale.y))
+			#print("basisz:"+str(myarea.transform.basis.z/myarea.scale.z))
 			#print("basisx:"+str(myray.transform.basis.x))
 			#print("basisy:"+str(myray.transform.basis.y))
 			#print("basisz:"+str(myray.transform.basis.z))
-			
-			var mynormal = myray.get_collision_normal()
-			
-			match(mynormal):
-				Vector3(1,0,0):
-					return"left"
-				Vector3(-1,0,0):
-					return "right"
-			
-	
-	
+
+
+
 
 #	myray.target_position = Vector3(0,300,0)
 #	if(myray.is_colliding()):
@@ -856,17 +1090,62 @@ func my_raycast(myray:RayCast3D,myarea:Area3D):
 
 
 
-func dir_collision(dir:String)->Vector3:
+func dir_collision(dir:String):
 	match dir:
-		"down":
-			return Vector3(0,0.1,0)
-		"up":
-			return Vector3(0,-0.1,0)
-		"left":
-			return Vector3(0,0,0.1)
-		"right":
-			return Vector3(0,0,-0.1)
+		"floor":
+			on_floor[2] = on_floor[2]+1
+			on_floor[1] = true;
+			return Vector3(0,offset_collision,0)
+			
+		"ceil":
+			on_ceiling[2] = on_ceiling[2]+1
+			return Vector3(0,-offset_collision,0)
+			
+			print("on ceiling2 collision:"+str(on_ceiling[2]))
+		"wall_l":
+			on_wall_r[2] = on_wall_r[2]+1
+			#return Vector3(0,0,offset_collision)
+			#offset_wall
+			return offset_wall
+		"wall_r":
+			on_wall_l[2] = on_wall_l[2]+1
+			#return Vector3(0,0,-offset_collision)
+			return offset_wall
+		"double_collision":
+			MaxScale = center_pivot.scale[0]
+			
+			is_colided = false
+			if(on_ceiling[0]&&on_floor[0]):
+				can_rotate_z = false
+			elif (on_wall_l[0] && on_wall_r[0]):
+				can_rotate_y = false
+			elif((on_wall_l[0]&&on_floor[0])||
+				(on_wall_l[0] && on_ceiling[0])||
+				(on_wall_r[0]&&on_floor[0])||
+				(on_wall_r[0]&&on_ceiling[0])):
+					can_rotate_z = false
+			
+			return Vector3.ZERO
+			
+			
 	return Vector3.ZERO	
+
+
+func find_which_side_collide(mynode:Node3D,mynormal:Vector3)->Vector3:
+	var basisx = mynode.global_transform.basis.x/mynode.scale.x
+	var basisy = mynode.global_transform.basis.y/mynode.scale.y
+	var basisz = mynode.global_transform.basis.z/mynode.scale.z
+	
+	if(abs(mynormal) == abs(basisx)):
+		return Vector3(offset_collision,0,0)
+	elif (abs(mynormal) == abs(basisy)):
+		return Vector3(0,offset_collision,0)
+	elif (abs(mynormal) == abs(basisz)):
+		return Vector3(0,0,offset_collision)
+	else:
+		return Vector3(0,0,0)
+	
+	
 
 
 func create_desk():
@@ -889,12 +1168,26 @@ func create_desk():
 
 
 func _on_d_area_area_entered(area):
-	is_colided = true
+	
 	print("areaName entered:"+str(area.name))
 	print("area:"+ str(area.get_groups()))
 	#print("area normal:"+str())
 	
-	my_raycast(myray,area)
+	#wall_ceil_floor= my_raycast(myray,area)
+	
+	is_colided = true
+	
+#	if(on_floor[0]&&on_ceiling[0])||(on_wall_l[0]&&on_wall_r[0])||(on_floor[0]&&on_wall_l[0])||(on_floor[0]&&on_wall_r[0])||(on_ceiling[0]&&on_wall_l[0])||(on_ceiling[0]&&on_wall_r[0]):
+#		is_colided = false
+#	else:
+#		is_colided = true
+					
+	
+	
+	
+	#if(wall_ceil_floor!=null):
+		#	while(is_colided):
+			#	center_pivot.global_position+= dir_collision(wall_ceil_floor)
 
 	
 	
@@ -923,6 +1216,8 @@ func _on_d_area_area_exited(area):
 	
 	is_colided = false
 	
+	on_floor[1]=false
+	
 	print("area name exited"+str(area.name))
 	
 	if(area.is_in_group("can_rotation")):
@@ -949,3 +1244,6 @@ func _on_collision_detection_object():
 	on_floor[0]= false
 	
 	pass # Replace with function body.
+
+
+
