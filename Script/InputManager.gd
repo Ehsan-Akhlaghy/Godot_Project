@@ -7,7 +7,7 @@ class_name  mycontroller
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print("ready")
+	#print("ready")
 	#print(MyModelManager.name)
 	
 	
@@ -36,7 +36,7 @@ func handle_mouse():
 			
 			#MyModelManager.check_collision_side()
 			#MyModelManager.check_collision_side()
-			print("Wheel up!");
+			#print("Wheel up!");
 		#elif(Input.is_action_just_pressed("Rotation_Left")):
 		elif(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)):
 			

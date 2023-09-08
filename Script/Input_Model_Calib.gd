@@ -53,7 +53,7 @@ var can_rotate_z:bool = true
 
 var offset_wall:Vector3
 
-var velocity_char:Vector3
+var velocity_char:Vector3 = Vector3(0,-9.8,0)
 
 var controller:mycontroller
 
@@ -1318,8 +1318,13 @@ func create_desk(path:String):
 		mygltf.append_from_file(path,gltf_state)
 		
 		var a =mygltf.generate_scene(gltf_state)
-	
+		
+		#get_parent().add_child(a)
+		
+		
+		#collision_desk.rotation = a.get_child(0).rotation * Vector3(-1,-1,-1)
 		collision_desk.add_child(a)
+		#a.reparent(collision_desk)
 	
 		var box_colision = BoxShape3D.new()
 		collision_desk.shape =  box_colision
@@ -1331,6 +1336,7 @@ func create_desk(path:String):
 		allmeshes=get_all_meshes(get_all_children(a))
 		for i in allmeshes:
 			all_size.append( i.global_transform.basis.get_scale() *i.get_aabb().size)
+			print(all_size[0])
 		
 		for i in range(0,all_size.size()):
 			if(i+1 ==all_size.size()):
@@ -1340,6 +1346,16 @@ func create_desk(path:String):
 			
 		var biggest_vector = all_size[all_size.size()-1]
 		
+		var	new_node_2:Node3D  = Node3D.new()
+		
+		static_desk.get_child(0).add_child(new_node_2)
+		var center = all_centers(a)
+		print("center:"+str(center))
+		change_pivot(new_node_2,center)
+		MyReparent(a,new_node_2)
+
+
+		new_node_2.position = Vector3.ZERO
 		
 		
 		#box_colision.size =biggest_vector.global_transform.basis.get_scale()* biggest_vector.get_aabb().size 
