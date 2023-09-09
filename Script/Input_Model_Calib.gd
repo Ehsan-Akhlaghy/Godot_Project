@@ -175,7 +175,9 @@ func calib_size():
 	
 	#new_node.scale = find_desired_size(biggest_bounding_box)
 	
-	new_node.scale = find_desired_size_2(Model)
+	#new_node.scale = find_desired_size_2(Model)
+	
+	new_node.scale = find_desired_size_3(Model)
 	
 	
 	#***change_pivot(center_pivot,center)
@@ -508,6 +510,67 @@ func find_desired_size_2(node):
 	
 	return 
 	
+
+func find_desired_size_3(node):
+	var allmeshes = []
+	var all_size = []
+	
+	var min_point = []
+	var mins
+	var max_point=[]
+	var maxs
+	var biggest_boundingbox 
+	
+	allmeshes=get_all_meshes(get_all_children(node))
+	for i in allmeshes:
+		#all_size.append( i.global_transform.basis.get_scale() *i.get_aabb()) 
+		min_point.append(i.global_transform.basis * i.get_aabb().position)
+		max_point.append(i.global_transform.basis * i.get_aabb().end)
+		
+		
+	var biggest_vector:Vector3 =Vector3.ZERO
+	
+	for i in range(0,min_point.size()):
+		if(i+1 ==min_point.size()):
+			break
+		if(min_point[i].length() <= min_point[i+1].length()):
+			min_point[i+1] = min_point[i]
+		mins = min_point[min_point.size()-1]	
+	
+	
+	for i in range(0,max_point.size()):
+		if(i+1 ==max_point.size()):
+			break
+		if(max_point[i].length() >= max_point[i+1].length()):
+			max_point[i+1] = max_point[i]
+		maxs = max_point[max_point.size()-1]	
+		print("size:"+str(max_point.size()))
+		
+	biggest_boundingbox = maxs - mins
+	
+
+	
+	#var Scale= [float(standard_size.x)/float(biggest_vector.x),
+				#		float(standard_size.y)/float(biggest_vector.y),
+					#	float(standard_size.z)/float(biggest_vector.z)]
+	
+	var Scale= [float(standard_size.x)/float(biggest_boundingbox.x),
+						float(standard_size.y)/float(biggest_boundingbox.y),
+						float(standard_size.z)/float(biggest_boundingbox.z)]
+	
+								
+	Scale.sort()
+	
+	#MyScale= Vector3(Scale[0],Scale[0],Scale[0])
+	MyScale= Vector3(Scale[0],Scale[1],Scale[2])
+	
+	#var parent:Node3D = Model.get_parent().get_parent().get_parent()
+	
+	return MyScale
+	
+	
+	
+	return 
 	
 func new_file_added():
 	#if(center_pivot!=null):

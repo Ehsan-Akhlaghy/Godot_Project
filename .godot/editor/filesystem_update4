@@ -1,5 +1,5 @@
 res://Scene/Test.tscn
 res://Script/Input_Model_Calib.gd
-res://Script/mainTest.gd
 res://Scene/MainScene.tscn
 res://Prefab/input_model_manager.tscn
+res://Script/mainTest.gd
