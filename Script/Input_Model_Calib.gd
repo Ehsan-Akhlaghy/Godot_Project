@@ -228,10 +228,13 @@ func find_center_3dObj(Mymesh:Vector3)->Vector3:
 	pass
 func change_pivot(mynode:Node3D,center:Vector3):
 	
-	#print("center before:"+ str(center_pivot.global_position) )
-	#mynode.global_position= center
+	
 	if(new_node.position.length()!=0):
 		new_node.position = Vector3.ZERO
+		
+		
+	#if(mynode.position.length()!=0):
+		#mynode.position = Vector3.ZERO
 	
 	mynode.global_position= center
 	
@@ -310,6 +313,32 @@ func create_Marker3d():
 	
 	#center_pivot.add_child(my_char_body)
 	my_char_body.add_child(my_collision)
+	
+	var allmeshes = []
+	var all_size = {}
+		
+	allmeshes=get_all_meshes(get_all_children(Model))
+	for i in allmeshes:
+		all_size[i] =i.global_transform.basis.get_scale() *i.get_aabb().size
+			
+	var all_size2 = all_size.values()
+	for i in range(0,all_size2.size()):
+		if(i+1 ==all_size2.size()):
+				break
+		if(all_size2[i].length() >= all_size2[i+1].length()):
+			all_size2[i+1] = all_size2[i]
+			
+	var biggest_vector =all_size2[all_size2.size()-1]
+	var biggest_mesh = all_size.find_key(biggest_vector)
+		
+	my_collision.rotation = biggest_mesh.global_rotation
+		#collision_desk.add_child(a)
+	print("biggest_vector:"+str(biggest_vector))
+	#my_collision.shape.size=biggest_vector
+	
+	
+	
+	
 	
 	
 	
@@ -1319,12 +1348,13 @@ func create_desk(path:String):
 		
 		var a =mygltf.generate_scene(gltf_state)
 		
-		#get_parent().add_child(a)
+		get_parent().add_child(a)
 		
-		
-		#collision_desk.rotation = a.get_child(0).rotation * Vector3(-1,-1,-1)
-		collision_desk.add_child(a)
-		#a.reparent(collision_desk)
+		#var a:Node3D
+		#a.global_rotation
+		collision_desk.rotation = a.get_child(0).global_rotation
+		#collision_desk.add_child(a)
+		a.reparent(collision_desk)
 	
 		var box_colision = BoxShape3D.new()
 		collision_desk.shape =  box_colision
@@ -1332,19 +1362,35 @@ func create_desk(path:String):
 		
 		
 		var allmeshes = []
-		var all_size = []
-		allmeshes=get_all_meshes(get_all_children(a))
-		for i in allmeshes:
-			all_size.append( i.global_transform.basis.get_scale() *i.get_aabb().size)
-			print(all_size[0])
+		var all_size = {}
 		
-		for i in range(0,all_size.size()):
-			if(i+1 ==all_size.size()):
-				break
-			if(all_size[i].length() >= all_size[i+1].length()):
-				all_size[i+1] = all_size[i]
+		
+		allmeshes=get_all_meshes(get_all_children(a))
+		#print(allmeshes)
+		#print(allmeshes[0])
+		for i in allmeshes:
+			#all_size.append( i.global_transform.basis.get_scale() *i.get_aabb().size)
+			all_size[i] =i.global_transform.basis.get_scale() *i.get_aabb().size
 			
-		var biggest_vector = all_size[all_size.size()-1]
+			#print(all_size[0])
+			#print(all_size.keys())
+			
+		var all_size2 = all_size.values()
+		for i in range(0,all_size2.size()):
+			if(i+1 ==all_size2.size()):
+				break
+			if(all_size2[i].length() >= all_size2[i+1].length()):
+				all_size2[i+1] = all_size2[i]
+			
+		var biggest_vector =all_size2[all_size2.size()-1]
+		var biggest_mesh = all_size.find_key(biggest_vector)
+		
+		
+		collision_desk.rotation = biggest_mesh.global_rotation
+		#collision_desk.add_child(a)
+		a.reparent(collision_desk)
+		
+		
 		
 		var	new_node_2:Node3D  = Node3D.new()
 		
