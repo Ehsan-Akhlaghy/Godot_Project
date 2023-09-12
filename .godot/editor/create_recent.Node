@@ -1,6 +1,7 @@
-Node3D
-StaticBody3D
 CollisionShape3D
+Node3D
+Input_Model_Manager
+StaticBody3D
 CollisionPolygon3D
 Camera3D
 Marker3D

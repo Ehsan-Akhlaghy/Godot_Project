@@ -18,7 +18,9 @@ var myshape
 var my_area:Area3D
 var my_char_body:CharacterBody3D
 
-var new_node:Node3D
+var new_node:Node3D =  Node3D.new()
+
+var  my_collision_3dmodel: CollisionShape3D
 
 
 var can_increase_pivot:bool = false
@@ -56,6 +58,7 @@ var offset_wall:Vector3
 var velocity_char:Vector3 = Vector3(0,-9.8,0)
 
 var controller:mycontroller
+var myfilemanager:MyFileManager
 
 
 var path_asset_glb:String
@@ -75,7 +78,8 @@ func myconstructor(_path_asset_glb:String,_desk_path:String,_desk_pos:Vector3,_a
 	asset_pos = _asset_pos	
 	standard_size = _standard_size
 	desk_pos = _desk_pos
-	
+	create_controller()
+	create_file()
 	#LoadFromFile(_path_asset_glb)
 	#var myfilesmanager:MyFileManager =MyFileManager.new(_path_asset_glb)
 	
@@ -89,66 +93,10 @@ func _ready():
 	pass
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	
-	#create_desk()
-	
-	#*if(is_colided):
-		#*center_pivot.global_position+= dir_collision(wall_ceil_floor)
-		#print("onfloor_collision:"+str(on_floor[2]))
-	
-		
-	
-	
-	
-	#print("b-a:"+str(b-a))
-	#print("b-a:2"+str(a.direction_to(b)))
-	#print("slide:"+str(b.slide(Vector3(1,1,0))))
-	
-	
-	#calib_pos()
-	#if(my_char_body!=null):
-		
-		#if(my_char_body.move_and_slide()):
-			
-		#	print("colided upate loop!!")
-			#center_pivot.global_position += Vector3(0,0.1,0)
-	
-	
-	#if(my_char_body!=null):
-	
-#			var mybase = center_pivot.global_transform.basis
-#			print("forward:"+str(-mybase.z))
-#			print("backward"+str(mybase.z))
-#			print("right"+str(mybase.x))
-#			print("left"+str(mybase.x))
-#			print("up"+str(mybase.y))
-#			print("bottom"+str(-mybase.x))
-#
-#			my_char_body.move_and_slide()
-#			print("last motion: "+str(my_char_body.get_last_motion()))
-#			print("Delta position: "+str(my_char_body.get_position_delta()))
-#			print("collision"+str(my_char_body.get_slide_collision_count()))
-#			if(my_char_body.is_on_floor()):
-#				print("on floor")
-#				print("floor normal: "+str(my_char_body.get_floor_normal()))
-#			if(my_char_body.is_on_ceiling()):
-#				print("on ceiling")
-#
-#				#zprint("floor normal: "+str(my_char_body.get))
-#			if(my_char_body.is_on_wall()):
-#				print("on wall")
-#				print("wall normal: "+str(my_char_body.get_wall_normal()))
-	
-	#increase_pivot()
-		
-	pass
+
 
 func _physics_process(delta):
 	if(my_char_body!=null):
-		#my_char_body.velocity += velocity_char *delta
-		#my_char_body.move_and_slide()
 		check_collision_side(delta)
 
 #formulation (feature_unit/current_unit) * current_size = Desired_size 
@@ -156,35 +104,29 @@ func calib_size():
 	
 	Init_Model()
 	
-	#***var biggest_bounding_box:AABB = find_biggest_bounding_box(Model)
 	
-	#***var new_node:Node3D = Node3D.new()
 	
-	new_node  = Node3D.new()
+	#new_node  = Node3D.new()
 	
-	#*center_pivot.get_child(0).get_child(0).add_child(new_node)
+	
 	my_char_body.get_child(0).add_child(new_node)
 	
-	#change_pivot(new_node,find_center_3dObj(biggest_bounding_box.get_center()))
-	var center = all_centers(Model)
+	
+	
+	var center = find_center_mesh_master_per_vertex(Model)
+
 	
 	change_pivot(new_node,center)
 	MyReparent(Model,new_node)
 	
 
 	
-	#new_node.scale = find_desired_size(biggest_bounding_box)
 	
-	#new_node.scale = find_desired_size_2(Model)
 	
 	new_node.scale = find_desired_size_3(Model)
+
 	
 	
-	#***change_pivot(center_pivot,center)
-	
-	#center_pivot.global_position = Vector3.ZERO
-	
-	#center_pivot.global_position = offset_desk.global_position
 	
 	change_pivot(my_char_body,center)
 	
@@ -192,38 +134,17 @@ func calib_size():
 	
 	my_char_body.global_position = asset_pos
 	
+	my_collision_3dmodel.shape.size = find_size_mesh_master_per_vertex(Model)
 	
 	
 	
-	#change_pivot(center_pivot,find_center_3dObj(biggest_bounding_box.get_center()))
-	#change_pivot(center_pivot,find_center_3dObj(all_centers(Model)))
-	
-	#****MyReparent(Model,center_pivot.get_child(0).get_child(0))
-	
-	
-	#new_node.position = Vector3(0,0,0)
 	pass
 func find_center_3dObj(Mymesh:Vector3)->Vector3:
 	
-	#var center:Vector3 = Model.to_global(Mymesh.get_center())
+	
 	
 	#*************
 	var center:Vector3 = Model.to_global(Mymesh)
-	
-	
-	
-	
-	#var center:Vector3 = Mymesh.to_global(Mymesh.get_center())
-	
-	#var center:Vector3 = center_pivot.to_global(Mymesh.get_center())
-	
-	#print("centerMesh:"+ str(center))
-	#print("before changing cordinate:"+str(Mymesh.get_center()))
-	#print("afer changing cordinate:"+str(center))
-	
-	#print("before changing cordinate:"+str(Mymesh))
-	#print("afer changing cordinate:"+str(center))
-	
 	
 	return center
 	#return Mymesh.get_center()
@@ -235,31 +156,17 @@ func change_pivot(mynode:Node3D,center:Vector3):
 		new_node.position = Vector3.ZERO
 		
 		
-	#if(mynode.position.length()!=0):
+
 		#mynode.position = Vector3.ZERO
 	
 	mynode.global_position= center
 	
-	#mynode.position= center
 	
-	#print("center after:"+ str(center_pivot.global_position) )
-	
-	#MyReparent(Model,center_pivot)
-
-
-
-
-	#MyReparent(Model,mynode.get_child(0).get_child(0))
-	
-	#MyReparent(Model,mynode)
 	
 	pass
 
-#func MyLoad_prefab():
-#	center_pivot = ResourceLoader.load("res://Prefab/center_pivot.tscn")
-#	print(center_pivot.resource_name)
-	
-	
+
+
 func create_Marker3d():	
 	#center_pivot = Node3D.new()
 	
@@ -282,134 +189,62 @@ func create_Marker3d():
 	#my_area.gravity = 0
 	#my_area.area_entered.connect(My_area_enterted())
 	
-	#my_rigid = RigidBody3D.new()
-	#my_rigid.gravity_scale = 0
-	#my_rigid.freeze_mode =RigidBody3D.FREEZE_MODE_KINEMATIC
-	#my_rigid.contact_monitor=true
-	#my_rigid.body_entered.connect(My_area_enterted)
+
 	
 	#my_char = CharacterBody3D.new()
 	#desk_3dobj.body_entered.connect(My_area_enterted)
 	#my_char.motion_mode=CharacterBody3D.MOTION_MODE_FLOATING
 	
 	
-	var  my_collision: CollisionShape3D = CollisionShape3D.new()
+	my_collision_3dmodel= CollisionShape3D.new()
 	myshape = BoxShape3D.new()
-	my_collision.shape =myshape
+	my_collision_3dmodel.shape =myshape
 	
 	
-	#my_collision.shape.size=standard_size/1.5
-	
-	my_collision.shape.size=standard_size
 	
 	
-	#get_parent().add_child(center_pivot)
+	
+	my_collision_3dmodel.shape.size=find_size_mesh_master_per_vertex(Model)
+	
+	
+	
 	get_parent().add_child(my_char_body)
 	
 	
-	#center_pivot.add_child(my_area)
-	#my_area.add_child(my_collision)
+
+	my_char_body.add_child(my_collision_3dmodel)
 	
-	#center_pivot.add_child(my_rigid)
-	#my_rigid.add_child(my_collision)
-	
-	#center_pivot.add_child(my_char_body)
-	my_char_body.add_child(my_collision)
-	
-	var allmeshes = []
-	var all_size = {}
-		
-	allmeshes=get_all_meshes(get_all_children(Model))
-	for i in allmeshes:
-		all_size[i] =i.global_transform.basis.get_scale() *i.get_aabb().size
-			
-	var all_size2 = all_size.values()
-	for i in range(0,all_size2.size()):
-		if(i+1 ==all_size2.size()):
-				break
-		if(all_size2[i].length() >= all_size2[i+1].length()):
-			all_size2[i+1] = all_size2[i]
-			
-	var biggest_vector =all_size2[all_size2.size()-1]
-	var biggest_mesh = all_size.find_key(biggest_vector)
-		
-	my_collision.rotation = biggest_mesh.global_rotation
-		#collision_desk.add_child(a)
-	print("biggest_vector:"+str(biggest_vector))
-	#my_collision.shape.size=biggest_vector
-	
-	
-	
-	
-	
-	
-	
-	#Model.add_to_group("can_rotation")
-	#for i in center_pivot.get_children():
-		#i.add_to_group("can_rotation")
-		
-	#var callable = Callable(self,"collision_happen")
-	
-	
-	
-	#my_area.area_entered.connect(_on_d_area_area_entered)
-	#my_area.area_exited.connect(_on_d_area_area_exited)
-	
-	
-	
-	#print("connection:"+str(my_area.connect("area_entered",func ehsan():print("fired!"),18)))
-	#print("Connection:"+str(my_area.area_entered.get_connections()))
-	#my_area.area_entered.emit()
-	#print("Connection2:"+str(area.area_entered.get_connections()))
+
+
+
 	
 func MyRotation(degree:float,axis:String):
 	
 	if(axis=="y"):
-		#center_pivot.rotate_y(degree)
+	
 		if(can_rotate_y):
 			my_char_body.rotate_object_local(Vector3(0,1,0),degree)
 	elif(axis=="z"):
-		#center_pivot.rotate_z(degree)
+		
 		if(can_rotate_z):
 			my_char_body.rotate_object_local(Vector3(0,0,1),degree)
-			#my_char_body.rotate_object_local(Vector3(1,1,1),degree)
 			
 			
-		#center_pivot.rotate_object_local(Vector3(1,0,0),degree)
-		#center_pivot.rotate_x(degree)
-		
-		
-	#InputModel.rotate_y(degree)
+			
 	
-	#print("Globalbasisx:"+str(center_pivot.global_transform.basis.x))
-	#print("Localbasisx:"+str(center_pivot.transform.basis.x))
-	#***new_node.rotate_y(degree)
 	
 	pass
 
 func DoScale(my_delta:float,max_scale =1 ):
 	
 
-	
 	var parent:Node3D = Model.get_parent().get_parent().get_parent()
 	
 	var _Scale:Vector3 =  Vector3(parent.scale.x+my_delta,parent.scale.y+my_delta
 				,parent.scale.z+my_delta) 			
-	
-	#var _Scale:Vector3 =  Vector3(new_node.scale.x+my_delta,new_node.scale.y+my_delta
-			#	,new_node.scale.z+my_delta) 	
-				
-	#=======================
-	
-	
-	#new_node.scale = clamp(_Scale,Vector3(0.1,0.1,0.1),Vector3(MaxScale,MaxScale,MaxScale))
+
 	parent.scale = clamp(_Scale,Vector3(0.1,0.1,0.1),Vector3(MaxScale,MaxScale,MaxScale))
-	#decrease_pivot()
-	#parent.scale = clamp(_Scale,Vector3(0.1,0.1,0.1),Vector3(MaxScale,MaxScale,MaxScale))
-	#============
-	#******************
-	
-	#print("ScaleName:"+str(Model.get_parent().name))
+
 	
 func MyReparent(child:Node3D,parent:Node3D):
 	
@@ -418,135 +253,20 @@ func MyReparent(child:Node3D,parent:Node3D):
 func Init_Model():
 	
 	
-	
-	
-	#*********Model.global_scale(Vector3.ONE)
-	
-	
-	
-	
-	#****MyReparent(Model,Model.get_parent().get_parent())
-	
-	
-	
 	Model.global_position = Vector3(0,0,0)
 	
-func find_desired_size(mymesh:AABB)->Vector3:
-	
-	#var  Mymesh:AABB = Model.get_aabb()
-	
-	
-	#var  Mymesh:AABB = Model.get_child(2).get_aabb()
-	var Bounding_box: Vector3 = mymesh.size
-	#print("Bounding box pre:"+ str(Bounding_box) )
-	
-	var Scale= [float(standard_size.x)/float(Bounding_box.x),
-						float(standard_size.y)/float(Bounding_box.y),
-						float(standard_size.z)/float(Bounding_box.z)]
-	
-	
-								
-	Scale.sort()
-	MyScale= Vector3(Scale[0],Scale[0],Scale[0])
-	
-	#var parent:Node3D = Model.get_parent().get_parent().get_parent()
-	
-	return MyScale
-	#parent.scale= MyScale
-	#var New_AABB:AABB =Mymesh.grow(float(standard_size.x-Bounding_box.x)/2)
-	
-	pass
 
-func find_desired_size_2(node):
-	var allmeshes = []
-	var all_size = []
-	allmeshes=get_all_meshes(get_all_children(node))
-	for i in allmeshes:
-		all_size.append( i.global_transform.basis.get_scale() *i.get_aabb().size) 
-		
-	
-		
-	#**var sum:Vector3 = Vector3.ZERO	
-	#**for i in all_size:
-		#**sum+=i
-	#print(sum)
-	
-	#**var size = sum/all_size.size()
-	#**print("second way center:"+str(sum/all_size.size()))
-	
-	
-	#print(mymodel.to_global(sum/all_center.size()))
-	
-
-	
-	var biggest_vector:Vector3 =Vector3.ZERO
-	
-	for i in range(0,all_size.size()):
-		if(i+1 ==all_size.size()):
-			break
-		#print("i:"+str(i))
-		#print("array:"+str(all_size))	
-		#print("pre:"+str(all_size[i])+"length:"+str(all_size[i].length()))
-		#print("current:"+str(all_size[i+1])+"length:"+str(all_size[i+1].length()))
-		if(all_size[i].length() >= all_size[i+1].length()):
-			all_size[i+1] = all_size[i]
-		#all_size[i+1] = max(all_size[i].length(),all_size[i+1].length())
-	biggest_vector = all_size[all_size.size()-1]	
-	
-	var Scale= [float(standard_size.x)/float(biggest_vector.x),
-						float(standard_size.y)/float(biggest_vector.y),
-						float(standard_size.z)/float(biggest_vector.z)]
-	
-	
-								
-	Scale.sort()
-	MyScale= Vector3(Scale[0],Scale[0],Scale[0])
-	
-	#var parent:Node3D = Model.get_parent().get_parent().get_parent()
-	
-	return MyScale
-	
-	
-	
-	return 
-	
 
 func find_desired_size_3(node):
-	var allmeshes = []
-	var all_size = []
+
+	var biggest_boundingbox:Vector3 
 	
-	var min_point = []
-	var mins
-	var max_point=[]
-	var maxs
-	var biggest_boundingbox 
 	
-	allmeshes=get_all_meshes(get_all_children(node))
-	for i in allmeshes:
-		#all_size.append( i.global_transform.basis.get_scale() *i.get_aabb()) 
-		min_point.append(i.global_transform.basis * i.get_aabb().position)
-		max_point.append(i.global_transform.basis * i.get_aabb().end)
+	#var biggest_vector:Vector3 =Vector3.ZERO
+	
+	
 		
-		
-	var biggest_vector:Vector3 =Vector3.ZERO
-	
-	for i in range(0,min_point.size()):
-		if(i+1 ==min_point.size()):
-			break
-		if(min_point[i].length() <= min_point[i+1].length()):
-			min_point[i+1] = min_point[i]
-		mins = min_point[min_point.size()-1]	
-	
-	
-	for i in range(0,max_point.size()):
-		if(i+1 ==max_point.size()):
-			break
-		if(max_point[i].length() >= max_point[i+1].length()):
-			max_point[i+1] = max_point[i]
-		maxs = max_point[max_point.size()-1]	
-		print("size:"+str(max_point.size()))
-		
-	biggest_boundingbox = maxs - mins
+	biggest_boundingbox = find_size_mesh_master_per_vertex(node)
 	
 
 	
@@ -560,62 +280,40 @@ func find_desired_size_3(node):
 	
 								
 	Scale.sort()
-	
-	#MyScale= Vector3(Scale[0],Scale[0],Scale[0])
-	MyScale= Vector3(Scale[0],Scale[1],Scale[2])
+	#in order to scale properly and doesn't change overall shape of mesh use below 
+	MyScale= Vector3(Scale[0],Scale[0],Scale[0])
+	#MyScale= Vector3(Scale[0],Scale[1],Scale[2])
 	
 	#var parent:Node3D = Model.get_parent().get_parent().get_parent()
 	
 	return MyScale
-	
-	
-	
-	return 
-	
+
+#after loading file from hard this file is called 	
 func new_file_added():
-	#if(center_pivot!=null):
+	
 	if(my_char_body!=null):
 		#center_pivot.get_parent().remove_child(center_pivot)
 		my_char_body.get_parent().remove_child(my_char_body)
-		on_floor[2] = []
-		on_floor[1]=false
-		on_floor[0]=false
-		
-		on_ceiling[2] = []
-		on_ceiling[1]=false
-		on_ceiling[0]=false
-		
-		on_wall_r[2] = []
-		on_wall_r[1]=false
-		on_wall_r[0]=false
-		
-		on_wall_l[2]=[]
-		on_wall_l[1]=false
-		on_wall_l[0]=false
-		
 		can_rotate_y = true
 		can_rotate_z = true
-	#if(myray!=null):
-	#	myray.get_parent().remove_child(myray)
-		
-	#self.get_parent().add_child(Model)
+
+
+
 	MaxScale = 100
 	add_child(Model)
-	#call_deferred("add_child",Model)
 	create_Marker3d()
 	calib_size()
 	
-	#create_ray3d()
-	#create_shape3d()
+
 	
 	
-	
+#find all chilren and node itself	
 func get_all_children(in_node,arr:=[]):
 	arr.push_back(in_node)
 	for child in in_node.get_children():
 		arr = get_all_children(child,arr)
 	return arr
-
+#get all meshes bounding box of node
 func get_all_meshes_aabb(mynodes):
 	var allmeshes = []
 	
@@ -629,6 +327,7 @@ func get_all_meshes_aabb(mynodes):
 			#print("center aabb mesh:"+str(i.get_aabb().get_center()))
 	return allmeshes
 
+#get all meshes of node 
 func get_all_meshes(mynodes):
 	var allmeshes = []
 	
@@ -642,7 +341,8 @@ func get_all_meshes(mynodes):
 			#print("center aabb mesh:"+str(i.get_aabb().get_center()))
 	return allmeshes
 	
-func find_biggest_bounding_box(mymodel:Node3D):
+#merge all meshes of node and return one AABB
+func make_biggest_bounding_box(mymodel:Node3D):
 	var allmeshes = []
 	allmeshes =get_all_meshes_aabb(get_all_children(mymodel))
 	var size_allmeshes:int = allmeshes.size()	
@@ -652,23 +352,66 @@ func find_biggest_bounding_box(mymodel:Node3D):
 			return allmeshes[i]
 		allmeshes[i+1] = allmeshes[i+1].merge(allmeshes[i])
 		
+#find size of single mesh with different approach
+func find_size_mesh_per_vertex(mymesh:MeshInstance3D):
+	var _min = mymesh.get_aabb().position
+	var _max = mymesh.get_aabb().end
+	print("size_vertex_approah:"+str(_max-_min))
+	
+#find size of multiple meshes of single node 
+func find_size_mesh_master_per_vertex(mynode:Node3D):
+	var all_aabb = get_all_meshes_aabb_transfromed(get_all_children(mynode))
+	var min_v = Vector3(INF,INF,INF)
+	var max_v = Vector3(-INF,-INF,-INF)
+	for i in all_aabb:
+		#print(i.position)
+		if(min_v>=i.position):
+			min_v = i.position
+		if(max_v<=i.end):
+			max_v = i.end
+		#min_v = min(min_v,i.position)
+		#max_v = max(max_v,i.end)
+	var mysize = max_v-min_v
+	
+	print("size meshes:"+str(mysize))
+	
+	
+	return mysize	
 
-#func all_centers(mymodel:Node3D):
-#	var allmeshes_aabb = []
-#	var all_center = []
-#	allmeshes_aabb =get_all_meshes_aabb(get_all_children(mymodel))
-#	for i in allmeshes_aabb:
-#		all_center.append(i.get_center())
-#
-#	var sum:Vector3 = Vector3.ZERO	
-#	for i in all_center:
-#		sum+=i
-#	print(sum)
-#	print(sum/all_center.size())
-#	#print(mymodel.to_global(sum/all_center.size()))
-#	return sum/all_center.size()
+#find center of multiple meshes 
+func find_center_mesh_master_per_vertex(mynode:Node3D):
+	var all_aabb = get_all_meshes_aabb_transfromed(get_all_children(mynode))
+	var min_v = Vector3(INF,INF,INF)
+	var max_v = Vector3(-INF,-INF,-INF)
+	for i in all_aabb:
+		#print(i.position)
+		if(min_v>=i.position):
+			min_v = i.position
+		if(max_v<=i.end):
+			max_v = i.end
+		#min_v = min(min_v,i.position)
+		#max_v = max(max_v,i.end)
+	
+	var mycenter= (max_v+min_v)/2
+	
+	print("center:"+str(mycenter))
+	#print("center rotation:"+str())
+	return mycenter
 
+#in godot 4, we must handle change coordinate form local space 
+#of object to world environment
+func get_all_meshes_aabb_transfromed(mynodes):
+	var allmeshes = []
+	
+	for i in mynodes:
+		
+	
+		if(i is MeshInstance3D):
+			allmeshes.append(i.global_transform*i.get_aabb())
+		
+	return allmeshes	
 
+#find center of multiple meshes of single node 
 func all_centers(mymodel:Node3D):
 	var allmeshes = []
 	var all_center = []
@@ -681,34 +424,12 @@ func all_centers(mymodel:Node3D):
 	var sum:Vector3 = Vector3.ZERO	
 	for i in all_center:
 		sum+=i
-	#print(sum)
-	#print("second way center:"+str(sum/all_center.size()))
-	#print(mymodel.to_global(sum/all_center.size()))
+
 	return sum/all_center.size()
-	
-			
-#func Move(whichway:String):
-#	if(whichway == "R"):
-#		mymesh.global_translate(Vector3(0,1,0))
-#	else:
-#		mymesh.global_translate(Vector3(0,-1,0))
-#		pass
 
-
-
-func increase_pivot():
-	if(can_increase_pivot):
-		#center_pivot.global_position += Vector3(0,0.25,0)
-		#if(my_char_body!=null):
-		#	my_char_body.move_and_slide()
-			pass
-
+#when using area3d for collision	
 func decrease_pivot():
-	#if(can_decrese_pivot):
-		#center_pivot.global_position -= Vector3(0,1,0)
-		#if(my_char_body!=null):
-		#	my_char_body.move_and_slide()
-	#print("decrease pivot")
+
 	if(!is_colided):
 		while(on_ceiling[2]!=0):
 			print("decrease pivot ceiling")
@@ -730,26 +451,10 @@ func decrease_pivot():
 			center_pivot.global_position+=Vector3(0,0,offset_collision)	
 			on_wall_l[2] = on_wall_l[2]-1	
 			pass
-			
-	#my_char_body.move_and_slide()		
-			#print("decrease pivot")
 
-
+#when using area3d for collision
 func decrease_pivot_2():
-	#if(can_decrese_pivot):
-		#center_pivot.global_position -= Vector3(0,1,0)
-		#if(my_char_body!=null):
-		#	my_char_body.move_and_slide()
-	#print("decrease pivot")
-	
-		#**for i in range(0,on_ceiling[2][-1]-1):
-			#print("decrease pivot ceiling")
-			#center_pivot.global_position+=Vector3(0,offset_collision,0)
-			
-			#on_ceiling[2]=on_ceiling[2]-1
-			
-		#if (on_floor[2]!=0):
-		#while ( on_floor[2][-1]!=0):
+
 		if(on_floor[2][-1]>6):on_floor[2][-1] = 6 * ((on_floor[2][-1]/100)+1)
 		for i in range(0,on_floor[2][-1]-1):
 			print("decrease pivot flooring:"+str(on_floor[-1]))
@@ -777,32 +482,11 @@ func decrease_pivot_2():
 			#print("decrease pivot")
 
 
-
-
-
-
+#when using characte2d, use this method for handling collision
 func check_collision_side(mydelta):
 	
 	my_char_body.velocity += velocity_char *mydelta
-	
-	#print("velocity:"+str(my_char_body.velocity))
-	#my_char_body.move_and_slide()
-	
-	
-	#var is_collision:bool 
-	
-	#print("move and slide:"+str(is_collision))
-	
-	
-	
-	
-	
-	#if(is_collision):
-		
-#		print("colided!")
-#
-#
-#		#print("colided!")
+
 
 	if(my_char_body.is_on_floor() && my_char_body.is_on_ceiling()):
 				print("on floor & on celing")
@@ -976,10 +660,11 @@ func check_collision_side(mydelta):
 #func point_inside_object(point:Vector3,Model_AABB:AABB)->bool:
 		#return Model_AABB.has_point(point)
 
+#when using area3d for collision 
 func calib_pos():
-	#print("call calib pos")
+	
 	if(on_floor[0]):
-		#*print("on floor")
+		
 		center_pivot.global_position+=Vector3(0,0.1,0)
 		my_char_body.move_and_slide()
 		
@@ -1023,7 +708,8 @@ func calib_pos():
 		on_ceiling[2] = on_ceiling[2]+1
 		if(!my_char_body.is_on_ceiling()):
 			on_ceiling[0] = false
-			
+	
+#when using area3d for collision 		
 func calib_pos_v2():
 	
 	while(on_floor[0]):
@@ -1036,9 +722,9 @@ func calib_pos_v2():
 			on_floor[0] = false
 			#Collision_Detection_Object.emit()
 
+#this method is used to find point is left or right of myobject
 func wall_Is_right(myobject:Node3D,point:Vector3)->bool:
-	#print("global position object:"+str(myobject.global_position))
-	#print("point:"+str(point.z))
+	
 	var diff_vec:Vector3 = point-myobject.global_position
 	
 	var right:float = rad_to_deg(diff_vec.angle_to(Vector3.RIGHT))
@@ -1116,10 +802,8 @@ func wall_Is_right(myobject:Node3D,point:Vector3)->bool:
 		
 	#var new_AABB:AABB = AABB(point,Vector3(5,5,5))
 	#return Model_AABB.encloses(new_AABB)
-	
 
-
-		
+#create ray3d for area3d workflow 	
 func create_ray3d():
 	myray = RayCast3D.new()
 	
@@ -1133,7 +817,7 @@ func create_ray3d():
 	
 
 	
-		
+#create shape3d for area3d workflow		
 func create_shape3d():
 	myshapecast = ShapeCast3D.new()
 	
@@ -1180,14 +864,10 @@ func my_shapecast(myshape:ShapeCast3D,myarea:Area3D,distance:float):
 				else:
 					"none of side"
 	
-func side(mypos:Vector3):
-	var newpos:Vector3 =center_pivot.to_local(mypos)
-	if(newpos.y >0):
-		print("object is up")
-	elif (newpos.y<0):
-		print("objecy is down")
+
 	
-	
+#ray cast to myarea in order to find myarea
+# is floor,ceiling or wall for area3d workflow 	
 func my_raycast(myray:RayCast3D,myarea:Area3D):
 	myray.global_position = center_pivot.global_position
 	#myray.global_position.z+=myz
@@ -1269,40 +949,8 @@ func my_raycast(myray:RayCast3D,myarea:Area3D):
 
 
 
-
-#	myray.target_position = Vector3(0,300,0)
-#	if(myray.is_colliding()):
-#		if(myray.get_collider().get_parent().name==myarea.name):
-#			myray.enabled = false
-#			print("up")
-#			return "up"
-#	else:
-#		myray.target_position = Vector3(0,-300,0)
-#		if(myray.is_colliding()):
-#			if(myray.get_collider().get_parent().name==myarea.name):
-#				myray.enabled = false
-#				print("down")
-#				return "down"
-#		else:
-#			myray.target_position = Vector3(0,0,300)
-#			if(myray.is_colliding()):
-#				if(myray.get_collider().get_parent().name==myarea.name):
-#					myray.enabled = false
-#					print("right")
-#					return "right"
-#			else:
-#				myray.target_position = Vector3(0,0,-300)
-#				if(myray.is_colliding()):
-#					if(myray.get_collider().get_parent().name==myarea.name):
-#						myray.enabled = false
-#						print("false")
-#						return "left"
-#				else:
-#					"none of side"
-
-
-
-
+#used for area3d workflow for counting 
+#number of collision 
 func dir_collision(dir:String):
 	match dir:
 		"floor":
@@ -1351,6 +999,7 @@ func dir_collision(dir:String):
 	return Vector3.ZERO	
 
 
+#find for coliding which side of mynode 
 func find_which_side_collide(mynode:Node3D,mynormal:Vector3)->Vector3:
 	var basisx = mynode.global_transform.basis.x/mynode.scale.x
 	var basisy = mynode.global_transform.basis.y/mynode.scale.y
@@ -1367,7 +1016,7 @@ func find_which_side_collide(mynode:Node3D,mynormal:Vector3)->Vector3:
 	
 	
 
-
+#create desk with area3d or staticbody at runtime 
 func create_desk(path:String):
 #	var area_desk:Area3D = Area3D.new()
 #
@@ -1390,87 +1039,55 @@ func create_desk(path:String):
 		static_desk.name = "Esi"
 		get_parent().add_child(static_desk)
 	
-		#static_desk.global_position = Vector3(0,0,0)
+	
 		
 		static_desk.global_position = desk_pos
 
-		#*static_desk.global_position.y = static_desk.global_position.y-4
-		#static_desk.global_position.y = static_desk.global_position.y
+	
 				
 		var collision_desk:CollisionShape3D = CollisionShape3D.new()
 	
 		static_desk.add_child(collision_desk)
 		
-		#var mesh_desk:CSGBox3D = CSGBox3D.new()
-		#mesh_desk.size = Vector3(20,20,20)
+
 		
 		var mygltf:GLTFDocument = GLTFDocument.new()
 		var gltf_state:GLTFState = GLTFState.new()
 		
 		mygltf.append_from_file(path,gltf_state)
 		
-		var a =mygltf.generate_scene(gltf_state)
+		var model_desk =mygltf.generate_scene(gltf_state)
 		
-		get_parent().add_child(a)
+		get_parent().add_child(model_desk)
 		
-		#var a:Node3D
-		#a.global_rotation
-		collision_desk.rotation = a.get_child(0).global_rotation
-		#collision_desk.add_child(a)
-		a.reparent(collision_desk)
-	
+
 		var box_colision = BoxShape3D.new()
 		collision_desk.shape =  box_colision
-		#box_colision.size =Vector3(20,20,20)
+
+		box_colision.size = find_size_mesh_master_per_vertex(model_desk)
 		
 		
-		var allmeshes = []
-		var all_size = {}
+		model_desk.reparent(collision_desk)
+	
 		
 		
-		allmeshes=get_all_meshes(get_all_children(a))
-		#print(allmeshes)
-		#print(allmeshes[0])
-		for i in allmeshes:
-			#all_size.append( i.global_transform.basis.get_scale() *i.get_aabb().size)
-			all_size[i] =i.global_transform.basis.get_scale() *i.get_aabb().size
-			
-			#print(all_size[0])
-			#print(all_size.keys())
-			
-		var all_size2 = all_size.values()
-		for i in range(0,all_size2.size()):
-			if(i+1 ==all_size2.size()):
-				break
-			if(all_size2[i].length() >= all_size2[i+1].length()):
-				all_size2[i+1] = all_size2[i]
-			
-		var biggest_vector =all_size2[all_size2.size()-1]
-		var biggest_mesh = all_size.find_key(biggest_vector)
-		
-		
-		collision_desk.rotation = biggest_mesh.global_rotation
-		#collision_desk.add_child(a)
-		a.reparent(collision_desk)
 		
 		
 		
 		var	new_node_2:Node3D  = Node3D.new()
 		
 		static_desk.get_child(0).add_child(new_node_2)
-		var center = all_centers(a)
+		#var center = all_centers(model_desk)
+		var center = find_center_mesh_master_per_vertex(model_desk)
 		print("center:"+str(center))
 		change_pivot(new_node_2,center)
-		MyReparent(a,new_node_2)
+		MyReparent(model_desk,new_node_2)
 
 
 		new_node_2.position = Vector3.ZERO
 		
-		
-		#box_colision.size =biggest_vector.global_transform.basis.get_scale()* biggest_vector.get_aabb().size 
-		box_colision.size =biggest_vector
-		#print(str(mesh_desk.global_transform.basis.get_scale()) +""+  str(mesh_desk.get_aabb().size) )
-	
+
+#method for activation_deactivation of behavior of characterbody
 func activation_deactivation_char_body(enable:bool):
 	my_char_body.axis_lock_angular_x=enable
 	my_char_body.axis_lock_angular_y=enable
@@ -1481,8 +1098,14 @@ func activation_deactivation_char_body(enable:bool):
 
 
 
-
-
+#create controller class for handling controlling 
+func create_controller():
+	controller =  mycontroller.new()
+	add_child(controller)
+#create file class for handling reading from model from file 
+func create_file():
+	myfilemanager = MyFileManager.new()
+	add_child(myfilemanager)
 
 
 

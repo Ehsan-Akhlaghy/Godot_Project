@@ -9,21 +9,15 @@ var MyModel:Node3D
 @onready var my_model_manager:Input_Model_Manager = get_node("..")
 var _path_file:String
 
-#func _init(path:String):
-	#my_model_manager = input_manager
-	#_path_file = path
-	#print(input_manager)
+
 	
-func _init():
-	#_path_file = my_model_manager.path_asset_glb
-	pass
 
 func _ready():
 	_path_file = my_model_manager.path_asset_glb
 	#LoadFromFile(_path_file)
 	call_deferred("LoadFromFile",_path_file)
 
-
+#load glb file form hard disk drive 
 func LoadFromFile(path:String):
 	if(checkformat_file_glb(path)):
 		var mygltf:GLTFDocument = GLTFDocument.new()
@@ -43,10 +37,9 @@ func LoadFromFile(path:String):
 
 
 
-	
+#checking format of file (just glb)
 func checkformat_file_glb(Path:String)->bool:
-	#print(File.get_as_text().to_lower())
-	#=='gltf'
+
 	if(Path.get_extension().contains('glb')|| Path.get_extension().contains('gltf')):
 		return true 
 	else:

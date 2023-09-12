@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://bw25xhs3iehum"]
 
-[ext_resource type="PackedScene" uid="uid://db1whq2oyow6o" path="res://Prefab/input_model_manager.tscn" id="1_03q7c"]
+[ext_resource type="Script" path="res://Script/mainTest.gd" id="1_amvp2"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wbfat"]
 size = Vector3(20.7879, 11.4559, 20)
@@ -17,7 +17,7 @@ albedo_color = Color(1, 0, 0.2, 1)
 [node name="MainScene" type="Node3D"]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.0655774, 0, -0.997847, 0, 1, 0, 0.997847, 0, -0.0655774, -90.832, 70.9117, -7.46001)
+transform = Transform3D(-0.0655774, 0, -0.997847, 0, 1, 0, 0.997847, 0, -0.0655774, -6.28273, 1.47598, -2.12502)
 current = true
 fov = 60.0
 
@@ -34,6 +34,7 @@ size = Vector3(20, 10, 20)
 
 [node name="Node3D3" type="Node3D" parent="."]
 transform = Transform3D(3.9997, -0.048868, -2.13609e-09, 0, -1.74846e-07, 4, -0.048868, -3.9997, -1.74833e-07, -18.1916, -0.271282, 33.5011)
+script = ExtResource("1_amvp2")
 
 [node name="StaticBody3D4" type="StaticBody3D" parent="."]
 transform = Transform3D(0.324297, 0, -0.945955, 0, 1, 0, 0.945955, 0, 0.324297, 61.3129, -9.41011, 757.679)
@@ -96,12 +97,9 @@ skeleton = NodePath("../../..")
 title = "Open a File"
 initial_position = 1
 size = Vector2i(800, 400)
-visible = true
 ok_button_text = "Open"
 file_mode = 0
 access = 2
 
 [node name="offset_desk" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.78466, 61.5168, -13.546)
-
-[node name="InputModelManager" parent="." instance=ExtResource("1_03q7c")]
