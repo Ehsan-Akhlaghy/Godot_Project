@@ -1,11 +1,13 @@
 
 extends Node
-class_name  mycontroller
+class_name  InputManager
 
 
-@onready var MyModelManager:Input_Model_Manager =get_node("..")
+var MyModelManager:Input_Model_Manager 
 
-
+func _init(input_model_manager:Input_Model_Manager):
+	MyModelManager = input_model_manager
+	name = "InputManager"
 
 func _physics_process(_delta):
 	handle_mouse()
@@ -48,11 +50,6 @@ func handle_mouse():
 
 			MyModelManager.can_rotate_y =true
 			MyModelManager.can_rotate_z =true
-			
-
-			
-		
+				
 	#if(Input.is_action_just_pressed("Esc")):
 	#		myFileDialog.visible= true
-
-

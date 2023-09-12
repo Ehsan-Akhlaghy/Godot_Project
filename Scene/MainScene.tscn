@@ -9,6 +9,5 @@ transform = Transform3D(0.843391, 0, 0.5373, 0, 1, 0, -0.5373, 0, 0.843391, 2, 2
 current = true
 fov = 60.0
 
-[node name="Node3D3" type="Node3D" parent="."]
-transform = Transform3D(3.9997, -0.048868, -2.13609e-09, 0, -1.74846e-07, 4, -0.048868, -3.9997, -1.74833e-07, -18.1916, -0.271282, 33.5011)
+[node name="Node" type="Node" parent="."]
 script = ExtResource("1_amvp2")

@@ -1,21 +1,9 @@
-extends Node
-class_name  MyFileManager
-
-
-
+extends Resource
+class_name  FileManager
 
 var MyModel:Node3D
-
-@onready var my_model_manager:Input_Model_Manager = get_node("..")
+var my_model_manager:Input_Model_Manager 
 var _path_file:String
-
-
-	
-
-func _ready():
-	_path_file = my_model_manager.path_asset_glb
-	#LoadFromFile(_path_file)
-	call_deferred("LoadFromFile",_path_file)
 
 #load glb file form hard disk drive 
 func LoadFromFile(path:String):
@@ -24,17 +12,8 @@ func LoadFromFile(path:String):
 		var gltf_state:GLTFState = GLTFState.new()
 		
 		mygltf.append_from_file(path,gltf_state)
-		
-		#remove_pre_model()
-		
-		my_model_manager.Model= mygltf.generate_scene(gltf_state)
-		
-		if(my_model_manager.Model!=null):
-			my_model_manager.new_file_added()
-			
-
-
-
+		var model= mygltf.generate_scene(gltf_state)
+		return model
 
 
 #checking format of file (just glb)
@@ -44,14 +23,3 @@ func checkformat_file_glb(Path:String)->bool:
 		return true 
 	else:
 		return false
-	
-#func remove_pre_model():
-#	if(MyModel!=null):
-#		remove_child(MyModel)
-		
-
-
-
-
-
-

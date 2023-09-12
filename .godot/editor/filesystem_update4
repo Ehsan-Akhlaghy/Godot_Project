@@ -1,4 +1,5 @@
 res://Scene/MainScene.tscn
 res://Script/mainTest.gd
+res://Script/FilesManager.gd
 res://Script/Input_Model_Calib.gd
 res://Script/InputManager.gd

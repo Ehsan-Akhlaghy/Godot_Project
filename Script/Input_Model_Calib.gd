@@ -2,60 +2,56 @@
 extends Node
 class_name  Input_Model_Manager
 
-var Model
-var MyScale:Vector3
-var MaxScale:float = 100
-
-var myshape
-
-var my_char_body:CharacterBody3D
-
-var new_node:Node3D =  Node3D.new()
-
-var  my_collision_3dmodel: CollisionShape3D
-
-
-var can_rotate_y:bool = true
-var can_rotate_z:bool = true
-
-
-var offset_wall:Vector3
-
-var velocity_char:Vector3 = Vector3(0,-9.8,0)
-
-var controller:mycontroller
-var myfilemanager:MyFileManager
-
+#input argument of class 
 var path_asset_glb:String
 var desk_path:String
 var asset_pos:Vector3
 var desk_pos:Vector3
 var standard_size:Vector3
 
+var controller:InputManager
+var file_manager:FileManager
+
+
+var Model
+var MyScale:Vector3
+var MaxScale:float = 100
+
+
+var char_body:CharacterBody3D
+var center_node:Node3D =  Node3D.new()
+var collision_3dmodel: CollisionShape3D
+
+var can_rotate_y:bool = true
+var can_rotate_z:bool = true
+
+var velocity_char:Vector3 = Vector3(0,-9.8,0)
+
 #constructor of class 
-func myconstructor(_path_asset_glb:String,_desk_path:String,_desk_pos:Vector3,_asset_pos:Vector3,_standard_size:Vector3):
-	
+func _init(_path_asset_glb:String,_desk_path:String,_desk_pos:Vector3,_asset_pos:Vector3,_standard_size:Vector3):
+	name = "InputModelManager"
 	path_asset_glb = _path_asset_glb
 	desk_path = _desk_path
 	asset_pos = _asset_pos	
 	standard_size = _standard_size
 	desk_pos = _desk_pos
-	create_controller()
-	create_file()
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	call_deferred("create_desk",desk_path)
-	MaxScale = 100
-	pass
-
+	file_manager = FileManager.new()
+	create_controller()
+	create_asset(path_asset_glb)
+	create_desk(desk_path)
+	MaxScale = 100	
+	
 
 
 #check in each physics frame collision happened 
 func _physics_process(delta):
-	if(my_char_body!=null):
+	if(char_body!=null):
 		check_collision_side(delta)
+
 
 #formulation (feature_unit/current_unit) * current_size = Desired_size 
 #we have a standard size which defined in constructor,
@@ -64,54 +60,49 @@ func calib_size():
 	
 	Init_Model()
 	
-	my_char_body.get_child(0).add_child(new_node)
+	char_body.get_child(0).add_child(center_node)
 	
 	var center = find_center_mesh_master_per_vertex(Model)
 
-	change_pivot(new_node,center)
-	MyReparent(Model,new_node)
+	change_pivot(center_node,center)
+	MyReparent(Model,center_node)
 	
-	new_node.scale = find_desired_size_3(Model)
+	center_node.scale = find_desired_size_3(Model)
 
-	change_pivot(my_char_body,center)
+	change_pivot(char_body,center)
 	
-	my_char_body.global_position = Vector3.ZERO
+	char_body.global_position = Vector3.ZERO
 	
-	my_char_body.global_position = asset_pos
+	char_body.global_position = asset_pos
 	
-	my_collision_3dmodel.shape.size = find_size_mesh_master_per_vertex(Model)
-	
-	pass
+	collision_3dmodel.shape.size = find_size_mesh_master_per_vertex(Model)
+
 
 #change mynode position to center(for new pivoting)
 func change_pivot(mynode:Node3D,center:Vector3):
 	
-	if(new_node.position.length()!=0):
-		new_node.position = Vector3.ZERO
+	if(center_node.position.length()!=0):
+		center_node.position = Vector3.ZERO
 		
-
 	mynode.global_position= center
-	
-	
 	pass
 
 
 #create hieracrchy of charbody for 3dmodel
 func create_Marker3d():	
-	my_char_body = CharacterBody3D.new()
+	char_body = CharacterBody3D.new()
+	char_body.name = "AssetModel"
+	collision_3dmodel= CollisionShape3D.new()
 	
-	my_collision_3dmodel= CollisionShape3D.new()
-	myshape = BoxShape3D.new()
-	my_collision_3dmodel.shape =myshape
-	
-
-	my_collision_3dmodel.shape.size=find_size_mesh_master_per_vertex(Model)
-	
-	get_parent().add_child(my_char_body)
-	
-	my_char_body.add_child(my_collision_3dmodel)
+	var myshape = BoxShape3D.new()
+	collision_3dmodel.shape =myshape
 	
 
+	collision_3dmodel.shape.size=find_size_mesh_master_per_vertex(Model)
+	
+	add_child(char_body)
+	
+	char_body.add_child(collision_3dmodel)
 
 
 #rotate method 	
@@ -120,27 +111,29 @@ func MyRotation(degree:float,axis:String):
 	if(axis=="y"):
 	
 		if(can_rotate_y):
-			my_char_body.rotate_object_local(Vector3(0,1,0),degree)
+			char_body.rotate_object_local(Vector3(0,1,0),degree)
 	elif(axis=="z"):
 		
 		if(can_rotate_z):
-			my_char_body.rotate_object_local(Vector3(0,0,1),degree)
-	pass
-	
+			char_body.rotate_object_local(Vector3(0,0,1),degree)
+
+
 #scale method
 func DoScale(my_delta:float):
 	
 	var parent:Node3D = Model.get_parent().get_parent().get_parent()
 	
 	var _Scale:Vector3 =  Vector3(parent.scale.x+my_delta,parent.scale.y+my_delta
-				,parent.scale.z+my_delta) 			
-
+				,parent.scale.z+my_delta)
+	
 	parent.scale = clamp(_Scale,Vector3(0.1,0.1,0.1),Vector3(MaxScale,MaxScale,MaxScale))
+
 
 #reparent child to new parent 	
 func MyReparent(child:Node3D,parent:Node3D):
 	
 	child.reparent(parent)
+
 
 func Init_Model():
 	Model.global_position = Vector3(0,0,0)
@@ -167,8 +160,8 @@ func find_desired_size_3(node):
 #after loading file from hard this file is called 	
 func new_file_added():
 	
-	if(my_char_body!=null):
-		my_char_body.get_parent().remove_child(my_char_body)
+	if(char_body!=null):
+		char_body.get_parent().remove_child(char_body)
 		can_rotate_y = true
 		can_rotate_z = true
 
@@ -260,64 +253,64 @@ func get_all_meshes_aabb_transfromed(mynodes):
 #when using characte2d, use this method for handling collision
 func check_collision_side(mydelta):
 	
-	my_char_body.velocity += velocity_char *mydelta
+	char_body.velocity += velocity_char *mydelta
 
 
-	if(my_char_body.is_on_floor() && my_char_body.is_on_ceiling()):
+	if(char_body.is_on_floor() && char_body.is_on_ceiling()):
 				print("on floor & on celing")
-				my_char_body.velocity = Vector3.ZERO
+				char_body.velocity = Vector3.ZERO
 				activation_deactivation_char_body(true)
-				MaxScale = my_char_body.scale[0]
+				MaxScale = char_body.scale[0]
 				can_rotate_z = false
-				my_char_body.move_and_slide()
+				char_body.move_and_slide()
 				return
 				
 
-	elif(my_char_body.is_on_wall() && my_char_body.is_on_floor()):
+	elif(char_body.is_on_wall() && char_body.is_on_floor()):
 				#print("on floor & on celing")
-				my_char_body.velocity = Vector3.ZERO
+				char_body.velocity = Vector3.ZERO
 				activation_deactivation_char_body(true)
-				MaxScale = my_char_body.scale[0]
+				MaxScale = char_body.scale[0]
 				can_rotate_z = false
 				can_rotate_y = false
-				my_char_body.move_and_slide()
+				char_body.move_and_slide()
 				return
 
 
 #
-	elif(my_char_body.is_on_floor()):
+	elif(char_body.is_on_floor()):
 			#print("on floor")
 			velocity_char = Vector3(0,-9.8,0)
 			activation_deactivation_char_body(false)
 			
-			my_char_body.move_and_slide()
+			char_body.move_and_slide()
 			return
 
-	elif(my_char_body.is_on_ceiling()):
+	elif(char_body.is_on_ceiling()):
 			#print("on celing")
 			velocity_char = Vector3(0,-9.8,0)
 			
 			activation_deactivation_char_body(false)
 			
-			my_char_body.move_and_slide()
+			char_body.move_and_slide()
 			return
 
-	elif(my_char_body.is_on_wall()):
-			var collision:KinematicCollision3D =	my_char_body.get_last_slide_collision()
+	elif(char_body.is_on_wall()):
+			var collision:KinematicCollision3D =	char_body.get_last_slide_collision()
 
-			if(wall_Is_right(my_char_body,collision.get_position(0))):
-				my_char_body.move_and_slide()
+			if(wall_Is_right(char_body,collision.get_position(0))):
+				char_body.move_and_slide()
 				return
 				
 			else:
-				my_char_body.move_and_slide()
+				char_body.move_and_slide()
 				return
 
 	
 	
 	activation_deactivation_char_body(false)
 						
-	my_char_body.move_and_slide()
+	char_body.move_and_slide()
 
 #this method is used to find point is left or right of myobject
 func wall_Is_right(myobject:Node3D,point:Vector3)->bool:
@@ -355,29 +348,16 @@ func wall_Is_right(myobject:Node3D,point:Vector3)->bool:
 func create_desk(path:String):
 	
 		var static_desk:StaticBody3D = StaticBody3D.new()
-		static_desk.name = "Esi"
-		get_parent().add_child(static_desk)
-	
-	
-		
+		static_desk.name = "Desk"
+		add_child(static_desk)
 		static_desk.global_position = desk_pos
-
-	
-				
+		
 		var collision_desk:CollisionShape3D = CollisionShape3D.new()
 	
 		static_desk.add_child(collision_desk)
 		
-
-		
-		var mygltf:GLTFDocument = GLTFDocument.new()
-		var gltf_state:GLTFState = GLTFState.new()
-		
-		mygltf.append_from_file(path,gltf_state)
-		
-		var model_desk =mygltf.generate_scene(gltf_state)
-		
-		get_parent().add_child(model_desk)
+		var model_desk = create_model(path)
+		add_child(model_desk)
 		
 
 		var box_colision = BoxShape3D.new()
@@ -385,14 +365,9 @@ func create_desk(path:String):
 
 		box_colision.size = find_size_mesh_master_per_vertex(model_desk)
 		
-		
 		model_desk.reparent(collision_desk)
 	
-		
-		
-		
-		
-		
+	
 		var	new_node_2:Node3D  = Node3D.new()
 		
 		static_desk.get_child(0).add_child(new_node_2)
@@ -408,19 +383,27 @@ func create_desk(path:String):
 
 #method for activation_deactivation of behavior of characterbody
 func activation_deactivation_char_body(enable:bool):
-	my_char_body.axis_lock_angular_x=enable
-	my_char_body.axis_lock_angular_y=enable
-	my_char_body.axis_lock_angular_z=enable
-	my_char_body.axis_lock_linear_x=enable
-	my_char_body.axis_lock_linear_y=enable
-	my_char_body.axis_lock_linear_z=enable
+	char_body.axis_lock_angular_x=enable
+	char_body.axis_lock_angular_y=enable
+	char_body.axis_lock_angular_z=enable
+	char_body.axis_lock_linear_x=enable
+	char_body.axis_lock_linear_y=enable
+	char_body.axis_lock_linear_z=enable
 
 #create controller class for handling controlling 
 func create_controller():
-	controller =  mycontroller.new()
+	controller =  InputManager.new(self)
 	add_child(controller)
 	
 #create file class for handling reading from model from file 
-func create_file():
-	myfilemanager = MyFileManager.new()
-	add_child(myfilemanager)
+func create_model(path:String):
+	
+	var model = file_manager.LoadFromFile(path)
+	return model
+
+
+#create model 
+func create_asset(path:String):
+	Model = create_model(path)
+	new_file_added()
+	
