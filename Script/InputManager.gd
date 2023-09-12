@@ -7,7 +7,7 @@ class_name  mycontroller
 
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	handle_mouse()
 	pass
 #handing mouse and keyboard event 	
